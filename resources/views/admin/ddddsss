@@ -1,0 +1,14 @@
+# Annuler la dernière migration
+php artisan migrate:rollback
+
+# Annuler les X dernières migrations
+php artisan migrate:rollback --step=5
+
+# Annuler toutes les migrations
+php artisan migrate:reset
+
+# Annuler toutes les migrations et les relancer
+php artisan migrate:refresh
+
+# Annuler tout et relancer avec les seeders
+php artisan migrate:refresh --seed

@@ -1,0 +1,21 @@
+{{ route('admin.add-product') }}
+
+
+main-content-wrapper
+
+
+@extends('admin/base')
+@section('contenue')
+
+
+
+
+
+
+@endsection 
+
+
+
+<div><span class="text-danger">$25</span><span
+    class="text-muted text-decoration-line-through ms-1">$28</span>
+</div>
