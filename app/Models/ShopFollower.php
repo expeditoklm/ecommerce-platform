@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -17,24 +18,18 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ShopFollower extends Model
 {
-    /**
-     * @var array
-     */
-    protected $fillable = ['user_id', 'shop_id', 'reason', 'deleted', 'created_at', 'updated_at'];
+    use HasUuid;
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function shop()
-    {
-        return $this->belongsTo('App\Models\Shop');
-    }
+    protected $fillable = ['uuid', 'user_id', 'shop_id', 'reason', 'deleted'];
+    protected $casts = ['deleted' => 'boolean'];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function user()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo(User::class);
+    }
+
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class);
     }
 }

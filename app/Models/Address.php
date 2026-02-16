@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -16,16 +17,22 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Address extends Model
 {
-    /**
-     * @var array
-     */
-    protected $fillable = ['shop_id', 'title', 'location', 'deleted', 'created_at', 'updated_at'];
+    use HasUuid;
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
+    protected $fillable = [
+        'uuid',
+        'title',
+        'location',
+        'shop_id',
+        'deleted',
+    ];
+
+    protected $casts = [
+        'deleted' => 'boolean',
+    ];
+
     public function shop()
     {
-        return $this->belongsTo('App\Models\Shop');
+        return $this->belongsTo(Shop::class);
     }
 }

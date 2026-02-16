@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -18,24 +19,31 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Category extends Model
 {
-    /**
-     * @var array
-     */
-    protected $fillable = ['name', 'description', 'icon_cat', 'deleted', 'status', 'created_at', 'updated_at'];
+    use HasUuid;
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function blogs()
+    protected $fillable = [
+        'uuid',
+        'name',
+        'description',
+        'icon_cat',
+        'deleted',
+        'status',
+    ];
+
+    protected $casts = [
+        'deleted' => 'boolean',
+        'status' => 'boolean',
+    ];
+
+    public function products()
     {
-        return $this->hasMany('App\Models\Blog');
+        return $this->belongsToMany(Product::class, 'category_product')
+            ->withTimestamps()
+            ->wherePivot('deleted', 0);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function shops()
+    public function blogs()
     {
-        return $this->hasMany('App\Models\Shop', 'main_category_id');
+        return $this->hasMany(Blog::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -14,8 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Producting extends Model
 {
-    /**
-     * @var array
-     */
-    protected $fillable = ['name', 'description', 'deleted', 'created_at', 'updated_at'];
+    use HasUuid;
+
+    protected $fillable = ['uuid', 'name', 'description', 'deleted'];
+    protected $casts = ['deleted' => 'boolean'];
 }

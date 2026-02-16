@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -14,16 +15,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Type extends Model
 {
-    /**
-     * @var array
-     */
-    protected $fillable = ['label', 'deleted', 'created_at', 'updated_at'];
+    use HasUuid;
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
+    protected $fillable = ['uuid', 'label', 'deleted'];
+    protected $casts = ['deleted' => 'boolean'];
+
     public function products()
     {
-        return $this->hasMany('App\Models\Product');
+        return $this->hasMany(Product::class);
     }
 }

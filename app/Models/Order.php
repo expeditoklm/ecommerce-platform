@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -19,24 +20,30 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Order extends Model
 {
-    /**
-     * @var array
-     */
-    protected $fillable = ['user_id', 'product_id', 'quantity', 'total', 'status', 'deleted', 'created_at', 'updated_at'];
+    use HasUuid;
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function product()
-    {
-        return $this->belongsTo('App\Models\Product');
-    }
+    protected $fillable = [
+        'uuid',
+        'user_id',
+        'product_id',
+        'quantity',
+        'total',
+        'status',
+        'deleted',
+    ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
+    protected $casts = [
+        'total' => 'decimal:2',
+        'deleted' => 'boolean',
+    ];
+
     public function user()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo(User::class);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 }

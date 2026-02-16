@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -35,68 +36,72 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Product extends Model
 {
-    /**
-     * @var array
-     */
-    protected $fillable = ['shop_id', 'type_id', 'name', 'slug', 'description', 'file_url', 'price', 'stock', 'is_on_sale', 'sale_price', 'sale_end_date', 'popularity_score', 'carousel_priority', 'auto_display', 'manual_display', 'target_segment', 'exclusive_discount', 'deleted', 'status', 'created_at', 'updated_at'];
+    use HasUuid;
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function orders()
-    {
-        return $this->hasMany('App\Models\Order');
-    }
+    protected $fillable = [
+        'uuid',
+        'shop_id',
+        'type_id',
+        'name',
+        'slug',
+        'description',
+        'file_url',
+        'price',
+        'stock',
+        'is_on_sale',
+        'sale_price',
+        'sale_end_date',
+        'popularity_score',
+        'carousel_priority',
+        'auto_display',
+        'manual_display',
+        'target_segment',
+        'exclusive_discount',
+        'deleted',
+        'status',
+    ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function productImages()
-    {
-        return $this->hasMany('App\Models\ProductImage');
-    }
+    protected $casts = [
+        'price' => 'decimal:2',
+        'sale_price' => 'decimal:2',
+        'exclusive_discount' => 'decimal:2',
+        'is_on_sale' => 'boolean',
+        'auto_display' => 'boolean',
+        'manual_display' => 'boolean',
+        'deleted' => 'boolean',
+        'status' => 'boolean',
+        'sale_end_date' => 'date',
+    ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function shop()
     {
-        return $this->belongsTo('App\Models\Shop');
+        return $this->belongsTo(Shop::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function type()
     {
-        return $this->belongsTo('App\Models\Type');
+        return $this->belongsTo(Type::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function reviews()
-    {
-        return $this->hasMany('App\Models\Review');
-    }
-
-     /**
-     * Relation many-to-many avec Category
-     */
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'category_product')
-                    ->wherePivot('deleted', 0)
-                    ->withTimestamps();
+            ->withTimestamps()
+            ->wherePivot('deleted', 0);
     }
 
-
-
-    /**
-     * Relation avec ProductImage
-     */
     public function images()
     {
-        return $this->hasMany(ProductImage::class)->where('deleted', 0);
+        return $this->hasMany(ProductImage::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

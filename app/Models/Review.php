@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -22,40 +23,41 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Review extends Model
 {
-    /**
-     * @var array
-     */
-    protected $fillable = ['product_id', 'user_id', 'title', 'rating', 'comment', 'end_date', 'deleted', 'created_at', 'updated_at'];
+    use HasUuid;
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function reviewImages()
-    {
-        return $this->hasMany('App\Models\ReviewImage');
-    }
+    protected $fillable = [
+        'uuid',
+        'title',
+        'rating',
+        'comment',
+        'end_date',
+        'product_id',
+        'user_id',
+        'deleted',
+    ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function reviewVoteOrSignalments()
-    {
-        return $this->hasMany('App\Models\ReviewVoteOrSignalment');
-    }
+    protected $casts = [
+        'deleted' => 'boolean',
+        'end_date' => 'date',
+    ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function product()
     {
-        return $this->belongsTo('App\Models\Product');
+        return $this->belongsTo(Product::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function user()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo(User::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ReviewImage::class);
+    }
+
+    public function votes()
+    {
+        return $this->hasMany(ReviewVoteOrSignalment::class);
     }
 }

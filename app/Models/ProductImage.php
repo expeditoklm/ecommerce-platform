@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -15,16 +16,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ProductImage extends Model
 {
-    /**
-     * @var array
-     */
-    protected $fillable = ['product_id', 'url', 'deleted', 'created_at', 'updated_at'];
+    use HasUuid;
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
+    protected $fillable = ['uuid', 'product_id', 'url', 'deleted'];
+    protected $casts = ['deleted' => 'boolean'];
+
     public function product()
     {
-        return $this->belongsTo('App\Models\Product');
+        return $this->belongsTo(Product::class);
     }
 }

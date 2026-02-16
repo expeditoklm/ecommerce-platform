@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -28,34 +29,49 @@ use Illuminate\Database\Eloquent\Model;
  * @property Category $category
  * @property Shop $shop
  */
+// Exemple pour Blog Model
 class Blog extends Model
 {
-    /**
-     * @var array
-     */
-    protected $fillable = ['shop_id', 'category_id', 'slug_url', 'title', 'description', 'content', 'publication_date', 'reading_time', 'is_published', 'views_count', 'shares_count', 'quote', 'quote_author', 'product_features', 'product_status', 'deleted', 'created_at', 'updated_at'];
+    use HasUuid;
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function blogImages()
-    {
-        return $this->hasMany('App\Models\BlogImage');
-    }
+    protected $fillable = [
+        'uuid',
+        'shop_id',
+        'category_id',
+        'slug_url',
+        'title',
+        'description',
+        'content',
+        'publication_date',
+        'reading_time',
+        'is_published',
+        'views_count',
+        'shares_count',
+        'quote',
+        'quote_author',
+        'product_features',
+        'product_status',
+        'deleted',
+    ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function category()
-    {
-        return $this->belongsTo('App\Models\Category');
-    }
+    protected $casts = [
+        'is_published' => 'boolean',
+        'deleted' => 'boolean',
+        'publication_date' => 'date',
+    ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function shop()
     {
-        return $this->belongsTo('App\Models\Shop');
+        return $this->belongsTo(Shop::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(BlogImage::class);
     }
 }
