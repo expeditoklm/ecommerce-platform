@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -21,16 +22,25 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Notification extends Model
 {
-    /**
-     * @var array
-     */
-    protected $fillable = ['shop_id', 'name', 'firstname', 'company', 'title', 'email', 'phone', 'comment', 'deleted', 'created_at', 'updated_at'];
+    use HasUuid;
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
+    protected $fillable = [
+        'uuid',
+        'shop_id',
+        'name',
+        'firstname',
+        'company',
+        'title',
+        'email',
+        'phone',
+        'comment',
+        'deleted',
+    ];
+
+    protected $casts = ['deleted' => 'boolean'];
+
     public function shop()
     {
-        return $this->belongsTo('App\Models\Shop');
+        return $this->belongsTo(Shop::class);
     }
 }

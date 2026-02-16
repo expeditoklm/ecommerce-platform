@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -64,3 +65,29 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+=======
+# Ecommerce Platform
+
+Plateforme e-commerce collaborative inspirée d'Alibaba, développée avec **Laravel**, **SQL** et **Bootstrap**.  
+Les partenaires peuvent ajouter leurs articles, et les acheteurs viennent les consulter et acheter.
+
+## 🚀 Technologies utilisées
+- Laravel (backend)
+- SQL (base de données)
+- Bootstrap (frontend)
+
+## 🎯 Objectifs
+- Gestion des partenaires et de leurs catalogues
+- Interface acheteurs simple et intuitive
+- Système de recherche et filtrage des produits
+- Sécurité et scalabilité
+
+## 📌 Installation
+1. Cloner le dépôt
+2. Installer les dépendances avec `composer install`
+3. Configurer `.env` pour la base de données
+4. Lancer les migrations avec `php artisan migrate`
+5. Démarrer le serveur avec `php artisan serve`
+
+---
+>>>>>>> b4bcd402db6a03e6d0923b92f9543033c93a0bf3

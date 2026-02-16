@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -35,64 +36,70 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Shop extends Model
 {
-    /**
-     * @var array
-     */
-    protected $fillable = ['user_id', 'main_category_id', 'name', 'slug', 'description', 'address', 'location', 'phone', 'logo_url', 'is_active', 'return_policy', 'contact_email', 'contact_phone', 'average_rating', 'reviews_count', 'website_url', 'deleted', 'created_at', 'updated_at'];
+    use HasUuid;
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function addresses()
-    {
-        return $this->hasMany('App\Models\Address');
-    }
+    protected $fillable = [
+        'uuid',
+        'user_id',
+        'name',
+        'slug',
+        'description',
+        'address',
+        'location',
+        'phone',
+        'logo_url',
+        'is_active',
+        'return_policy',
+        'contact_email',
+        'contact_phone',
+        'average_rating',
+        'reviews_count',
+        'main_category_id',
+        'website_url',
+        'deleted',
+    ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function blogs()
-    {
-        return $this->hasMany('App\Models\Blog');
-    }
+    protected $casts = [
+        'is_active' => 'boolean',
+        'deleted' => 'boolean',
+        'average_rating' => 'decimal:2',
+    ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function notifications()
-    {
-        return $this->hasMany('App\Models\Notification');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function products()
-    {
-        return $this->hasMany('App\Models\Product');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function shopFollowers()
-    {
-        return $this->hasMany('App\Models\ShopFollower');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function category()
-    {
-        return $this->belongsTo('App\Models\Category', 'main_category_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function user()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo(User::class);
+    }
+
+    public function mainCategory()
+    {
+        return $this->belongsTo(Category::class, 'main_category_id');
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
+
+    public function blogs()
+    {
+        return $this->hasMany(Blog::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'shop_followers')
+            ->withTimestamps()
+            ->withPivot('reason', 'deleted')
+            ->wherePivot('deleted', 0);
     }
 }

@@ -1,0 +1,77 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        $tables = [
+            'addresses',
+            'blogs',
+            'blog_images',
+            'categories',
+            'category_product',
+            'notifications',
+            'orders',
+            'productings',
+            'products',
+            'product_images',
+            'reviews',
+            'review_images',
+            'review_vote_or_signalment',
+            'shops',
+            'shop_followers',
+            'types',
+            'users',
+        ];
+
+        foreach ($tables as $table) {
+            if (!Schema::hasColumn($table, 'uuid')) {
+                Schema::table($table, function (Blueprint $blueprint) {
+                    // UUID nullable au début, on le rendra unique plus tard
+                   $blueprint->uuid('uuid')->nullable();
+                });
+            }
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        $tables = [
+            'addresses',
+            'blogs',
+            'blog_images',
+            'categories',
+            'category_product',
+            'notifications',
+            'orders',
+            'productings',
+            'products',
+            'product_images',
+            'reviews',
+            'review_images',
+            'review_vote_or_signalment',
+            'shops',
+            'shop_followers',
+            'types',
+            'users',
+        ];
+
+        foreach ($tables as $table) {
+            if (Schema::hasColumn($table, 'uuid')) {
+                Schema::table($table, function (Blueprint $blueprint) {
+                    $blueprint->dropColumn('uuid');
+                });
+            }
+        }
+    }
+};

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -19,31 +20,29 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ReviewVoteOrSignalment extends Model
 {
-    /**
-     * The table associated with the model.
-     * 
-     * @var string
-     */
+    use HasUuid;
+
     protected $table = 'review_vote_or_signalment';
 
-    /**
-     * @var array
-     */
-    protected $fillable = ['review_id', 'user_id', 'reason', 'type', 'status', 'deleted', 'created_at', 'updated_at'];
+    protected $fillable = [
+        'uuid',
+        'review_id',
+        'user_id',
+        'reason',
+        'type',
+        'status',
+        'deleted',
+    ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
+    protected $casts = ['deleted' => 'boolean'];
+
     public function review()
     {
-        return $this->belongsTo('App\Models\Review');
+        return $this->belongsTo(Review::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function user()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo(User::class);
     }
 }
