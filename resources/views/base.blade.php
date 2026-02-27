@@ -525,7 +525,7 @@
                   <img src="{{ asset('assets/images/products/product-img-1.jpg') }}" alt="Ecommerce" class="icon-shape icon-xxl">
                   <div class="ms-3">
                     <!-- title -->
-                    <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit">
+                    <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">
                       <h6 class="mb-0">Haldiram's Sev Bhujia</h6>
                     </a>
                     <span><small class="text-muted">Nom de la boutique</small></span>
@@ -563,7 +563,7 @@
                 <div class="d-flex">
                   <img src="{{ asset('assets/images/products/product-img-2.jpg') }}" alt="Ecommerce" class="icon-shape icon-xxl">
                   <div class="ms-3">
-                    <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit">
+                    <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">
                       <h6 class="mb-0">NutriChoice Digestive </h6>
                     </a>
                     <span><small class="text-muted">Nom de la boutique</small></span>
@@ -604,7 +604,7 @@
                   <img src="{{ asset('assets/images/products/product-img-3.jpg') }}" alt="Ecommerce" class="icon-shape icon-xxl">
                   <div class="ms-3">
                     <!-- title -->
-                    <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit">
+                    <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">
                       <h6 class="mb-0">Cadbury 5 Star Chocolate</h6>
                     </a>
                     <span><small class="text-muted">Nom de la boutique</small></span>
@@ -644,7 +644,7 @@
                   <div class="ms-3">
                     <!-- title -->
                     <!-- title -->
-                    <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit">
+                    <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">
                       <h6 class="mb-0">Onion Flavour Potato</h6>
                     </a>
                     <span><small class="text-muted">Nom de la boutique</small></span>
@@ -684,7 +684,7 @@
                   <img src="{{ asset('assets/images/products/product-img-5.jpg') }}" alt="Ecommerce" class="icon-shape icon-xxl">
                   <div class="ms-3">
                     <!-- title -->
-                    <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit">
+                    <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">
                       <h6 class="mb-0">Salted Instant Popcorn </h6>
                     </a>
                     <span><small class="text-muted">Nom de la boutique</small></span>

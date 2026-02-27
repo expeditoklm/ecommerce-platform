@@ -65,7 +65,7 @@
                       <div class=" position-absolute top-0 start-0">
                         <span class="badge bg-danger">Sale</span>
                       </div>
-                      <a href="{{ route('shop.single', ['slug' => 1]) }}">
+                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}">
                         <!-- img --><img src="../assets/images/products/product-img-1.jpg"
                           alt="Grocery Ecommerce Template" class="mb-3 img-fluid"></a>
                       <!-- action btn -->
@@ -81,7 +81,7 @@
                     <!-- heading -->
                     <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Snack &
                           Munchies</small></a></div>
-                    <h2 class="fs-6"><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">Haldiram's Sev
+                    <h2 class="fs-6"><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Haldiram's Sev
                         Bhujia</a></h2>
                     <div>
 
@@ -113,7 +113,7 @@
                 <!-- card product -->
                 <div class="card card-product">
                   <div class="card-body">
-                    <div class="text-center position-relative"> <a href="{{ route('shop.single', ['slug' => 1]) }}">
+                    <div class="text-center position-relative"> <a href="{{ route('shop.single', ['uuid' => "rui"]) }}">
                         <!-- img --><img src="../assets/images/products/product-img-2.jpg"
                           alt="Grocery Ecommerce Template" class="mb-3 img-fluid"></a>
                       <!-- action btn -->
@@ -129,7 +129,7 @@
                     <!-- heading -->
                     <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Bakery &
                           Biscuits</small></a></div>
-                    <h2 class="fs-6"><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">NutriChoice
+                    <h2 class="fs-6"><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">NutriChoice
                         Digestive </a>
                     </h2>
                     <!-- rating -->
@@ -162,7 +162,7 @@
                 <!-- card product -->
                 <div class="card card-product">
                   <div class="card-body">
-                    <div class="text-center position-relative"> <a href="{{ route('shop.single', ['slug' => 1]) }}">
+                    <div class="text-center position-relative"> <a href="{{ route('shop.single', ['uuid' => "rui"]) }}">
                         <!-- img --><img src="../assets/images/products/product-img-3.jpg"
                           alt="Grocery Ecommerce Template" class="mb-3 img-fluid"></a>
                       <!-- action btn -->
@@ -178,7 +178,7 @@
                     <!-- heading -->
                     <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Bakery &
                           Biscuits</small></a></div>
-                    <h2 class="fs-6"><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">Cadbury 5 Star
+                    <h2 class="fs-6"><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Cadbury 5 Star
                         Chocolate</a>
                     </h2>
                     <!-- rating -->
@@ -212,7 +212,7 @@
                 <!-- card product -->
                 <div class="card card-product">
                   <div class="card-body">
-                    <div class="text-center position-relative"> <a href="{{ route('shop.single', ['slug' => 1]) }}">
+                    <div class="text-center position-relative"> <a href="{{ route('shop.single', ['uuid' => "rui"]) }}">
                         <!-- img --><img src="../assets/images/products/product-img-4.jpg"
                           alt="Grocery Ecommerce Template" class="mb-3 img-fluid"></a>
                       <!-- action btn -->
@@ -228,7 +228,7 @@
                     <!-- heading -->
                     <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Snack &
                           Munchies</small></a></div>
-                    <h2 class="fs-6"><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">Onion Flavour
+                    <h2 class="fs-6"><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Onion Flavour
                         Potato</a></h2>
                     <!-- rating -->
                     <div class="text-warning">
@@ -261,7 +261,7 @@
                 <!-- card product -->
                 <div class="card card-product">
                   <div class="card-body">
-                    <div class="text-center position-relative"> <a href="{{ route('shop.single', ['slug' => 1]) }}">
+                    <div class="text-center position-relative"> <a href="{{ route('shop.single', ['uuid' => "rui"]) }}">
                         <!-- img --><img src="../assets/images/products/product-img-5.jpg"
                           alt="Grocery Ecommerce Template" class="mb-3 img-fluid"></a>
                       <!-- action btn -->
@@ -277,7 +277,7 @@
                     <!-- heading -->
                     <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Instant
                           Food</small></a></div>
-                    <h2 class="fs-6"><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">Salted Instant
+                    <h2 class="fs-6"><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Salted Instant
                         Popcorn </a>
                     </h2>
                     <!-- rating -->
@@ -316,7 +316,7 @@
                         <span class="badge bg-danger">Sale</span>
                       </div>
 
-                      <a href="{{ route('shop.single', ['slug' => 1]) }}">
+                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}">
                         <!-- img --><img src="../assets/images/products/product-img-6.jpg"
                           alt="Grocery Ecommerce Template" class="mb-3 img-fluid"></a>
                       <!-- action btn -->
@@ -333,7 +333,7 @@
                     <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Dairy,
                           Bread
                           & Eggs</small></a></div>
-                    <h2 class="fs-6"><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">Blueberry
+                    <h2 class="fs-6"><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Blueberry
                         Greek Yogurt</a>
                     </h2>
                     <div>
@@ -366,7 +366,7 @@
                 <!-- card product -->
                 <div class="card card-product">
                   <div class="card-body">
-                    <div class="text-center position-relative"> <a href="{{ route('shop.single', ['slug' => 1]) }}">
+                    <div class="text-center position-relative"> <a href="{{ route('shop.single', ['uuid' => "rui"]) }}">
                         <!-- img --><img src="../assets/images/products/product-img-7.jpg"
                           alt="Grocery Ecommerce Template" class="mb-3 img-fluid"></a>
                       <!-- action btn -->
@@ -383,7 +383,7 @@
                     <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Dairy,
                           Bread
                           & Eggs</small></a></div>
-                    <h2 class="fs-6"><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">Britannia
+                    <h2 class="fs-6"><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Britannia
                         Cheese Slices</a>
                     </h2>
                     <!-- rating -->
@@ -416,7 +416,7 @@
                 <!-- card product -->
                 <div class="card card-product">
                   <div class="card-body">
-                    <div class="text-center position-relative"> <a href="{{ route('shop.single', ['slug' => 1]) }}">
+                    <div class="text-center position-relative"> <a href="{{ route('shop.single', ['uuid' => "rui"]) }}">
                         <!-- img --><img src="../assets/images/products/product-img-8.jpg"
                           alt="Grocery Ecommerce Template" class="mb-3 img-fluid"></a>
                       <!-- action btn -->
@@ -432,7 +432,7 @@
                     <!-- heading -->
                     <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Instant
                           Food</small></a></div>
-                    <h2 class="fs-6"><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">Kellogg's
+                    <h2 class="fs-6"><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Kellogg's
                         Original Cereals</a>
                     </h2>
                     <!-- rating -->
@@ -466,7 +466,7 @@
                 <!-- card product -->
                 <div class="card card-product">
                   <div class="card-body">
-                    <div class="text-center position-relative"> <a href="{{ route('shop.single', ['slug' => 1]) }}">
+                    <div class="text-center position-relative"> <a href="{{ route('shop.single', ['uuid' => "rui"]) }}">
                         <!-- img --><img src="../assets/images/products/product-img-9.jpg"
                           alt="Grocery Ecommerce Template" class="mb-3 img-fluid"></a>
                       <!-- action btn -->
@@ -482,7 +482,7 @@
                     <!-- heading -->
                     <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Snack &
                           Munchies</small></a></div>
-                    <h2 class="fs-6"><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">Slurrp Millet
+                    <h2 class="fs-6"><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Slurrp Millet
                         Chocolate </a>
                     </h2>
                     <!-- rating -->
@@ -516,7 +516,7 @@
                 <!-- card product -->
                 <div class="card card-product">
                   <div class="card-body">
-                    <div class="text-center position-relative"> <a href="{{ route('shop.single', ['slug' => 1]) }}">
+                    <div class="text-center position-relative"> <a href="{{ route('shop.single', ['uuid' => "rui"]) }}">
                         <!-- img --><img src="../assets/images/products/product-img-10.jpg"
                           alt="Grocery Ecommerce Template" class="mb-3 img-fluid"></a>
                       <!-- action btn -->
@@ -533,7 +533,7 @@
                     <div class="text-small mb-1"><a href="#!" class="text-decoration-none text-muted"><small>Dairy,
                           Bread
                           & Eggs</small></a></div>
-                    <h2 class="fs-6"><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">Amul Butter -
+                    <h2 class="fs-6"><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Amul Butter -
                         500 g</a></h2>
                     <!-- rating -->
                     <div class="text-warning">

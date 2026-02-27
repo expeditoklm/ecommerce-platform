@@ -88,20 +88,20 @@
                     <!-- Table body -->
                     <tr>
                       <td class="align-middle border-top-0 w-0">
-                        <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-1.jpg" alt="Ecommerce"
+                        <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-1.jpg" alt="Ecommerce"
                             class="icon-shape icon-xl"></a>
 
                       </td>
                       <td class="align-middle border-top-0">
 
-                        <a href="{{ route('shop.single', ['slug' => 1]) }}" class="fw-semi-bold text-inherit">
+                        <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="fw-semi-bold text-inherit">
                           <h6 class="mb-0">Haldiram's Nagpur Aloo Bhujia</h6>
                         </a>
                         <span><small class="text-muted">Catégorie</small></span>
 
                       </td>
                       <td class="align-middle border-top-0">
-                        <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit">#14899</a>
+                        <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">#14899</a>
 
                       </td>
                       <td class="align-middle border-top-0">
@@ -122,19 +122,19 @@
                     </tr>
                     <tr>
                       <td class="align-middle border-top-0 w-0">
-                        <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Ecommerce"
+                        <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Ecommerce"
                             class="icon-shape icon-xl"></a>
 
                       </td>
                       <td class="align-middle border-top-0">
-                        <a href="{{ route('shop.single', ['slug' => 1]) }}" class="fw-semi-bold text-inherit">
+                        <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="fw-semi-bold text-inherit">
                           <h6 class="mb-0">Nutri Choise Biscuit</h6>
                         </a>
                         <span><small class="text-muted">2 Pkt</small></span>
 
                       </td>
                       <td class="align-middle border-top-0">
-                        <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit">#14658
+                        <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">#14658
                         </a>
                       </td>
                       <td class="align-middle border-top-0">

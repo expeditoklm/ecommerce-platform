@@ -30,7 +30,7 @@
                 </div>
 
                 <!-- img -->
-                <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
+                <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
                     class="mb-3 img-fluid"></a>
                 <!-- action btn -->
                     <div class="product-action-btn">
@@ -86,7 +86,7 @@
 
 
                 <!-- img -->
-                <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-3.jpg" alt="Grocery Ecommerce Template"
+                <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-3.jpg" alt="Grocery Ecommerce Template"
                     class="mb-3 img-fluid"></a>
                 <!-- action btn -->
                     <div class="product-action-btn">
@@ -143,7 +143,7 @@
                 </div>
 
                 <!-- img -->
-                <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-8.jpg" alt="Grocery Ecommerce Template"
+                <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-8.jpg" alt="Grocery Ecommerce Template"
                     class="mb-3 img-fluid"></a>
                 <!-- action btn -->
                     <div class="product-action-btn">
@@ -201,7 +201,7 @@
                 </div>
 
                 <!-- img -->
-                <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-9.jpg" alt="Grocery Ecommerce Template"
+                <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-9.jpg" alt="Grocery Ecommerce Template"
                     class="mb-3 img-fluid"></a>
                 <!-- action btn -->
                     <div class="product-action-btn">
@@ -258,7 +258,7 @@
 
 
                 <!-- img -->
-                <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-10.jpg" alt="Grocery Ecommerce Template"
+                <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-10.jpg" alt="Grocery Ecommerce Template"
                     class="mb-3 img-fluid"></a>
                 <!-- action btn -->
                     <div class="product-action-btn">
@@ -323,7 +323,7 @@
                 </div>
 
                 <!-- img -->
-                <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
+                <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
                     class="mb-3 img-fluid"></a>
                 <!-- action btn -->
                     <div class="product-action-btn">
@@ -382,7 +382,7 @@
                 </div>
 
                 <!-- img -->
-                <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
+                <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
                     class="mb-3 img-fluid"></a>
                 <!-- action btn -->
                     <div class="product-action-btn">
@@ -441,7 +441,7 @@
                 </div>
 
                 <!-- img -->
-                <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
+                <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
                     class="mb-3 img-fluid"></a>
                 <!-- action btn -->
                     <div class="product-action-btn">
@@ -500,7 +500,7 @@
                 </div>
 
                 <!-- img -->
-                <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
+                <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
                     class="mb-3 img-fluid"></a>
                 <!-- action btn -->
                     <div class="product-action-btn">
@@ -558,7 +558,7 @@
                 </div>
 
                 <!-- img -->
-                <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
+                <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
                     class="mb-3 img-fluid"></a>
                 <!-- action btn -->
                     <div class="product-action-btn">
@@ -616,7 +616,7 @@
                 </div>
 
                 <!-- img -->
-                <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
+                <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
                     class="mb-3 img-fluid"></a>
                 <!-- action btn -->
                     <div class="product-action-btn">
@@ -673,7 +673,7 @@
                 </div>
 
                 <!-- img -->
-                <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
+                <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
                     class="mb-3 img-fluid"></a>
                 <!-- action btn -->
                     <div class="product-action-btn">
@@ -730,7 +730,7 @@
                 </div>
 
                 <!-- img -->
-                <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
+                <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
                     class="mb-3 img-fluid"></a>
                 <!-- action btn -->
                     <div class="product-action-btn">
@@ -787,7 +787,7 @@
                 </div>
 
                 <!-- img -->
-                <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
+                <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
                     class="mb-3 img-fluid"></a>
                 <!-- action btn -->
                     <div class="product-action-btn">
@@ -844,7 +844,7 @@
                 </div>
 
                 <!-- img -->
-                <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
+                <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
                     class="mb-3 img-fluid"></a>
                 <!-- action btn -->
                     <div class="product-action-btn">

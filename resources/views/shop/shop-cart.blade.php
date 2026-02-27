@@ -55,7 +55,7 @@
                       class="img-fluid"></div>
                   <div class="col-4 col-md-5">
                     <!-- title -->
-                    <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit"><h6 class="mb-0">Haldiram's Sev Bhujia</h6></a>
+                    <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit"><h6 class="mb-0">Haldiram's Sev Bhujia</h6></a>
                     <span><small class="text-muted">.98 / lb</small></span>
                     <!-- text -->
                     <div class="mt-2 small lh-1"> <a href="#!" class="text-decoration-none text-inherit"> <span
@@ -98,7 +98,7 @@
                       class="img-fluid"></div>
                   <div class="col-4 col-md-5">
                     <!-- title -->
-                    <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit"><h6 class="mb-0">NutriChoice Digestive </h6></a>
+                    <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit"><h6 class="mb-0">NutriChoice Digestive </h6></a>
                     <span><small class="text-muted">250g</small></span>
                     <!-- text -->
                         <div class="mt-2 small lh-1"> <a href="#!" class="text-decoration-none text-inherit"> <span
@@ -140,7 +140,7 @@
                       class="img-fluid"></div>
                   <div class="col-4 col-md-5">
                     <!-- title -->
-                    <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit"><h6 class="mb-0">Cadbury 5 Star Chocolate</h6></a>
+                    <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit"><h6 class="mb-0">Cadbury 5 Star Chocolate</h6></a>
                     <span><small class="text-muted">1 kg</small></span>
                     <!-- text -->
                         <div class="mt-2 small lh-1"> <a href="#!" class="text-decoration-none text-inherit"> <span
@@ -182,7 +182,7 @@
                       class="img-fluid"></div>
                   <div class="col-4 col-md-5">
                     <!-- title -->
-                    <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit">  <h6 class="mb-0">Onion Flavour Potato</h6></a>
+                    <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">  <h6 class="mb-0">Onion Flavour Potato</h6></a>
                     <span><small class="text-muted">250g</small></span>
                     <!-- text -->
                         <div class="mt-2 small lh-1"> <a href="#!" class="text-decoration-none text-inherit"> <span
@@ -224,7 +224,7 @@
                       class="img-fluid"></div>
                   <div class="col-4 col-md-5">
                     <!-- title -->
-                    <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit"><h6 class="mb-0">Salted Instant Popcorn </h6></a>
+                    <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit"><h6 class="mb-0">Salted Instant Popcorn </h6></a>
                     <span><small class="text-muted">100g</small></span>
                     <!-- text -->
                         <div class="mt-2 small lh-1"> <a href="#!" class="text-decoration-none text-inherit"> <span

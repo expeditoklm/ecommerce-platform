@@ -93,7 +93,7 @@
                     <tr>
                    
                       <td class="align-middle border-top-0">
-                        <a href="{{ route('shop.single', ['slug' => 1]) }}" class="fw-semi-bold text-inherit">
+                        <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="fw-semi-bold text-inherit">
                           <h6 class="mb-0">Haldiram's Nagpur Aloo Bhujia</h6>
                         </a>
                         <span><small class="text-muted">Catégorie</small></span>
@@ -101,7 +101,7 @@
 
                       <td></td>
                       <td class="align-middle border-top-0">
-                        <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit">#14899</a>
+                        <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">#14899</a>
                       </td>
 
                       <td></td>
@@ -118,7 +118,7 @@
                     <tr>
                    
                       <td class="align-middle border-top-0">
-                        <a href="{{ route('shop.single', ['slug' => 1]) }}" class="fw-semi-bold text-inherit">
+                        <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="fw-semi-bold text-inherit">
                           <h6 class="mb-0">Haldiram's Nagpur Aloo Bhujia</h6>
                         </a>
                         <span><small class="text-muted">Catégorie</small></span>
@@ -126,7 +126,7 @@
 
                       <td></td>
                       <td class="align-middle border-top-0">
-                        <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit">#14899</a>
+                        <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">#14899</a>
                       </td>
 
                       <td></td>
@@ -143,7 +143,7 @@
                     <tr>
                    
                       <td class="align-middle border-top-0">
-                        <a href="{{ route('shop.single', ['slug' => 1]) }}" class="fw-semi-bold text-inherit">
+                        <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="fw-semi-bold text-inherit">
                           <h6 class="mb-0">Haldiram's Nagpur Aloo Bhujia</h6>
                         </a>
                         <span><small class="text-muted">Catégorie</small></span>
@@ -151,7 +151,7 @@
 
                       <td></td>
                       <td class="align-middle border-top-0">
-                        <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit">#14899</a>
+                        <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">#14899</a>
                       </td>
 
                       <td></td>
@@ -168,7 +168,7 @@
                     <tr>
                    
                       <td class="align-middle border-top-0">
-                        <a href="{{ route('shop.single', ['slug' => 1]) }}" class="fw-semi-bold text-inherit">
+                        <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="fw-semi-bold text-inherit">
                           <h6 class="mb-0">Haldiram's Nagpur Aloo Bhujia</h6>
                         </a>
                         <span><small class="text-muted">Catégorie</small></span>
@@ -176,7 +176,7 @@
 
                       <td></td>
                       <td class="align-middle border-top-0">
-                        <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit">#14899</a>
+                        <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">#14899</a>
                       </td>
 
                       <td></td>
@@ -193,7 +193,7 @@
                     <tr>
                    
                       <td class="align-middle border-top-0">
-                        <a href="{{ route('shop.single', ['slug' => 1]) }}" class="fw-semi-bold text-inherit">
+                        <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="fw-semi-bold text-inherit">
                           <h6 class="mb-0">Haldiram's Nagpur Aloo Bhujia</h6>
                         </a>
                         <span><small class="text-muted">Catégorie</small></span>

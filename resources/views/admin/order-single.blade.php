@@ -95,7 +95,7 @@
                       <tbody>
                         <tr>
                           <td>
-                            <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit">
+                            <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">
                               <div class="d-flex align-items-center">
                                 <div>
                                   <img src="../assets/images/products/product-img-1.jpg" alt=""
@@ -117,7 +117,7 @@
                         </tr>
                         <tr>
                           <td>
-                            <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit">
+                            <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">
                               <div class="d-flex align-items-center">
                                 <div>
                                   <img src="../assets/images/products/product-img-2.jpg" alt=""
@@ -139,7 +139,7 @@
                         </tr>
                         <tr>
                           <td>
-                            <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit">
+                            <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">
                               <div class="d-flex align-items-center">
                                 <div>
                                   <img src="../assets/images/products/product-img-3.jpg" alt=""
@@ -161,7 +161,7 @@
                         </tr>
                         <tr>
                           <td>
-                            <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit">
+                            <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">
                               <div class="d-flex align-items-center">
                                 <div>
                                   <img src="../assets/images/products/product-img-4.jpg" alt=""

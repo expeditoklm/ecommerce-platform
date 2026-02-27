@@ -67,10 +67,10 @@
 
 
                         <td>
-                          <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-1.jpg" alt=""
+                          <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-1.jpg" alt=""
                               class="icon-shape icon-md"></a>
                         </td>
-                        <td><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-reset">Haldiram's Sev Bhujia</a></td>
+                        <td><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-reset">Haldiram's Sev Bhujia</a></td>
                         <td>Snack & Munchies</td>
 
                         <td>
@@ -95,10 +95,10 @@
 
 
                         <td>
-                          <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt=""
+                          <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-2.jpg" alt=""
                               class="icon-shape icon-md"></a>
                         </td>
-                        <td><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-reset">NutriChoice Digestive</a></td>
+                        <td><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-reset">NutriChoice Digestive</a></td>
                         <td>Bakery & Biscuits</td>
 
                         <td>
@@ -122,10 +122,10 @@
 
 
                         <td>
-                          <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-3.jpg" alt=""
+                          <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-3.jpg" alt=""
                               class="icon-shape icon-md"></a>
                         </td>
-                        <td><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-reset">Cadbury 5 Star Chocolate</a></td>
+                        <td><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-reset">Cadbury 5 Star Chocolate</a></td>
                         <td>Snack & Munchies</td>
 
                         <td>
@@ -148,10 +148,10 @@
                       <tr>
 
                         <td>
-                          <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-4.jpg" alt=""
+                          <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-4.jpg" alt=""
                               class="icon-shape icon-md"></a>
                         </td>
-                        <td><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-reset">Onion Flavour Potato</a></td>
+                        <td><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-reset">Onion Flavour Potato</a></td>
                         <td>Snack & Munchies</td>
 
                         <td>
@@ -175,10 +175,10 @@
 
 
                         <td>
-                          <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-5.jpg" alt=""
+                          <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-5.jpg" alt=""
                               class="icon-shape icon-md"></a>
                         </td>
-                        <td><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-reset">Salted Instant Popcorn</a></td>
+                        <td><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-reset">Salted Instant Popcorn</a></td>
                         <td>Instant Food</td>
 
                         <td>
@@ -202,10 +202,10 @@
 
 
                         <td>
-                          <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-6.jpg" alt=""
+                          <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-6.jpg" alt=""
                               class="icon-shape icon-md"></a>
                         </td>
-                        <td><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-reset">Blueberry Greek Yogurt</a></td>
+                        <td><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-reset">Blueberry Greek Yogurt</a></td>
                         <td>Dairy, Bread & Eggs</td>
 
                         <td>
@@ -229,10 +229,10 @@
 
     
                         <td>
-                          <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-7.jpg" alt=""
+                          <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-7.jpg" alt=""
                               class="icon-shape icon-md"></a>
                         </td>
-                        <td><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-reset">Britannia Cheese Slices</a></td>
+                        <td><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-reset">Britannia Cheese Slices</a></td>
                         <td>Dairy, Bread & Eggs</td>
 
                         <td>
@@ -256,10 +256,10 @@
 
 
                         <td>
-                          <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-8.jpg" alt=""
+                          <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-8.jpg" alt=""
                               class="icon-shape icon-md"></a>
                         </td>
-                        <td><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-reset">Blueberry Greek Yogurt</a></td>
+                        <td><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-reset">Blueberry Greek Yogurt</a></td>
                         <td>Instant Food</td>
 
                         <td>
@@ -282,10 +282,10 @@
                       <tr>
 
                         <td>
-                          <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-9.jpg" alt=""
+                          <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-9.jpg" alt=""
                               class="icon-shape icon-md"></a>
                         </td>
-                        <td><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-reset">Slurrp Millet Chocolate</a></td>
+                        <td><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-reset">Slurrp Millet Chocolate</a></td>
                         <td>Instant Food</td>
 
                         <td>
@@ -309,10 +309,10 @@
 
 
                         <td>
-                          <a href="{{ route('shop.single', ['slug' => 1]) }}"> <img src="../assets/images/products/product-img-10.jpg" alt=""
+                          <a href="{{ route('shop.single', ['uuid' => "rui"]) }}"> <img src="../assets/images/products/product-img-10.jpg" alt=""
                               class="icon-shape icon-md"></a>
                         </td>
-                        <td><a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-reset">Amul Butter - 500 g</a></td>
+                        <td><a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-reset">Amul Butter - 500 g</a></td>
                         <td>Instant Food</td>
 
                         <td>

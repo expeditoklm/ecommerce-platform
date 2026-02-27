@@ -233,7 +233,7 @@
                       <a href="#!" class="text-decoration-none text-muted"><small>Snack & Munchies</small></a>
                     </div>
                     <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">Haldiram's Sev Bhujia</a>
+                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Haldiram's Sev Bhujia</a>
                     </h2>
 
                     <!-- price -->
@@ -280,7 +280,7 @@
                       <a href="#!" class="text-decoration-none text-muted"><small>Bakery & Biscuits</small></a>
                     </div>
                     <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">NutriChoice Digestive
+                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">NutriChoice Digestive
                       </a>
                     </h2>
 
@@ -326,7 +326,7 @@
                       <a href="#!" class="text-decoration-none text-muted"><small>Bakery & Biscuits</small></a>
                     </div>
                     <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">Cadbury 5 Star Chocolate</a>
+                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Cadbury 5 Star Chocolate</a>
                     </h2>
 
                     <!-- price -->
@@ -373,7 +373,7 @@
                       <a href="#!" class="text-decoration-none text-muted"><small>Snack & Munchies</small></a>
                     </div>
                     <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">Onion Flavour Potato</a>
+                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Onion Flavour Potato</a>
                     </h2>
 
                     <!-- price -->
@@ -420,7 +420,7 @@
                       <a href="#!" class="text-decoration-none text-muted"><small>Instant Food</small></a>
                     </div>
                     <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">Salted Instant Popcorn
+                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Salted Instant Popcorn
                       </a>
                     </h2>
    
@@ -470,7 +470,7 @@
                       <a href="#!" class="text-decoration-none text-muted"><small>Dairy, Bread & Eggs</small></a>
                     </div>
                     <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">Blueberry Greek Yogurt</a>
+                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Blueberry Greek Yogurt</a>
                     </h2>
 
                     <!-- price -->
@@ -517,7 +517,7 @@
                       <a href="#!" class="text-decoration-none text-muted"><small>Dairy, Bread & Eggs</small></a>
                     </div>
                     <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">Britannia Cheese Slices</a>
+                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Britannia Cheese Slices</a>
                     </h2>
 
                     <!-- price -->
@@ -562,7 +562,7 @@
                       <a href="#!" class="text-decoration-none text-muted"><small>Instant Food</small></a>
                     </div>
                     <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">Kellogg's Original Cereals</a>
+                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Kellogg's Original Cereals</a>
                     </h2>
 
                     <!-- price -->
@@ -609,7 +609,7 @@
                       <a href="#!" class="text-decoration-none text-muted"><small>Snack & Munchies</small></a>
                     </div>
                     <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">Slurrp Millet Chocolate
+                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Slurrp Millet Chocolate
                       </a>
                     </h2>
 
@@ -657,7 +657,7 @@
                       <a href="#!" class="text-decoration-none text-muted"><small>Dairy, Bread & Eggs</small></a>
                     </div>
                     <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['slug' => 1]) }}" class="text-inherit text-decoration-none">Amul Butter - 500 g</a>
+                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Amul Butter - 500 g</a>
                     </h2>
 
                     <div class="d-flex justify-content-between mt-4">
