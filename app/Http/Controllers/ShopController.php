@@ -25,11 +25,11 @@ class ShopController extends Controller
         return view('shop/shop-cart');
     }
   // Dans ShopController.php
-
-public function shopSingle($slug)
+public function shopSingle($uuid)
 {
+    // Recherche par UUID au lieu de slug
     $product = Product::with(['images', 'type', 'categories', 'shop'])
-        ->where('slug', $slug)
+        ->where('uuid', $uuid)
         ->where('deleted', 0)
         ->where('status', 1)
         ->firstOrFail();
@@ -41,9 +41,9 @@ public function shopSingle($slug)
         ->where('id', '!=', $product->id)
         ->where(function($query) use ($product) {
             $query->where('type_id', $product->type_id)
-                  ->orWhereHas('categories', function($q) use ($product) {
-                      $q->whereIn('categories.id', $product->categories->pluck('id'));
-                  });
+                ->orWhereHas('categories', function($q) use ($product) {
+                    $q->whereIn('categories.id', $product->categories->pluck('id'));
+                });
         })
         ->limit(5)
         ->get();

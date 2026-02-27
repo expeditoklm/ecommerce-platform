@@ -142,16 +142,17 @@
                                                              class="icon-shape icon-md rounded bg-light">
                                                     @endif
                                                 </td>
-                                                <td>
-                                                    <a href="{{ route('shop.single', ['slug' => $product->slug]) }}" class="text-reset fw-bold">
-                                                        {{ $product->name }}
-                                                    </a>
-                                                    @if($product->is_on_sale)
-                                                        <span class="badge bg-danger ms-2">
-                                                            <i class="bi bi-tag-fill"></i> Sale
-                                                        </span>
-                                                    @endif
-                                                </td>
+                                               <td>
+    <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" 
+       class="text-reset fw-bold">
+        {{ $product->name }}
+    </a>
+    @if($product->is_on_sale)
+        <span class="badge bg-danger ms-2">
+            <i class="bi bi-tag-fill"></i> Sale
+        </span>
+    @endif
+</td>
                                                 <td>
                                                     @if($product->type)
                                                         <span class="badge bg-info">{{ $product->type->label }}</span>

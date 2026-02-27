@@ -1,4 +1,34 @@
 @extends('base')
+
+@section('styles')
+<style>
+  .zoom {
+    position: relative;
+    overflow: hidden;
+    cursor: zoom-in;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    transition: background-size 0.3s ease;
+}
+
+.zoom img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: opacity 0.3s ease;
+}
+
+/* Zoom behaviour is handled via JS to avoid flicker on first hover/focus. */
+
+/* Override theme.min.css rule `div.zoom img:hover{opacity:0}` which
+   hides the image when the <img> itself is hovered. We want the image
+   to be hidden only when the container is hovered (handled above). */
+div.zoom img:hover {
+  opacity: 1 !important;
+}
+</style>
+@endsection 
 @section('content')
 
 <main>
@@ -934,15 +964,77 @@
 
 
 
-
 @section('script')
+<script>
+// Fonction zoom - À AJOUTER EN PREMIER
+function zoom(event) {
+  var zoomer = event.currentTarget;
+  var img = zoomer.querySelector('img');
+  var offsetX = 0, offsetY = 0;
+
+  if (typeof event.offsetX !== 'undefined') {
+    offsetX = event.offsetX;
+    offsetY = event.offsetY;
+  } else if (event.touches && event.touches.length) {
+    offsetX = event.touches[0].pageX - zoomer.getBoundingClientRect().left;
+    offsetY = event.touches[0].pageY - zoomer.getBoundingClientRect().top;
+  }
+
+  var x = (offsetX / zoomer.offsetWidth) * 100;
+  var y = (offsetY / zoomer.offsetHeight) * 100;
+
+  zoomer.style.backgroundPosition = x + '% ' + y + '%';
+  zoomer.style.backgroundSize = '200%';
+  if (img) img.style.opacity = 0;
+}
+
+// Reset zoom/background and restore image when pointer leaves the zoom container
+document.addEventListener('DOMContentLoaded', function() {
+  var zooms = document.querySelectorAll('.zoom');
+  zooms.forEach(function(z) {
+    // Remove any inline onmousemove handlers to avoid duplicate calls
+    if (z.hasAttribute && z.hasAttribute('onmousemove')) {
+      z.removeAttribute('onmousemove');
+    }
+    // On enter: immediately initialize zoom and hide the <img>
+    z.addEventListener('mouseenter', function(e) {
+      try { zoom(e); } catch (err) { /* ignore */ }
+    });
+
+    // Continuously follow the pointer to pan the zoomed background
+    z.addEventListener('mousemove', function(e) {
+      try { zoom(e); } catch (err) { /* ignore */ }
+    });
+
+    // Support touchstart and touchmove so mobile users get the same behaviour
+    z.addEventListener('touchstart', function(e) {
+      try { zoom(e); } catch (err) { /* ignore */ }
+    });
+    z.addEventListener('touchmove', function(e) {
+      try { zoom(e); } catch (err) { /* ignore */ }
+    }, { passive: true });
+
+    z.addEventListener('mouseleave', function() {
+      var img = z.querySelector('img');
+      z.style.backgroundSize = '';
+      z.style.backgroundPosition = '';
+      if (img) img.style.opacity = 1;
+    });
+
+    // also reset on touchend for mobile
+    z.addEventListener('touchend', function() {
+      var img = z.querySelector('img');
+      z.style.backgroundSize = '';
+      z.style.backgroundPosition = '';
+      if (img) img.style.opacity = 1;
+    });
+  });
+});
+</script>
+
 <script>
   var slider; 0 < $(".productModal").length && (slider = tns({ container: "#productModal", items: 1, startIndex: 0, navContainer: "#productModalThumbnails", navAsThumbnails: !0, autoplay: !1, autoplayTimeout: 1500, swipeAngle: !1, speed: 1500, controls: !1, autoplayButtonOutput: !1, loop: !1 })), 1 < $(".product").length && (slider = tns({ container: "#product", items: 1, startIndex: 0, navContainer: "#productThumbnails", navAsThumbnails: !0, autoplay: !1, autoplayTimeout: 1500, swipeAngle: !1, speed: 1500, controls: !1, autoplayButtonOutput: !1 }));
 </script>
-<script>
-  var slider; 0 < $(".productModal").length && (slider = tns({ container: "#productModal2", items: 1, startIndex: 0, navContainer: "#productModalThumbnails2", navAsThumbnails: !0, autoplay: !1, autoplayTimeout: 1500, swipeAngle: !1, speed: 1500, controls: !1, autoplayButtonOutput: !1, loop: !1 })), 1 < $(".product").length && (slider = tns({ container: "#product", items: 1, startIndex: 0, navContainer: "#productThumbnails", navAsThumbnails: !0, autoplay: !1, autoplayTimeout: 1500, swipeAngle: !1, speed: 1500, controls: !1, autoplayButtonOutput: !1 }));
-</script>
-
 
 <script>
     console.log(@json($product));
@@ -950,7 +1042,6 @@
 </script>
 
 @endsection
-
 
 
 

@@ -12,23 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         $tables = [
-            'addresses',
-            'blogs',
-            'blog_images',
-            'categories',
-            'category_product',
-            'notifications',
-            'orders',
-            'productings',
-            'products',
-            'product_images',
-            'reviews',
-            'review_images',
-            'review_vote_or_signalment',
-            'shops',
-            'shop_followers',
-            'types',
-            'users',
+            "",
         ];
 
         foreach ($tables as $table) {

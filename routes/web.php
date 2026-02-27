@@ -47,8 +47,9 @@ Route::get('/base', [ShopController::class , 'base'])->name('base');
 Route::get('/shop/wishlist', [ShopController::class , 'shopWishlist'])->name('shop.wishlist');
 Route::get('/shop/cart', [ShopController::class , 'shopCart'])->name('shop.cart');
 
-// Dans web.php, modifiez la route shop.single pour accepter un slug
-Route::get('/shop/product/{slug}', [ShopController::class, 'shopSingle'])->name('shop.single', ['slug' => 1]);
+// Modifiez votre route pour accepter l'UUID
+Route::get('/shop/product/{uuid}', [ShopController::class, 'shopSingle'])
+    ->name('shop.single');
 
 Route::get('/shop/single-service', [ShopController::class , 'shopSingleService'])->name('shop.single-service');
 Route::get('/shop/single-location', [ShopController::class , 'shopSingleLocation'])->name('shop.single-location');
