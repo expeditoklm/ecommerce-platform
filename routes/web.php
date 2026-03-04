@@ -89,6 +89,7 @@ Route::get('/store/grid', [storeController::class , 'storeGrid'])->name('store.g
 Route::get('/store/single', [StoreController::class , 'storeSingle'])->name('store.single');
 Route::get('/store', [StoreController::class , 'store'])->middleware(['auth', 'verified'])->name('store');
 Route::get('/store/reviews', [StoreController::class , 'storeReviews'])->middleware(['auth', 'verified'])->name('store.reviews');
+Route::post('/store/reviews', [StoreController::class , 'storeReviewsAdd'])->middleware(['auth', 'verified'])->name('store.reviews-add');
 Route::get('/store/contact', [StoreController::class , 'storeContact'])->middleware(['auth', 'verified'])->name('store.contact');
 
 Route::get('/blog', [BlogController::class , 'blog'])->name('blog');
@@ -102,8 +103,8 @@ Route::get('/admin/products', [AdminController::class , 'adminProducts'])->middl
 Route::get('/admin/services', [AdminController::class , 'adminServices'])->middleware(['auth', 'verified'])->name('admin.services');
 Route::get('/admin/locations', [AdminController::class , 'adminLocations'])->middleware(['auth', 'verified'])->name('admin.locations');
 
-Route::get('/admin/add-product', [AdminController::class , 'adminAddProduct'])->middleware(['auth', 'verified'])->name('admin.add-product');
-Route::post('/admin/add-product2', [AdminController::class , 'adminAddProduct2'])->middleware(['auth', 'verified'])->name('admin.add-product2');
+Route::get('/admin/add-product', [AdminController::class , 'adminAddProductForm'])->middleware(['auth', 'verified'])->name('admin.add-product-form');
+Route::post('/admin/add-product2', [AdminController::class , 'adminAddProduct'])->middleware(['auth', 'verified'])->name('admin.add-product');
 Route::get('/admin/add-service', [AdminController::class , 'adminAddService'])->middleware(['auth', 'verified'])->name('admin.add-service');
 Route::get('/admin/add-location', [AdminController::class , 'adminAddLocation'])->middleware(['auth', 'verified'])->name('admin.add-location');
 

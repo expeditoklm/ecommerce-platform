@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ExchangeStatus;
 use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
@@ -43,6 +44,12 @@ class Product extends Model
         'shop_id',
         'type_id',
         'name',
+        'code',
+        'online_date',
+        'city',
+        'district',
+        'exchange_status',
+        'condition',
         'slug',
         'description',
         'file_url',
@@ -70,6 +77,7 @@ class Product extends Model
         'manual_display' => 'boolean',
         'deleted' => 'boolean',
         'status' => 'boolean',
+         'exchange_status' => ExchangeStatus::class,
         'sale_end_date' => 'date',
     ];
 
