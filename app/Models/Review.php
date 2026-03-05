@@ -27,6 +27,8 @@ class Review extends Model
 
     protected $fillable = [
         'uuid',
+        'exchange_status',
+        'likes_count',
         'title',
         'rating',
         'comment',

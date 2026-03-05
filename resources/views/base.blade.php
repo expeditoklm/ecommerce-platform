@@ -26,7 +26,7 @@
   <link href="{{ asset('assets/libs/feather-webfont/dist/feather-icons.css') }}" rel="stylesheet">
   <link href="{{ asset('assets/libs/simplebar/dist/simplebar.min.css') }}" rel="stylesheet">
 
-
+  @yield('css')
   <!-- Theme CSS -->
   <link rel="stylesheet" href="{{ asset('assets/css/theme.min.css') }}">
   <!-- Google tag (gtag.js) -->

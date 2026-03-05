@@ -89,8 +89,16 @@ Route::get('/store/grid', [storeController::class , 'storeGrid'])->name('store.g
 Route::get('/store/single', [StoreController::class , 'storeSingle'])->name('store.single');
 Route::get('/store', [StoreController::class , 'store'])->middleware(['auth', 'verified'])->name('store');
 Route::get('/store/reviews', [StoreController::class , 'storeReviews'])->middleware(['auth', 'verified'])->name('store.reviews');
-Route::post('/store/reviews', [StoreController::class , 'storeReviewsAdd'])->middleware(['auth', 'verified'])->name('store.reviews-add');
+Route::post('/store/reviews/{uuid}', [StoreController::class , 'storeReviewsAdd'])->middleware(['auth', 'verified'])->name('store.reviews-add');
 Route::get('/store/contact', [StoreController::class , 'storeContact'])->middleware(['auth', 'verified'])->name('store.contact');
+
+Route::post('/review/{uuid}/helpful', [StoreController::class, 'helpful'])
+    ->name('review.helpful')
+    ->middleware('auth');
+
+Route::post('/review/{uuid}/report', [StoreController::class, 'report'])
+    ->name('review.report')
+    ->middleware('auth');
 
 Route::get('/blog', [BlogController::class , 'blog'])->name('blog');
 Route::get('/blog/single', [BlogController::class , 'blogSingle'])->name('blog.single');

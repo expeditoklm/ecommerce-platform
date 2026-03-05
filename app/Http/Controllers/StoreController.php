@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Review;
 use App\Models\ReviewImage;
+use App\Models\ReviewVoteOrSignalment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -29,8 +30,11 @@ class StoreController extends Controller
         return view('store/reviews');
     }
 
-    public function storeReviewsAdd(Request $request, Product $product)
+    public function storeReviewsAdd(Request $request, $uuid)
     {
+        
+    $product = Product::where('uuid', $uuid)->firstOrFail();
+
         // Vérifier que l'utilisateur est connecté
         if (!Auth::check()) {
             return redirect()->route('login')
@@ -64,15 +68,14 @@ class StoreController extends Controller
 
         // Créer la review
         $review = Review::create([
-            'product_id'      => 1,
+            'product_id'      => $product->id,
             'user_id'         => Auth::id(),
             'rating'          => $validated['rating'],
             'title'           => $validated['title'],
             'comment'         => $validated['comment'],
-            'exchange_status' => $validated['exchange_status'] ?? null,
+            'exchange_status' => $validated['exchange_status'],
             'deleted'         => 0,
         ]);
-
         // Upload des images si présentes
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
@@ -94,12 +97,82 @@ class StoreController extends Controller
             ->where('deleted', 0)->avg('rating') ?? 0;
         // $product->save();
 
-        return back()->with('success', 'Votre avis a été publié avec succès !');
+       // Méthode universelle à mettre dans chaque return back()
+return redirect(url()->previous() . '#reviews-tab-pane')
+    ->with('success', 'Votre avis a été publié avec succès !');
     }
 
     
     public function storeContact(){
         return view('store/contact');
     }
+
+
+    public function helpful( $uuid)
+{
+    $review = Review::where('uuid', $uuid)->firstOrFail();
+    $existing = ReviewVoteOrSignalment::where('review_id', $review->id)
+        ->where('user_id', Auth::id())
+        ->where('type', 'LIKE')
+        ->first();
+
+    if ($existing) {
+        // Toggle : retirer le like
+        $existing->delete();
+        $review->decrement('likes_count');
+    } else {
+        ReviewVoteOrSignalment::create([
+            'review_id' => $review->id,
+            'user_id'   => Auth::id(),
+            'type'      => 'LIKE',
+            'status'    => 'APPROVED',
+            'deleted'   => 0,
+        ]);
+        $review->increment('likes_count');
+    }
+
+// Méthode universelle à mettre dans chaque return back()
+return redirect(url()->previous() . '#reviews-tab-pane')
+    ->with('success', 'Votre vote a été pris en compte. Merci !');
+}
+
+public function report(Request $request, $uuid)
+{
+    $request->validate([
+        'reason'        => 'required|string',
+        'reason_detail' => 'nullable|string|max:500',
+    ]);
+
+    $review = Review::where('uuid', $uuid)->firstOrFail();
+
+    $existing = ReviewVoteOrSignalment::where('review_id', $review->id)
+        ->where('user_id', Auth::id())
+        ->where('type', 'REPORT')
+        ->first();
+
+    if ($existing) {
+        return back()->with('error', 'Vous avez déjà signalé cet avis.');
+    }
+
+    // Combiner raison + détail
+    $fullReason = $request->reason;
+    if ($request->filled('reason_detail')) {
+        $fullReason .= ' — ' . $request->reason_detail;
+    }
+
+    ReviewVoteOrSignalment::create([
+        'review_id' => $review->id,
+        'user_id'   => Auth::id(),
+        'type'      => 'REPORT',
+        'status'    => 'PENDING',
+        'reason'    => $fullReason,
+        'deleted'   => 0,
+    ]);
+
+    // Méthode universelle à mettre dans chaque return back()
+return redirect(url()->previous() . '#reviews-tab-pane')
+    ->with('success', 'Signalement envoyé, merci. Notre équipe va examiner cet avis. !');
+
+}
 
 }

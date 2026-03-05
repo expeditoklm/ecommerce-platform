@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ReviewVoteOrSignalment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Auth;
-
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 class ShopController extends Controller
 {
@@ -27,28 +28,106 @@ class ShopController extends Controller
   // Dans ShopController.php
 public function shopSingle($uuid)
 {
-    // Recherche par UUID au lieu de slug
+    // Dans shopSingle()
+$sortParam = request('sort', 'top');
     $product = Product::with(['images', 'type', 'categories', 'shop'])
         ->where('uuid', $uuid)
         ->where('deleted', 0)
         ->where('status', 1)
         ->firstOrFail();
-    
-    // Produits similaires (même type ou même catégorie)
+
+    // Reviews avec user et images
+    $reviewsQuery  = $product->reviews()
+        ->with(['user', 'images'])
+        ->where('deleted', 0);
+        
+
+    // Calcul note moyenne
+    $averageRating = $product->reviews()
+        ->where('deleted', 0)
+        ->avg('rating') ?? 0;
+
+    // Calcul total reviews
+    $reviewsCount = $product->reviews()
+        ->where('deleted', 0)
+        ->count();
+
+    // Distribution par étoiles
+    $ratingDistribution = [];
+    for ($i = 5; $i >= 1; $i--) {
+        $count = $product->reviews()
+            ->where('deleted', 0)
+            ->where('rating', $i)
+            ->count();
+        $ratingDistribution[$i] = [
+            'count'      => $count,
+            'percentage' => $reviewsCount > 0
+                ? round(($count / $reviewsCount) * 100)
+                : 0,
+        ];
+    }
+
+    // Produits similaires
     $relatedProducts = Product::with(['images'])
         ->where('deleted', 0)
         ->where('status', 1)
         ->where('id', '!=', $product->id)
-        ->where(function($query) use ($product) {
+        ->where(function ($query) use ($product) {
             $query->where('type_id', $product->type_id)
-                ->orWhereHas('categories', function($q) use ($product) {
+                ->orWhereHas('categories', function ($q) use ($product) {
                     $q->whereIn('categories.id', $product->categories->pluck('id'));
                 });
         })
         ->limit(5)
         ->get();
-    
-    return view('shop/shop-single', compact('product', 'relatedProducts'));
+
+
+        $userVotes = [];
+if (FacadesAuth::check()) {
+    $userVotes = ReviewVoteOrSignalment::where('user_id', FacadesAuth::id())
+        ->where('type', 'LIKE')
+        ->where('deleted', 0)
+        ->pluck('review_id')
+        ->toArray();
+}
+
+
+// Appliquer le tri
+switch ($sortParam) {
+    case 'recent':
+        $reviewsQuery->latest();
+        break;
+    case 'oldest':
+        $reviewsQuery->oldest();
+        break;
+    case 'best':
+        $reviewsQuery->orderBy('rating', 'desc');
+        break;
+    case 'worst':
+        $reviewsQuery->orderBy('rating', 'asc');
+        break;
+    case 'helpful':
+        $reviewsQuery->orderBy('likes_count', 'desc');
+        break;
+    case 'top':
+    default:
+        // Top = meilleure note + plus utile
+        $reviewsQuery->orderBy('rating', 'desc')
+                     ->orderBy('likes_count', 'desc');
+        break;
+}
+
+$reviews = $reviewsQuery->paginate(5)->withQueryString();
+
+    return view('shop/shop-single', compact(
+        'product',
+        'relatedProducts',
+        'reviews',
+        'averageRating',
+        'reviewsCount',
+        'ratingDistribution', 'userVotes'
+
+    ));
 }
 
     public function shopFullwidth(){
