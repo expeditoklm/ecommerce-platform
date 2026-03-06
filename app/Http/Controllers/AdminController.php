@@ -102,12 +102,17 @@ class AdminController extends Controller
             'sale_end_date'      => 'nullable|date',
             'status'             => 'required|in:0,1',
             'file_url'           => 'nullable|file|mimes:pdf,doc,docx|max:10240',
-            'images.*'           => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+             'images'            => 'nullable|array|max:4',
+            'images.*'           => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120|dimensions:min_width=400,min_height=300,ratio=4/3',
             'target_segment'     => 'nullable|string|max:255',
             'exclusive_discount' => 'nullable|numeric|min:0|max:100',
             'carousel_priority'  => 'nullable|integer|min:0|max:100',
             'auto_display'       => 'nullable|boolean',
             'manual_display'     => 'nullable|boolean',
+        ],
+        [
+            'images.max' => 'Vous ne pouvez télécharger que 4 images.',
+            'images.*.dimensions' => 'Chaque image doit avoir une résolution minimale de 400x300 pixels et un ratio de 4:3.',
         ]);
 
         // Générer un slug unique
@@ -300,6 +305,18 @@ class AdminController extends Controller
             'auto_display'       => $request->has('auto_display') ? 1 : 0,
             'manual_display'     => $request->has('manual_display') ? 1 : 0,
         ]);
+
+        // Pour l'édition — vérifier le total existant + nouvelles
+if (isset($product)) {
+    $existingCount = $product->images()->where('deleted', 0)->count();
+    $newCount      = $request->hasFile('images') ? count($request->file('images')) : 0;
+
+    if ($existingCount + $newCount > 4) {
+        return back()->withErrors([
+            'images' => "Vous avez déjà {$existingCount} image(s). Vous ne pouvez ajouter que " . (4 - $existingCount) . " image(s) supplémentaire(s)."
+        ])->withInput();
+    }
+}
 
         // Mettre à jour les catégories
         $product->categories()->sync($request->categories);

@@ -50,57 +50,49 @@ use App\Enums\ProductCondition;
             <div class="row">
 
                 <div class="col-md-6">
-                    <!-- img slide -->
-                    <div class="product" id="product">
-                        <div class="zoom" onmousemove="zoom(event)"
-                            style="background-image: url({{ asset('assets/images/products/product-single-img-1.jpg') }})">
-                            <img src="{{ asset('assets/images/products/product-single-img-1.jpg') }}" alt="">
-                        </div>
-                        <div>
-                            <div class="zoom" onmousemove="zoom(event)"
-                                style="background-image: url({{ asset('assets/images/products/product-single-img-2.jpg') }})">
-                                <img src="{{ asset('assets/images/products/product-single-img-2.jpg') }}" alt="">
-                            </div>
-                        </div>
-                        <div>
-                            <div class="zoom" onmousemove="zoom(event)"
-                                style="background-image: url({{ asset('assets/images/products/product-single-img-3.jpg') }})">
-                                <img src="{{ asset('assets/images/products/product-single-img-3.jpg') }}" alt="">
-                            </div>
-                        </div>
-                        <div>
-                            <div class="zoom" onmousemove="zoom(event)"
-                                style="background-image: url({{ asset('assets/images/products/product-single-img-4.jpg') }})">
-                                <img src="{{ asset('assets/images/products/product-single-img-4.jpg') }}" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- product tools -->
-                    <div class="product-tools">
-                        <div class="thumbnails row g-3" id="productThumbnails">
-                            <div class="col-3">
-                                <div class="thumbnails-img">
-                                    <img src="{{ asset('assets/images/products/product-single-img-1.jpg') }}" alt="">
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <div class="thumbnails-img">
-                                    <img src="{{ asset('assets/images/products/product-single-img-2.jpg') }}" alt="">
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <div class="thumbnails-img">
-                                    <img src="{{ asset('assets/images/products/product-single-img-3.jpg') }}" alt="">
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <div class="thumbnails-img">
-                                    <img src="{{ asset('assets/images/products/product-single-img-4.jpg') }}" alt="">
-                                </div>
-                            </div>
-                        </div>
+    <!-- img slide -->
+    <div class="product" id="product">
+
+        @forelse($product->images->where('deleted', 0) as $image)
+            <div>
+                <div class="zoom" onmousemove="zoom(event)"
+                     style="background-image: url({{ asset($image->url) }})">
+                    <img src="{{ asset($image->url) }}" alt="{{ $product->name }}">
+                </div>
+            </div>
+        @empty
+            {{-- Image par défaut si aucune image --}}
+            <div>
+                <div class="zoom" onmousemove="zoom(event)"
+                     style="background-image: url({{ asset('assets/images/products/placeholder.jpg') }})">
+                    <img src="{{ asset('assets/images/products/placeholder.jpg') }}" alt="{{ $product->name }}">
+                </div>
+            </div>
+        @endforelse
+
+    </div>
+
+    <!-- product tools / thumbnails -->
+    <div class="product-tools">
+        <div class="thumbnails row g-3" id="productThumbnails">
+
+            @forelse($product->images->where('deleted', 0) as $image)
+                <div class="col-3">
+                    <div class="thumbnails-img">
+                        <img src="{{ asset($image->url) }}" alt="{{ $product->name }}">
                     </div>
                 </div>
+            @empty
+                <div class="col-3">
+                    <div class="thumbnails-img">
+                        <img src="{{ asset('assets/images/products/placeholder.jpg') }}" alt="{{ $product->name }}">
+                    </div>
+                </div>
+            @endforelse
+
+        </div>
+    </div>
+</div>
                 <div class="col-md-6">
                     <div class="ps-lg-10 mt-6 mt-md-0">
                         <!-- content -->
