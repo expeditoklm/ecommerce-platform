@@ -12,6 +12,7 @@ class User extends Authenticatable
     protected $fillable = [
         'uuid',
         'name',
+        'firstname',
         'email',
         'email_verified_at',
         'password',
@@ -60,4 +61,15 @@ class User extends Authenticatable
             ->withPivot('reason', 'deleted')
             ->wherePivot('deleted', 0);
     }
+
+    public function wishlists()
+{
+    return $this->hasMany(Wishlist::class)->where('deleted', 0);
+}
+
+// Helper — vérifier si un produit est en wishlist
+public function hasInWishlist(int $productId): bool
+{
+    return $this->wishlists()->where('product_id', $productId)->exists();
+}
 }

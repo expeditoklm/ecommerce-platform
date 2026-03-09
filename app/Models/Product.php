@@ -1,86 +1,82 @@
 <?php
-
 namespace App\Models;
 
 use App\Enums\ExchangeStatus;
+use App\Enums\ProductSection;
 use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * @property integer $id
- * @property integer $shop_id
- * @property integer $type_id
- * @property string $name
- * @property string $slug
- * @property string $description
- * @property string $file_url
- * @property float $price
- * @property integer $stock
- * @property boolean $is_on_sale
- * @property float $sale_price
- * @property string $sale_end_date
- * @property integer $popularity_score
- * @property integer $carousel_priority
- * @property boolean $auto_display
- * @property boolean $manual_display
- * @property string $target_segment
- * @property float $exclusive_discount
- * @property boolean $deleted
- * @property boolean $status
- * @property string $created_at
- * @property string $updated_at
- * @property Order[] $orders
- * @property ProductImage[] $productImages
- * @property Shop $shop
- * @property Type $type
- * @property Review[] $reviews
- */
 class Product extends Model
 {
     use HasUuid;
 
     protected $fillable = [
-        'uuid',
-        'shop_id',
-        'type_id',
-        'name',
-        'code',
-        'online_date',
-        'city',
-        'district',
-        'exchange_status',
-        'condition',
-        'slug',
-        'description',
-        'file_url',
-        'price',
+        'uuid', 'section', 'label',
+        'shop_id', 'type_id',
+        'name', 'code', 'slug',
+        'online_date', 'city', 'district',
+        'exchange_status', 'condition', 'condition_description',
+        'description', 'features', 'file_url',
+        'price', 'price_7days', 'price_30days',
         'stock',
-        'is_on_sale',
-        'sale_price',
-        'sale_end_date',
-        'popularity_score',
-        'carousel_priority',
-        'auto_display',
-        'manual_display',
-        'target_segment',
-        'exclusive_discount',
-        'deleted',
-        'status',
+        'is_on_sale', 'sale_price', 'sale_end_date',
+        'popularity_score', 'wishlist_count',
+        'carousel_priority', 'auto_display', 'manual_display',
+        'target_segment', 'exclusive_discount',
+        'average_rating', 'reviews_count',
+        'deleted', 'status',
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
-        'sale_price' => 'decimal:2',
+        'price'              => 'decimal:2',
+        'price_7days'        => 'decimal:2',
+        'price_30days'       => 'decimal:2',
+        'sale_price'         => 'decimal:2',
         'exclusive_discount' => 'decimal:2',
-        'is_on_sale' => 'boolean',
-        'auto_display' => 'boolean',
-        'manual_display' => 'boolean',
-        'deleted' => 'boolean',
-        'status' => 'boolean',
-         'exchange_status' => ExchangeStatus::class,
-        'sale_end_date' => 'date',
+        'is_on_sale'         => 'boolean',
+        'auto_display'       => 'boolean',
+        'manual_display'     => 'boolean',
+        'deleted'            => 'integer',
+        'status'             => 'integer',
+        'exchange_status'    => ExchangeStatus::class,
+        'section'            => ProductSection::class,
+        'sale_end_date'      => 'date',
+        'online_date'        => 'date',
     ];
 
+    // ── Scopes par section ──────────────────────────────
+    public function scopeProducts($query)
+    {
+        return $query->where('section', 'product');
+    }
+
+    public function scopeServices($query)
+    {
+        return $query->where('section', 'service');
+    }
+
+    public function scopeRentals($query)
+    {
+        return $query->where('section', 'rental');
+    }
+
+    // ── Helpers ─────────────────────────────────────────
+    public function isProduct(): bool
+    {
+        return $this->section === ProductSection::Product;
+    }
+
+    public function isService(): bool
+    {
+        return $this->section === ProductSection::Service;
+    }
+
+    public function isRental(): bool
+    {
+        return $this->section === ProductSection::Rental;
+    }
+
+    // ── Relations ────────────────────────────────────────
     public function shop()
     {
         return $this->belongsTo(Shop::class);
@@ -100,7 +96,7 @@ class Product extends Model
 
     public function images()
     {
-        return $this->hasMany(ProductImage::class);
+        return $this->hasMany(ProductImage::class)->where('deleted', 0);
     }
 
     public function reviews()
@@ -112,4 +108,17 @@ class Product extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+ 
+
+    public function wishlists()
+{
+    return $this->hasMany(Wishlist::class)->where('deleted', 0);
+}
+
+// Helper — nombre de fois ajouté en wishlist
+public function getWishlistCountAttribute(): int
+{
+    return $this->wishlists()->count();
+}
 }

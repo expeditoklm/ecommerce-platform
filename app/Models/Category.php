@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ProductSection;
 use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,6 +25,7 @@ class Category extends Model
     protected $fillable = [
         'uuid',
         'name',
+        'section',
         'description',
         'icon_cat',
         'deleted',
@@ -33,6 +35,7 @@ class Category extends Model
     protected $casts = [
         'deleted' => 'boolean',
         'status' => 'boolean',
+        'section'  => ProductSection::class,
     ];
 
     public function products()
@@ -45,5 +48,16 @@ class Category extends Model
     public function blogs()
     {
         return $this->hasMany(Blog::class);
+    }
+
+    // Scopes
+    public function scopeActive($query)
+    {
+        return $query->where('deleted', 0)->where('status', 1);
+    }
+
+    public function scopeForSection($query, string $section)
+    {
+        return $query->where('section', $section);
     }
 }

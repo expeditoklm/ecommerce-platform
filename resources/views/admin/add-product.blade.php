@@ -61,13 +61,50 @@ use App\Enums\ProductCondition;
 
                                 <!-- Nom du produit -->
                                 <div class="col-lg-12 mb-3">
-                                    <label class="form-label">Nom du produit <span class="text-danger">*</span></label>
+                                    <label class="form-label">Nom de l'article <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror"
                                         name="name" value="{{ old('name', $product->name ?? '') }}"
                                         placeholder="Ex: iPhone 13 Pro Max" required>
                                     @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+                                </div>
+
+                                {{-- Sélecteur de section --}}
+                                <div class="col-lg-6 mb-3">
+                                    <label class="form-label">Section <span class="text-danger">*</span></label>
+                                    <select class="form-select @error('section') is-invalid @enderror"
+                                        name="section" id="sectionSelect"
+                                        onchange="toggleSectionFields(this.value)" required>
+                                        <option value="product" {{ old('section', $product->section?->value ?? 'product') == 'product' ? 'selected' : '' }}>
+                                            Produit
+                                        </option>
+                                        <option value="service" {{ old('section', $product->section?->value ?? '') == 'service' ? 'selected' : '' }}>
+                                            Service
+                                        </option>
+                                        <option value="rental" {{ old('section', $product->section?->value ?? '') == 'rental' ? 'selected' : '' }}>
+                                            Location
+                                        </option>
+                                    </select>
+                                    @error('section')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                {{-- Prix 7 jours et 30 jours (service/location seulement) --}}
+                                <div id="rentalServicePrices" style="display: {{ in_array(old('section', $product->section?->value ?? 'product'), ['service', 'rental']) ? 'flex' : 'none' }};" class="row">
+                                    <div class="col-lg-6 mb-3">
+                                        <label class="form-label">Prix 7 jours (FCFA)</label>
+                                        <input type="number" class="form-control" name="price_7days"
+                                            value="{{ old('price_7days', $product->price_7days ?? '') }}"
+                                            step="0.01" min="0">
+                                    </div>
+                                    <div class="col-lg-6 mb-3">
+                                        <label class="form-label">Prix 30 jours (FCFA)</label>
+                                        <input type="number" class="form-control" name="price_30days"
+                                            value="{{ old('price_30days', $product->price_30days ?? '') }}"
+                                            step="0.01" min="0">
+                                    </div>
                                 </div>
 
                                 <!-- Type -->
@@ -721,6 +758,54 @@ use App\Enums\ProductCondition;
         };
         previewImages(fakeEvent);
     });
+</script>
+
+<script>
+    function deleteImage(imageId) {
+        if (!confirm('Supprimer cette image ?')) return;
+
+        fetch(`/admin/products/images/${imageId}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Retirer le bloc image du DOM
+                    const imageBlock = document.getElementById(`image-${imageId}`);
+                    if (imageBlock) {
+                        imageBlock.remove();
+                    }
+
+                    // Si plus d'images — masquer la carte entière
+                    const remainingImages = document.querySelectorAll('[id^="image-"]');
+                    if (remainingImages.length === 0) {
+                        const card = document.querySelector('.card.mb-4 .card-header h4');
+                        if (card && card.textContent.includes('Images actuelles')) {
+                            card.closest('.card').remove();
+                        }
+                    }
+
+                } else {
+                    alert('Erreur : ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Une erreur est survenue.');
+            });
+    }
+</script>
+
+{{-- Script --}}
+<script>
+    function toggleSectionFields(section) {
+        const rentalPrices = document.getElementById('rentalServicePrices');
+        rentalPrices.style.display = ['service', 'rental'].includes(section) ? 'flex' : 'none';
+    }
 </script>
 
 @endsection

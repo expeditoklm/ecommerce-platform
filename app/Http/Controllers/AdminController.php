@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\Type;
@@ -34,7 +35,14 @@ class AdminController extends Controller
         }
 
         $query = Product::with(['images', 'type', 'categories', 'shop'])
-            ->where('deleted', 0);
+            ->where('deleted', 0)
+            ->where('section', 'product');
+
+
+        // Filtre section
+        if ($request->filled('section')) {
+            $query->where('section', $request->section);
+        }
 
         if ($shopId) {
             $query->where('shop_id', $shopId);
@@ -67,7 +75,16 @@ class AdminController extends Controller
         $products = $query->paginate(15)->appends($request->query());
         $types = Type::where('deleted', 0)->get();
 
-        return view('admin/products', compact('products', 'types'));
+        // Compteurs par section pour les badges des tabs
+        $baseQuery = Product::where('deleted', 0);
+        $counts = [
+            'all'     => (clone $baseQuery)->count(),
+            'product' => (clone $baseQuery)->where('section', 'product')->count(),
+            'service' => (clone $baseQuery)->where('section', 'service')->count(),
+            'rental'  => (clone $baseQuery)->where('section', 'rental')->count(),
+        ];
+
+        return view('admin/products', compact('products', 'types', 'counts'));
     }
 
 
@@ -87,33 +104,41 @@ class AdminController extends Controller
      */
     public function adminAddProduct(Request $request)
     {
-        $validated = $request->validate([
-            'name'               => 'required|string|max:255',
-            'type_id'            => 'required|exists:types,id',
-            'categories'         => 'required|array|min:1',
-            'categories.*'       => 'exists:categories,id',
-            'description'        => 'nullable|string',
-            'price'              => 'required|numeric|min:0',
-            'stock'              => 'required|integer|min:0',
-            'city'               => 'required|string|max:100',
-            'district'           => 'nullable|string|max:100',
-            'is_on_sale'         => 'nullable|boolean',
-            'sale_price'         => 'nullable|numeric|min:0',
-            'sale_end_date'      => 'nullable|date',
-            'status'             => 'required|in:0,1',
-            'file_url'           => 'nullable|file|mimes:pdf,doc,docx|max:10240',
-             'images'            => 'nullable|array|max:4',
-            'images.*'           => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120|dimensions:min_width=400,min_height=300,ratio=4/3',
-            'target_segment'     => 'nullable|string|max:255',
-            'exclusive_discount' => 'nullable|numeric|min:0|max:100',
-            'carousel_priority'  => 'nullable|integer|min:0|max:100',
-            'auto_display'       => 'nullable|boolean',
-            'manual_display'     => 'nullable|boolean',
-        ],
-        [
-            'images.max' => 'Vous ne pouvez télécharger que 4 images.',
-            'images.*.dimensions' => 'Chaque image doit avoir une résolution minimale de 400x300 pixels et un ratio de 4:3.',
-        ]);
+        $validated = $request->validate(
+            [
+                'name'               => 'required|string|max:255',
+                'type_id'            => 'required|exists:types,id',
+                'categories'         => 'required|array|min:1',
+                'categories.*'       => 'exists:categories,id',
+                'description'        => 'nullable|string',
+                'price'              => 'required|numeric|min:0',
+                'stock'              => 'required|integer|min:0',
+                'city'               => 'required|string|max:100',
+                'district'           => 'nullable|string|max:100',
+                'is_on_sale'         => 'nullable|boolean',
+                'sale_price'         => 'nullable|numeric|min:0',
+                'sale_end_date'      => 'nullable|date',
+                'status'             => 'required|in:0,1',
+                'file_url'           => 'nullable|file|mimes:pdf,doc,docx|max:10240',
+                'images'            => 'nullable|array|max:4',
+                'images.*'           => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120|dimensions:min_width=400,min_height=300,ratio=4/3',
+                'target_segment'     => 'nullable|string|max:255',
+                'exclusive_discount' => 'nullable|numeric|min:0|max:100',
+                'carousel_priority'  => 'nullable|integer|min:0|max:100',
+                'auto_display'       => 'nullable|boolean',
+                'manual_display'     => 'nullable|boolean',
+                // Ajouter dans la validation :
+                'section'      => 'required|in:product,service,rental',
+                'price_7days'  => 'nullable|numeric|min:0',
+                'price_30days' => 'nullable|numeric|min:0',
+                'label'        => 'nullable|in:new,exchange,none',
+
+            ],
+            [
+                'images.max' => 'Vous ne pouvez télécharger que 4 images.',
+                'images.*.dimensions' => 'Chaque image doit avoir une résolution minimale de 400x300 pixels et un ratio de 4:3.',
+            ]
+        );
 
         // Générer un slug unique
         $slug = Str::slug($request->name);
@@ -131,7 +156,7 @@ class AdminController extends Controller
 
         // je souhaite que par defaut que le statut de lechange soit "En Echange"
         $exchangeStatus = 'En Echange';
-       
+
 
         // Upload du fichier document
         $fileUrl = null;
@@ -180,6 +205,11 @@ class AdminController extends Controller
             'manual_display'     => $request->has('manual_display') ? 1 : 0,
             'popularity_score'   => 0,
             'deleted'            => 0,
+            // Ajouter dans Product::create() et $product->update() :
+            'section'      => $request->section,
+            'price_7days'  => $request->price_7days,
+            'price_30days' => $request->price_30days,
+            'label'        => $request->label ?? 'new',
         ]);
 
         // Attacher les catégories
@@ -206,11 +236,12 @@ class AdminController extends Controller
     /**
      * Afficher le formulaire d'édition
      */
-    public function adminEditProduct($id)
+    public function adminEditProduct($uuid)
     {
-        $product = Product::with(['images', 'categories'])
+        $product = Product::with(['images', 'type', 'categories', 'shop'])
             ->where('deleted', 0)
-            ->findOrFail($id);
+            ->where('uuid', $uuid)
+            ->firstOrFail();
 
         $user = Auth::user();
         $shopId = $user->shop_id ?? $user->shop->id ?? null;
@@ -235,6 +266,7 @@ class AdminController extends Controller
         $user = Auth::user();
         $shopId = $user->shop_id ?? $user->shop->id ?? null;
 
+
         if ($shopId && $product->shop_id != $shopId) {
             abort(403, 'Unauthorized action.');
         }
@@ -247,7 +279,6 @@ class AdminController extends Controller
             'description'        => 'nullable|string',
             'price'              => 'required|numeric|min:0',
             'stock'              => 'required|integer|min:0',
-            'exchange_status'    => 'required|in:En Echange,Echange Terminé,Indisponible',
             'city'               => 'required|string|max:100',
             'district'           => 'nullable|string|max:100',
             'is_on_sale'         => 'nullable|boolean',
@@ -284,6 +315,8 @@ class AdminController extends Controller
             $file->move(public_path('uploads/products/files'), $fileName);
             $product->file_url = 'uploads/products/files/' . $fileName;
         }
+        // je souhaite que par defaut que le statut de lechange soit "En Echange"
+        $exchangeStatus = 'En Echange';
 
         // Mettre à jour le produit
         $product->update([
@@ -292,7 +325,7 @@ class AdminController extends Controller
             'type_id'            => $request->type_id,
             'price'              => $request->price,
             'stock'              => $request->stock,
-            'exchange_status'    => $request->exchange_status,
+            'exchange_status'    => $exchangeStatus,
             'city'               => $request->city,
             'district'           => $request->district,
             'is_on_sale'         => $request->has('is_on_sale') ? 1 : 0,
@@ -307,16 +340,16 @@ class AdminController extends Controller
         ]);
 
         // Pour l'édition — vérifier le total existant + nouvelles
-if (isset($product)) {
-    $existingCount = $product->images()->where('deleted', 0)->count();
-    $newCount      = $request->hasFile('images') ? count($request->file('images')) : 0;
+        if (isset($product)) {
+            $existingCount = $product->images()->where('deleted', 0)->count();
+            $newCount      = $request->hasFile('images') ? count($request->file('images')) : 0;
 
-    if ($existingCount + $newCount > 4) {
-        return back()->withErrors([
-            'images' => "Vous avez déjà {$existingCount} image(s). Vous ne pouvez ajouter que " . (4 - $existingCount) . " image(s) supplémentaire(s)."
-        ])->withInput();
-    }
-}
+            if ($existingCount + $newCount > 4) {
+                return back()->withErrors([
+                    'images' => "Vous avez déjà {$existingCount} image(s). Vous ne pouvez ajouter que " . (4 - $existingCount) . " image(s) supplémentaire(s)."
+                ])->withInput();
+            }
+        }
 
         // Mettre à jour les catégories
         $product->categories()->sync($request->categories);
@@ -336,6 +369,31 @@ if (isset($product)) {
         }
 
         return redirect()->route('admin.products')->with('success', 'Produit mis à jour avec succès !');
+    }
+
+    public function adminDeleteProductImage($id)
+    {
+        try {
+            $image = ProductImage::findOrFail($id);
+
+            // Supprimer le fichier physique
+            if (file_exists(public_path($image->url))) {
+                unlink(public_path($image->url));
+            }
+
+            // Supprimer en base
+            $image->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Image supprimée avec succès.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors de la suppression.'
+            ], 500);
+        }
     }
 
 
@@ -446,15 +504,25 @@ if (isset($product)) {
     // Autres méthodes
     // -------------------------------------------------------------------------
 
-    public function adminServices()
-    {
-        return view('admin/services');
-    }
+    // public function adminServices(Request $request)
+    // {
+    //     $query = Product::with(['images', 'type', 'categories', 'shop'])
+    //         ->where('deleted', 0)
+    //         ->where('section', 'service');
+    //     // ...
+    //     // return view('admin/services', compact('products', 'types'));
+    //     return view('admin/services');
+    // }
 
-    public function adminLocations()
-    {
-        return view('admin/locations');
-    }
+    // public function adminLocations(Request $request)
+    // {
+    //     $query = Product::with(['images', 'type', 'categories', 'shop'])
+    //         ->where('deleted', 0)
+    //         ->where('section', 'rental');
+    //     // ...
+    //     // return view('admin/locations', compact('products', 'types'));
+    //     return view('admin/locations');
+    // }
 
     public function adminAddService()
     {
@@ -466,25 +534,158 @@ if (isset($product)) {
         return view('admin/add-location');
     }
 
-    public function adminCategories()
+    public function adminCategories(Request $request)
     {
-        return view('admin/categories');
+        $query = Category::where('deleted', 0);
+
+        if ($request->filled('section')) {
+            $query->where('section', $request->section);
+        }
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $categories = $query->latest()->paginate(10)->withQueryString();
+
+        $counts = [
+            'all'     => Category::where('deleted', 0)->count(),
+            'product' => Category::where('deleted', 0)->where('section', 'product')->count(),
+            'service' => Category::where('deleted', 0)->where('section', 'service')->count(),
+            'rental'  => Category::where('deleted', 0)->where('section', 'rental')->count(),
+        ];
+
+        return view('admin/categories', compact('categories', 'counts'));
     }
 
+    public function adminCategoryStore(Request $request)
+    {
+        $request->validate([
+            'name'        => 'required|string|max:255',
+            'section'     => 'required|in:product,service,rental',
+            'description' => 'nullable|string',
+            'icon_cat'    => 'nullable|image|mimes:svg,png,jpg|max:1024',
+        ]);
+
+        $iconPath = null;
+        if ($request->hasFile('icon_cat')) {
+            $iconPath = $request->file('icon_cat')->store('assets/images/icons', 'public');
+        }
+
+        Category::create([
+            'uuid'        => \Illuminate\Support\Str::uuid(),
+            'name'        => $request->name,
+            'section'     => $request->section,
+            'description' => $request->description,
+            'icon_cat'    => $iconPath,
+            'status'      => 1,
+            'deleted'     => 0,
+        ]);
+
+        return back()->with('success', 'Catégorie ajoutée avec succès.');
+    }
+
+    public function adminCategoryToggleStatus($id)
+    {
+        $category = Category::findOrFail($id);
+        $category->update(['status' => $category->status ? 0 : 1]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Statut mis à jour.',
+            'status'  => $category->status,
+        ]);
+    }
+
+    public function adminCategoryDelete($id)
+    {
+        $category = Category::findOrFail($id);
+        $category->update(['deleted' => 1]);
+
+        return response()->json(['success' => true, 'message' => 'Catégorie supprimée.']);
+    }
     public function adminAddCategory()
     {
         return view('admin/add-category');
     }
 
-    public function adminOrderList()
+    public function adminOrderList(Request $request)
     {
-        return view('admin/order-list');
+        $query = Order::with(['user', 'product.images'])
+            ->where('orders.deleted', 0)
+            ->where('orders.user_id', '!=', Auth::id());
+
+        if ($request->filled('search')) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                    ->orWhere('firstname', 'like', '%' . $request->search . '%');
+            })->orWhereHas('product', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        if ($request->filled('section')) {
+            $query->whereHas('product', fn($q) => $q->where('section', $request->section));
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // paginate and keep the current query parameters
+        $orders = $query->latest()
+            ->paginate(15)
+            ->appends($request->query());
+
+        $counts = [
+            'all'       => Order::where('deleted', 0)->where('orders.user_id', '!=', Auth::id())->count(),
+            'pending'   => Order::where('deleted', 0)->where('orders.user_id', '!=', Auth::id())->where('status', 'pending')->count(),
+            'accepted'  => Order::where('deleted', 0)->where('orders.user_id', '!=', Auth::id())->where('status', 'accepted')->count(),
+            'completed' => Order::where('deleted', 0)->where('orders.user_id', '!=', Auth::id())->where('status', 'completed')->count(),
+            'rejected'  => Order::where('deleted', 0)->where('orders.user_id', '!=', Auth::id())->where('status', 'rejected')->count(),
+            'cancelled' => Order::where('deleted', 0)->where('orders.user_id', '!=', Auth::id())->where('status', 'cancelled')->count(),
+        ];
+
+        return view('admin/order-list', compact('orders', 'counts'));
     }
 
-    public function adminOrderSingle()
+    public function adminOrderUpdateStatus(Request $request, $uuid)
     {
-        return view('admin/order-single');
+        $request->validate(['status' => 'required|in:pending,accepted,rejected,completed,cancelled']);
+
+        $order = Order::where('uuid', $uuid)->firstOrFail();
+        $order->update(['status' => $request->status]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Statut mis à jour.',
+            'status'  => $request->status,
+        ]);
     }
+
+    public function adminOrderDelete($uuid)
+    {
+        $order = Order::where('uuid', $uuid)->firstOrFail();
+        $order->update(['deleted' => 1]);
+
+        return response()->json(['success' => true, 'message' => 'Commande supprimée.']);
+    }
+
+    public function adminOrderSingle($uuid)
+{
+    $order = Order::with([
+        'user',
+        'owner',
+        'product.images',
+        'offeredProduct.images',
+    ])->where('uuid', $uuid)->firstOrFail();
+
+    return view('admin/order-single', compact('order'));
+}
 
     public function adminOrderSingleLocation()
     {
@@ -506,15 +707,63 @@ if (isset($product)) {
         return view('admin/reviews');
     }
 
-    public function adminMeOrderList()
-    {
-        return view('admin/me-order-list');
-    }
+    // public function adminMeOrderList()
+    // {
+    //     return view('admin/me-order-list');
+    // }
 
-    public function adminMeOrderSingle()
+
+      public function adminMeOrderList(Request $request)
     {
-        return view('admin/me-order-single');
+        $query = Order::with(['user', 'product.images'])
+            ->where('orders.deleted', 0)
+            ->where('orders.user_id',  Auth::id());
+
+        if ($request->filled('search')) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                    ->orWhere('firstname', 'like', '%' . $request->search . '%');
+            })->orWhereHas('product', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        if ($request->filled('section')) {
+            $query->whereHas('product', fn($q) => $q->where('section', $request->section));
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // paginate and keep the current query parameters
+        $orders = $query->latest()
+            ->paginate(15)
+            ->appends($request->query());
+
+        $counts = [
+            'all'       => Order::where('deleted', 0)->where('orders.user_id',  Auth::id())->count(),
+            'pending'   => Order::where('deleted', 0)->where('orders.user_id',  Auth::id())->where('status', 'pending')->count(),
+            'accepted'  => Order::where('deleted', 0)->where('orders.user_id',  Auth::id())->where('status', 'accepted')->count(),
+            'completed' => Order::where('deleted', 0)->where('orders.user_id',  Auth::id())->where('status', 'completed')->count(),
+            'rejected'  => Order::where('deleted', 0)->where('orders.user_id',  Auth::id())->where('status', 'rejected')->count(),
+            'cancelled' => Order::where('deleted', 0)->where('orders.user_id',  Auth::id())->where('status', 'cancelled')->count(),
+        ];
+
+        return view('admin/me-order-list', compact('orders', 'counts'));
     }
+public function adminMeOrderSingle($uuid)
+{
+    $order = Order::with([
+        'product.images',
+        'offeredProduct.images',
+        'owner',
+    ])->where('uuid', $uuid)
+      ->where('user_id', Auth::id()) // sécurité : seulement mes commandes
+      ->firstOrFail();
+
+    return view('admin/me-order-single', compact('order'));
+}
 
     public function adminMeOrderSingleLocation()
     {

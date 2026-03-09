@@ -99,6 +99,42 @@
                         </div>
                     </div>
 
+                    {{-- Tabs section --}}
+<div class="row mb-4">
+    <div class="col-12">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link {{ !request('section') ? 'active' : '' }}"
+                   href="{{ route('admin.products', request()->except('section', 'page')) }}">
+                    <i class="bi bi-grid me-2"></i>Tous
+                    <span class="badge bg-secondary ms-1">{{ $counts['all'] }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request('section') == 'product' ? 'active' : '' }}"
+                   href="{{ route('admin.products', array_merge(request()->except('section', 'page'), ['section' => 'product'])) }}">
+                    <i class="bi bi-box-seam me-2"></i>Produits
+                    <span class="badge bg-primary ms-1">{{ $counts['product'] }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request('section') == 'service' ? 'active' : '' }}"
+                   href="{{ route('admin.products', array_merge(request()->except('section', 'page'), ['section' => 'service'])) }}">
+                    <i class="bi bi-tools me-2"></i>Services
+                    <span class="badge bg-success ms-1">{{ $counts['service'] }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request('section') == 'rental' ? 'active' : '' }}"
+                   href="{{ route('admin.products', array_merge(request()->except('section', 'page'), ['section' => 'rental'])) }}">
+                    <i class="bi bi-key me-2"></i>Locations
+                    <span class="badge bg-warning ms-1">{{ $counts['rental'] }}</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
                     <!-- card body -->
                     <div class="card-body p-0">
                         @if($products->count() > 0)
@@ -221,12 +257,15 @@
                                                 </a>
                                                 <ul class="dropdown-menu">
                                                     <li>
-                                                        <a class="dropdown-item" href="#">
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('shop.single', ['uuid' => $product->uuid]) }}"
+                                                            target="_blank">
                                                             <i class="bi bi-eye me-3"></i>View
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="#">
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('admin.edit-product', ['uuid' => $product->uuid]) }}">
                                                             <i class="bi bi-pencil-square me-3"></i>Edit
                                                         </a>
                                                     </li>
@@ -305,9 +344,12 @@
 
         if (type) url.searchParams.set('type_id', type);
         else url.searchParams.delete('type_id');
+        
 
         if (sale) url.searchParams.set('is_on_sale', sale);
         else url.searchParams.delete('is_on_sale');
+
+         url.searchParams.delete('page');
 
         window.location.href = url.toString();
     }
