@@ -30,7 +30,7 @@ class Review extends Model
         'exchange_status',
         'likes_count',
         'title',
-        'rating',
+        'rating','shop_id',
         'comment',
         'end_date',
         'product_id',
@@ -62,4 +62,8 @@ class Review extends Model
     {
         return $this->hasMany(ReviewVoteOrSignalment::class);
     }
+    public function shop()
+{
+    return $this->belongsTo(Shop::class);
+}
 }

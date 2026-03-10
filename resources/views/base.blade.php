@@ -6,7 +6,8 @@
 
 <head>
   <!-- Required meta tags -->
-  <meta charset="utf-8">
+<meta charset="utf-8">
+<meta name="csrf-token" content="{{ csrf_token() }}">  {{-- ← ajoute cette ligne --}}
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta content="Codescandy" name="author">
   <title>AccUeil eCommerce FreshCart </title>
@@ -33,7 +34,10 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-M8S4MT3EYG"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
     gtag('js', new Date());
 
     gtag('config', 'G-M8S4MT3EYG');
@@ -225,7 +229,7 @@
                     </path>
                   </svg>
                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
-                    5
+                    1
                     <span class="visually-hidden">unread messages</span>
                   </span>
                 </a>
@@ -252,9 +256,19 @@
                     <line x1="3" y1="6" x2="21" y2="6"></line>
                     <path d="M16 10a4 4 0 0 1-8 0"></path>
                   </svg>
-                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
-                    1
-                    <span class="visually-hidden">unread messages</span>
+                  {{-- Desktop --}}
+<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"
+      id="waitlist-badge" style="display:none">
+    0
+    <span class="visually-hidden">Liste d'attente</span>
+</span>
+
+{{-- Mobile (même chose) --}}
+<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"
+      id="waitlist-badge-mobile" style="display:none">
+    0
+    <span class="visually-hidden">Liste d'attente</span>
+</span>
                   </span>
                 </a>
 
@@ -357,19 +371,19 @@
               <ul class="navbar-nav align-items-center ">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <li class="nav-item dropdown w-100 w-lg-auto">
-                  <a class="nav-link " href="{{ route('welcome') }}" role="button" 
+                  <a class="nav-link " href="{{ route('welcome') }}" role="button"
                     aria-expanded="false">
                     Home
                   </a>
                 </li>
 
                 <li class="nav-item dropdown w-100 w-lg-auto">
-                  <a class="nav-link " href="{{ route('store.grid') }}" role="button" 
+                  <a class="nav-link " href="{{ route('store.grid') }}" role="button"
                     aria-expanded="false">
                     Shop
                   </a>
                 </li>
-                
+
 
                 <li class="nav-item dropdown w-100 w-lg-auto dropdown-fullwidth">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -426,7 +440,7 @@
                 </li>
 
                 <li class="nav-item dropdown w-100 w-lg-auto">
-                  <a class="nav-link " href="{{ route('login') }}" role="button" 
+                  <a class="nav-link " href="{{ route('login') }}" role="button"
                     aria-expanded="false">
                     Account
                   </a>
@@ -434,7 +448,7 @@
                 </li>
 
                 <li class="nav-item dropdown w-100 w-lg-auto">
-                  <a class="nav-link " href="{{ route('store') }}" role="button" 
+                  <a class="nav-link " href="{{ route('store') }}" role="button"
                     aria-expanded="false">
                     My shop
                   </a>
@@ -498,234 +512,42 @@
 
 
   <!-- Shop Cart -->
-
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-    <div class="offcanvas-header border-bottom">
-      <div class="text-start">
-        <h5 id="offcanvasRightLabel" class="mb-0 fs-4">Liste d'attente</h5>
-        <small>Mise à jour de la liste dans 382480 min</small>
-      </div>
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header border-bottom">
+    <div class="text-start">
+      <h5 id="offcanvasRightLabel" class="mb-0 fs-4">Liste d'attente</h5>
+      <small id="waitlist-count-label">0 produit(s)</small>
     </div>
-    <div class="offcanvas-body">
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    @guest
+    <div class="alert alert-danger p-2" role="alert">
+      Se connecter pour finaliser votre demande.
+      <a href="{{ route('login') }}" class="alert-link">Connectez-vous maintenant!</a>
+    </div>
+    @endguest
 
-      <div class="">
-        <!-- alert -->
-        <div class="alert alert-danger p-2" role="alert">
-          Se connecter pour finaliser votre demande.<a href="{{ route('pages.signin') }}" class="alert-link">Connectez-vous maintenant!</a>
-        </div>
-        <ul class="list-group list-group-flush">
-          <!-- list group -->
-          <li class="list-group-item py-3 ps-0 border-top">
-            <!-- row -->
-            <div class="row align-items-center">
+    <div id="waitlist-items">
+      {{-- Rempli dynamiquement par JS --}}
+    </div>
 
-              <div class="col-6 col-md-6 col-lg-7">
-                <div class="d-flex">
-                  <img src="{{ asset('assets/images/products/product-img-1.jpg') }}" alt="Ecommerce" class="icon-shape icon-xxl">
-                  <div class="ms-3">
-                    <!-- title -->
-                    <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">
-                      <h6 class="mb-0">Haldiram's Sev Bhujia</h6>
-                    </a>
-                    <span><small class="text-muted">Nom de la boutique</small></span>
-                    <!-- text -->
-                    <div class="mt-2 small lh-1"> <a href="#!" class="text-decoration-none text-inherit"> <span
-                          class="me-1 align-text-bottom">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-trash-2 text-success">
-                            <polyline points="3 6 5 6 21 6"></polyline>
-                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                            </path>
-                            <line x1="10" y1="11" x2="10" y2="17"></line>
-                            <line x1="14" y1="11" x2="14" y2="17"></line>
-                          </svg></span><span class="text-muted">Remove</span></a></div>
-                  </div>
-                </div>
-              </div>
-              <!-- input group -->
-              <div class="col-4 col-md-3 col-lg-3">
-                <!-- input -->
-                <!-- input -->
-          
+    <div class="text-center text-muted py-5 d-none" id="waitlist-empty">
+      <i class="bi bi-bag-x fs-1"></i>
+      <p class="mt-2">Votre liste d'attente est vide.</p>
+    </div>
 
-              </div>
-
-            </div>
-
-          </li>
-          <!-- list group -->
-          <li class="list-group-item py-3 ps-0">
-            <!-- row -->
-            <div class="row align-items-center">
-              <div class="col-6 col-md-6 col-lg-7">
-                <div class="d-flex">
-                  <img src="{{ asset('assets/images/products/product-img-2.jpg') }}" alt="Ecommerce" class="icon-shape icon-xxl">
-                  <div class="ms-3">
-                    <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">
-                      <h6 class="mb-0">NutriChoice Digestive </h6>
-                    </a>
-                    <span><small class="text-muted">Nom de la boutique</small></span>
-                    <!-- text -->
-                    <div class="mt-2 small lh-1"> <a href="#!" class="text-decoration-none text-inherit"> <span
-                          class="me-1 align-text-bottom">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-trash-2 text-success">
-                            <polyline points="3 6 5 6 21 6"></polyline>
-                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                            </path>
-                            <line x1="10" y1="11" x2="10" y2="17"></line>
-                            <line x1="14" y1="11" x2="14" y2="17"></line>
-                          </svg></span><span class="text-muted">Remove</span></a></div>
-                  </div>
-                </div>
-              </div>
-
-
-              <!-- input group -->
-              <div class="col-4 col-md-3 col-lg-3">
-                <!-- input -->
-                <!-- input -->
-  
-              </div>
-
-            </div>
-
-          </li>
-          <!-- list group -->
-          <li class="list-group-item py-3 ps-0">
-            <!-- row -->
-            <div class="row align-items-center">
-
-              <div class="col-6 col-md-6 col-lg-7">
-                <div class="d-flex">
-                  <img src="{{ asset('assets/images/products/product-img-3.jpg') }}" alt="Ecommerce" class="icon-shape icon-xxl">
-                  <div class="ms-3">
-                    <!-- title -->
-                    <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">
-                      <h6 class="mb-0">Cadbury 5 Star Chocolate</h6>
-                    </a>
-                    <span><small class="text-muted">Nom de la boutique</small></span>
-                    <!-- text -->
-                    <div class="mt-2 small lh-1"> <a href="#!" class="text-decoration-none text-inherit"> <span
-                          class="me-1 align-text-bottom">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-trash-2 text-success">
-                            <polyline points="3 6 5 6 21 6"></polyline>
-                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                            </path>
-                            <line x1="10" y1="11" x2="10" y2="17"></line>
-                            <line x1="14" y1="11" x2="14" y2="17"></line>
-                          </svg></span><span class="text-muted">Remove</span></a></div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- input group -->
-              <div class="col-4 col-md-3 col-lg-3">
-                <!-- input -->
-                <!-- input -->
-
-              </div>
-
-            </div>
-
-          </li>
-          <!-- list group -->
-          <li class="list-group-item py-3 ps-0">
-            <!-- row -->
-            <div class="row align-items-center">
-              <div class="col-6 col-md-6 col-lg-7">
-                <div class="d-flex">
-                  <img src="{{ asset('assets/images/products/product-img-4.jpg') }}" alt="Ecommerce" class="icon-shape icon-xxl">
-                  <div class="ms-3">
-                    <!-- title -->
-                    <!-- title -->
-                    <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">
-                      <h6 class="mb-0">Onion Flavour Potato</h6>
-                    </a>
-                    <span><small class="text-muted">Nom de la boutique</small></span>
-                    <!-- text -->
-                    <div class="mt-2 small lh-1"> <a href="#!" class="text-decoration-none text-inherit"> <span
-                          class="me-1 align-text-bottom">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-trash-2 text-success">
-                            <polyline points="3 6 5 6 21 6"></polyline>
-                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                            </path>
-                            <line x1="10" y1="11" x2="10" y2="17"></line>
-                            <line x1="14" y1="11" x2="14" y2="17"></line>
-                          </svg></span><span class="text-muted">Remove</span></a></div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- input group -->
-              <div class="col-4 col-md-3 col-lg-3">
-                <!-- input -->
-                <!-- input -->
-
-              </div>
-              <!-- price -->
-
-            </div>
-
-          </li>
-          <!-- list group -->
-          <li class="list-group-item py-3 ps-0 border-bottom">
-            <!-- row -->
-            <div class="row align-items-center">
-              <div class="col-6 col-md-6 col-lg-7">
-                <div class="d-flex">
-                  <img src="{{ asset('assets/images/products/product-img-5.jpg') }}" alt="Ecommerce" class="icon-shape icon-xxl">
-                  <div class="ms-3">
-                    <!-- title -->
-                    <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit">
-                      <h6 class="mb-0">Salted Instant Popcorn </h6>
-                    </a>
-                    <span><small class="text-muted">Nom de la boutique</small></span>
-                    <!-- text -->
-                    <div class="mt-2 small lh-1"> <a href="#!" class="text-decoration-none text-inherit"> <span
-                          class="me-1 align-text-bottom">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-trash-2 text-success">
-                            <polyline points="3 6 5 6 21 6"></polyline>
-                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                            </path>
-                            <line x1="10" y1="11" x2="10" y2="17"></line>
-                            <line x1="14" y1="11" x2="14" y2="17"></line>
-                          </svg></span><span class="text-muted">Remove</span></a></div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- input group -->
-              <div class="col-4 col-md-3 col-lg-3">
-                <!-- input -->
-                <!-- input -->
-
-              </div>
-              <!-- price -->
-     
-            </div>
-
-          </li>
-
-        </ul>
-        <!-- btn -->
-        <div class="d-flex justify-content-between mt-4">
-          <a href="{{ route('welcome') }}" class="btn btn-primary">Continue Shopping</a>
-          <a href="#!" class="btn btn-dark">Update Cart</a>
-        </div>
-
-      </div>
+    <div class="d-flex justify-content-between mt-4" id="waitlist-actions" style="display:none!important">
+      <a href="{{ route('welcome') }}" class="btn btn-primary">Continuer</a>
+      <button onclick="clearWaitlist()" class="btn btn-outline-danger btn-sm">
+        <i class="bi bi-trash me-1"></i>Vider
+      </button>
     </div>
   </div>
+</div>
+
+
+
 
   <!-- Modal -->
   <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
@@ -793,7 +615,7 @@
   </div>
 
 
-    @yield('content') ;
+  @yield('content') ;
 
   <!-- Modal -->
 
@@ -924,7 +746,9 @@
       <div class="border-top py-4">
         <div class="row align-items-center">
           <div class="col-md-6"><span class="small text-muted">© 2022 <span id="copyright"> -
-                <script>document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))</script>
+                <script>
+                  document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
+                </script>
               </span>FreshCart eCommerce HTML Template. All rights reserved. Powered by <a
                 href="https://codescandy.com/">Codescandy</a>.</span></div>
           <div class="col-md-6">
@@ -960,7 +784,7 @@
   </footer>
 
   <!-- Javascript-->
- 
+
   <!-- Libs JS -->
   <script src="{{ asset('assets/libs/jquery/dist/jquery.min.js') }}"></script>
   <script src="{{ asset('assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
@@ -977,6 +801,174 @@
   <script src="{{ asset('assets/js/vendors/zoom.js') }}"></script>
   <script src="{{ asset('assets/js/vendors/increment-value.js') }}"></script>
 
+{{-- ═══════════════════════════════════════════════
+     LISTE D'ATTENTE — localStorage
+     ═══════════════════════════════════════════════ --}}
+<script>
+// ── Helpers localStorage ────────────────────────────
+const WAITLIST_KEY = 'maketroc_waitlist';
+
+function getWaitlist() {
+    return JSON.parse(localStorage.getItem(WAITLIST_KEY) || '[]');
+}
+
+function saveWaitlist(items) {
+    localStorage.setItem(WAITLIST_KEY, JSON.stringify(items));
+    renderWaitlist();
+    updateBadge();
+}
+
+function addToWaitlist(product) {
+    const items = getWaitlist();
+    const exists = items.find(p => p.uuid === product.uuid);
+    if (exists) {
+        showToast('Déjà dans votre liste d\'attente', 'warning');
+        return;
+    }
+    items.push(product);
+    saveWaitlist(items);
+    showToast(product.name + ' ajouté à la liste d\'attente', 'success');
+    // Ouvrir le panel
+    const offcanvas = bootstrap.Offcanvas.getOrCreateInstance(document.getElementById('offcanvasRight'));
+    offcanvas.show();
+}
+
+function removeFromWaitlist(uuid) {
+    const items = getWaitlist().filter(p => p.uuid !== uuid);
+    saveWaitlist(items);
+}
+
+function clearWaitlist() {
+    saveWaitlist([]);
+}
+
+function renderWaitlist() {
+    const items     = getWaitlist();
+    const container = document.getElementById('waitlist-items');
+    const empty     = document.getElementById('waitlist-empty');
+    const actions   = document.getElementById('waitlist-actions');
+    const label     = document.getElementById('waitlist-count-label');
+
+    if (!container) return;
+
+    if (items.length === 0) {
+        container.innerHTML = '';
+        empty?.classList.remove('d-none');
+        actions && (actions.style.display = 'none');
+        if (label) label.textContent = '0 produit(s)';
+        return;
+    }
+
+    empty?.classList.add('d-none');
+    actions && (actions.style.removeProperty('display'));
+    if (label) label.textContent = items.length + ' produit(s)';
+
+    container.innerHTML = items.map(p => `
+        <div class="d-flex align-items-start border-bottom py-3">
+            <img src="${p.image}" alt="${p.name}"
+                 class="rounded" style="width:60px;height:60px;object-fit:cover;flex-shrink:0">
+            <div class="ms-3 flex-grow-1">
+                <a href="${p.url}" class="text-inherit text-decoration-none">
+                    <h6 class="mb-0 small fw-semibold">${p.name}</h6>
+                </a>
+                <small class="text-success">${p.shop}</small><br>
+                <small class="text-dark fw-bold">${p.price}</small>
+                <div class="mt-1">
+                    <button onclick="removeFromWaitlist('${p.uuid}')"
+                            class="btn btn-link p-0 text-danger text-decoration-none small">
+                        <i class="bi bi-trash me-1"></i>Retirer
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function updateBadge() {
+    const count = getWaitlist().length;
+    ['waitlist-badge', 'waitlist-badge-mobile'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.childNodes[0].textContent = count + ' ';
+        el.style.display = count > 0 ? '' : 'none';
+    });
+}
+
+// ── Toast notification ──────────────────────────────
+function showToast(message, type = 'success') {
+    const id = 'toast-' + Date.now();
+    const color = type === 'success' ? 'bg-success' : type === 'warning' ? 'bg-warning' : 'bg-danger';
+    const html = `
+        <div id="${id}" class="toast align-items-center text-white ${color} border-0 position-fixed"
+             style="bottom:1.5rem;right:1.5rem;z-index:9999" role="alert">
+            <div class="d-flex">
+                <div class="toast-body">${message}</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                        data-bs-dismiss="toast"></button>
+            </div>
+        </div>`;
+    document.body.insertAdjacentHTML('beforeend', html);
+    const el = document.getElementById(id);
+    const toast = new bootstrap.Toast(el, { delay: 3000 });
+    toast.show();
+    el.addEventListener('hidden.bs.toast', () => el.remove());
+}
+
+// ── Init au chargement ──────────────────────────────
+document.addEventListener('DOMContentLoaded', function () {
+    renderWaitlist();
+    updateBadge();
+});
+</script>
+
+{{-- ═══════════════════════════════════════════════
+     WISHLIST — AJAX Laravel
+     ═══════════════════════════════════════════════ --}}
+<script>
+function toggleWishlist(uuid, btn) {
+    @auth
+    if (event) event.preventDefault();
+    btn.disabled = true;
+
+    const token = document.querySelector('meta[name="csrf-token"]');
+    if (!token) {
+        showToast('CSRF token manquant', 'danger');
+        btn.disabled = false;
+        return;
+    }
+
+    fetch('/wishlist/toggle/' + uuid, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': token.content,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(r => {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+    })
+    .then(data => {
+        const icon = btn.querySelector('i');
+        if (data.wishlisted) {
+            icon.classList.replace('bi-heart', 'bi-heart-fill');
+            icon.classList.add('text-danger');
+            showToast('Ajouté à la wishlist ❤️', 'success');
+        } else {
+            icon.classList.replace('bi-heart-fill', 'bi-heart');
+            icon.classList.remove('text-danger');
+            showToast('Retiré de la wishlist', 'warning');
+        }
+    })
+    .catch(err => showToast('Erreur: ' + err.message, 'danger'))
+    .finally(() => btn.disabled = false);
+    @else
+    window.location.href = '{{ route("login") }}';
+    @endauth
+}
+</script>
+
 
 
 </body>
@@ -985,10 +977,3 @@
 <!-- Mirrored from freshcart.codescandy.com/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 21 Aug 2023 02:35:11 GMT -->
 
 </html>
-
-
-
-
-
-
-

@@ -3593,7 +3593,7 @@
 
 
             <div class="fs-4">
-              <a href="{{ route('store.single') }}"> <span class="text-secondary">E-Grocery Super Market</span></a>
+              <a href="{{ route('store.single', ['uuid' => '1f179672-b492-4421-a8ff-0cf3293d131e']) }}"> <span class="text-secondary">E-Grocery Super Market</span></a>
             </div>
              <div class="mb-4">
               <!-- rating -->
@@ -3761,7 +3761,7 @@
             <hr class="my-6">
             
             <div class="fs-4">
-              <a href="{{ route('store.single') }}"> <span class="text-secondary">E-Grocery Super Market</span></a>
+              <a href="{{ route('store.single', ['uuid' => '1f179672-b492-4421-a8ff-0cf3293d131e']) }}"> <span class="text-secondary">E-Grocery Super Market</span></a>
             </div>
             <div class="mb-4">
               <!-- rating -->

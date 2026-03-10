@@ -25,7 +25,6 @@
             <div class="bg-light d-flex justify-content-between ps-md-10 ps-6 rounded">
               <div class="d-flex align-items-center">
                 <h1 class="mb-0 fw-bold">Stores</h1>
-
               </div>
               <div class="py-6">
                 <!-- img -->
@@ -67,7 +66,7 @@
               </div>
               <div class="mt-4">
                 <!-- content -->
-                <h2 class="mb-1 h5"><a href="{{ route('store.single') }}" class="text-inherit">E-Grocery Super Market</a></h2>
+                <h2 class="mb-1 h5"><a href="{{ route('store.single', ['uuid' => '1f179672-b492-4421-a8ff-0cf3293d131e']) }}" class="text-inherit">E-Grocery Super Market</a></h2>
                 <div class="small text-muted"><span class="me-2">Organic </span><span class="me-2">Groceries</span>
                   <span>Butcher Shop</span>
                 </div>
@@ -102,7 +101,7 @@
               </div>
               <div class="mt-4">
                 <!-- content -->
-                <h2 class="mb-1 h5"><a href="{{ route('store.single') }}" class="text-inherit">DealShare Mart</a></h2>
+                <h2 class="mb-1 h5"><a href="{{ route('store.single', ['uuid' => '1f179672-b492-4421-a8ff-0cf3293d131e']) }}" class="text-inherit">DealShare Mart</a></h2>
                 <div class="small text-muted"><span class="me-2">Alcohol</span><span class="me-2">Groceries</span></div>
                 <div class="py-3">
                   <ul class="list-unstyled mb-0 small">
@@ -133,7 +132,7 @@
                   class="rounded-circle icon-shape icon-xl"></div>
               <div class="mt-4">
                 <!-- content -->
-                <h2 class="mb-1 h5"><a href="{{ route('store.single') }}" class="text-inherit">DMart</a></h2>
+                <h2 class="mb-1 h5"><a href="{{ route('store.single', ['uuid' => '1f179672-b492-4421-a8ff-0cf3293d131e']) }}" class="text-inherit">DMart</a></h2>
                 <div class="small text-muted"><span class="me-2">Groceries</span><span class="me-2">Bakery</span>
                   <span>Deli</span>
                 </div>
@@ -166,7 +165,7 @@
                   class="rounded-circle icon-shape icon-xl"></div>
               <div class="mt-4">
                 <!-- content -->
-                <h2 class="mb-1 h5"><a href="{{ route('store.single') }}" class="text-inherit">Blinkit Store</a></h2>
+                <h2 class="mb-1 h5"><a href="{{ route('store.single', ['uuid' => '1f179672-b492-4421-a8ff-0cf3293d131e']) }}" class="text-inherit">Blinkit Store</a></h2>
                 <div class="small text-muted"><span class="me-2">Meal Kits</span><span class="me-2">Prepared
                     Meals</span> <span>Organic</span></div>
                 <div class="py-3">
@@ -198,7 +197,7 @@
                   class="rounded-circle icon-shape icon-xl"></div>
               <div class="mt-4">
                 <!-- content -->
-                <h2 class="mb-1 h5"><a href="{{ route('store.single') }}" class="text-inherit">StoreFront Super Market</a></h2>
+                <h2 class="mb-1 h5"><a href="{{ route('store.single', ['uuid' => '1f179672-b492-4421-a8ff-0cf3293d131e']) }}" class="text-inherit">StoreFront Super Market</a></h2>
                 <div class="small text-muted"><span class="me-2">Groceries</span><span class="me-2">Bakery</span></div>
                 <div class="py-3">
                   <ul class="list-unstyled mb-0 small">
@@ -229,7 +228,7 @@
                   class="rounded-circle icon-shape icon-xl"></div>
               <div class="mt-4">
                 <!-- content -->
-                <h2 class="mb-1 h5"><a href="{{ route('store.single') }}" class="text-inherit">BigBasket</a></h2>
+                <h2 class="mb-1 h5"><a href="{{ route('store.single', ['uuid' => '1f179672-b492-4421-a8ff-0cf3293d131e']) }}" class="text-inherit">BigBasket</a></h2>
                 <div class="small text-muted"><span class="me-2">Groceries</span> <span class="me-2">Deli</span></div>
                 <div class="py-3">
                   <ul class="list-unstyled mb-0 small">
@@ -260,7 +259,7 @@
                   class="rounded-circle icon-shape icon-xl"></div>
               <div class="mt-4">
                 <!-- content -->
-                <h2 class="mb-1 h5"><a href="{{ route('store.single') }}" class="text-inherit">Swiggy Instamart</a></h2>
+                <h2 class="mb-1 h5"><a href="{{ route('store.single', ['uuid' => '1f179672-b492-4421-a8ff-0cf3293d131e']) }}" class="text-inherit">Swiggy Instamart</a></h2>
                 <div class="small text-muted"><span class="me-2">Meal Kits</span><span class="me-2">Prepared
                     Meals</span> <span>Organic</span></div>
                 <div class="py-3">
@@ -292,7 +291,7 @@
                   class="rounded-circle icon-shape icon-xl"></div>
               <div class="mt-4">
                 <!-- content -->
-                <h2 class="mb-1 h5"><a href="{{ route('store.single') }}" class="text-inherit">Online Grocery Mart</a></h2>
+                <h2 class="mb-1 h5"><a href="{{ route('store.single', ['uuid' => '1f179672-b492-4421-a8ff-0cf3293d131e']) }}" class="text-inherit">Online Grocery Mart</a></h2>
                 <div class="small text-muted"><span class="me-2">Groceries</span><span class="me-2">Bakery</span></div>
                 <div class="py-3">
                   <ul class="list-unstyled mb-0 small">
@@ -323,7 +322,7 @@
                   class="rounded-circle icon-shape icon-xl"></div>
               <div class="mt-4">
                 <!-- content -->
-                <h2 class="mb-1 h5"><a href="{{ route('store.single') }}" class="text-inherit">Spencers</a></h2>
+                <h2 class="mb-1 h5"><a href="{{ route('store.single', ['uuid' => '1f179672-b492-4421-a8ff-0cf3293d131e']) }}" class="text-inherit">Spencers</a></h2>
                 <div class="small text-muted"><span class="me-2">Groceries</span> <span class="me-2">Deli</span></div>
                 <div class="py-3">
                   <ul class="list-unstyled mb-0 small">
@@ -354,7 +353,7 @@
                   class="rounded-circle icon-shape icon-xl"></div>
               <div class="mt-4">
                 <!-- content -->
-                <h2 class="mb-1 h5"><a href="{{ route('store.single') }}" class="text-inherit">DealShare Mart</a></h2>
+                <h2 class="mb-1 h5"><a href="{{ route('store.single', ['uuid' => '1f179672-b492-4421-a8ff-0cf3293d131e']) }}" class="text-inherit">DealShare Mart</a></h2>
                 <div class="small text-muted"><span class="me-2">Alcohol</span><span class="me-2">Groceries</span></div>
                 <div class="py-3">
                   <ul class="list-unstyled mb-0 small">
@@ -385,7 +384,7 @@
                   class="rounded-circle icon-shape icon-xl"></div>
               <div class="mt-4">
                 <!-- content -->
-                <h2 class="mb-1 h5"><a href="{{ route('store.single') }}" class="text-inherit">DMart</a></h2>
+                <h2 class="mb-1 h5"><a href="{{ route('store.single', ['uuid' => '1f179672-b492-4421-a8ff-0cf3293d131e']) }}" class="text-inherit">DMart</a></h2>
                 <div class="small text-muted"><span class="me-2">Groceries</span><span class="me-2">Bakery</span>
                   <span>Deli</span>
                 </div>
@@ -417,7 +416,7 @@
                   class="rounded-circle icon-shape icon-xl"></div>
               <div class="mt-4">
                 <!-- content -->
-                <h2 class="mb-1 h5"><a href="{{ route('store.single') }}" class="text-inherit">Blinkit Store</a></h2>
+                <h2 class="mb-1 h5"><a href="{{ route('store.single', ['uuid' => '1f179672-b492-4421-a8ff-0cf3293d131e']) }}" class="text-inherit">Blinkit Store</a></h2>
                 <div class="small text-muted"><span class="me-2">Meal Kits</span><span class="me-2">Prepared
                     Meals</span> <span>Organic</span></div>
                 <div class="py-3">

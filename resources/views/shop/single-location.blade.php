@@ -89,7 +89,7 @@
             <!-- hr -->
             <hr class="my-6">
             <div class="fs-4">
-              <a href="{{ route('store.single') }}"> <span class="text-secondary">E-Grocery Super Market</span></a>
+              <a href="{{ route('store.single', ['uuid' => $shop->uuid]) }}"> <span class="text-secondary">E-Grocery Super Market</span></a>
             </div>
              <div class="mb-4">
               <!-- rating -->

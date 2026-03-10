@@ -75,9 +75,9 @@ class Shop extends Model
         return $this->belongsTo(Category::class, 'main_category_id');
     }
 
-    public function products()
+       public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Product::class)->where('deleted', 0);
     }
 
     public function addresses()
@@ -101,5 +101,15 @@ class Shop extends Model
             ->withTimestamps()
             ->withPivot('reason', 'deleted')
             ->wherePivot('deleted', 0);
+    }
+
+    // Étoiles pour l'affichage
+    public function getStarsAttribute(): array
+    {
+        $rating = round($this->average_rating * 2) / 2; // arrondi au 0.5 près
+        $full   = floor($rating);
+        $half   = ($rating - $full) >= 0.5 ? 1 : 0;
+        $empty  = 5 - $full - $half;
+        return compact('full', 'half', 'empty');
     }
 }

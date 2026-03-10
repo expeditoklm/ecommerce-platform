@@ -1,802 +1,331 @@
-
 @extends('base')
 @section('content')
 
 <main>
-    <div class="mt-4">
-      <div class="container">
-        <!-- row -->
-        <div class="row">
-          <!-- col -->
-          <div class="col-12">
-            <!-- breadcrumb -->
-
-          </div>
+  <div class="mt-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Accueil</a></li>
+              <li class="breadcrumb-item"><a href="{{ route('store') }}">Boutiques</a></li>
+              <li class="breadcrumb-item active">{{ $shop->name }}</li>
+            </ol>
+          </nav>
         </div>
       </div>
     </div>
-    <!-- section -->
-    <section class="mb-lg-14 mb-8 mt-8">
-      <div class="container">
-        <!-- row -->
-        <div class="row">
-          <div class="col-12 col-lg-3 col-md-4 mb-4 mb-md-0">
-            <div class="d-flex flex-column">
-              <div>
-                <!-- img -->
-                <!-- img -->
-                <img src="../assets/images/stores-logo/stores-logo-1.svg" alt=""
-                  class="rounded-circle icon-shape icon-xxl" />
-              </div>
-              <!-- heading -->
-              <div class="mt-4">
-                <h1 class="mb-1 h4">E-Grocery Super Market</h1>
-               
-                <div>
-                  <span><small><a href="#!">100% satisfaction guarantee</a></small></span>
-                </div>
-                <!-- rating -->
-                <div class="mt-2">
-                  <!-- rating -->
-                  <small class="text-warning">
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-half"></i></small><span class="ms-2">5.0</span>
-                  <!-- text --><span class="text-muted ms-1">(3,400 reviews)</span>
-                </div>
-              </div>
-            </div>
-            <hr />
-            <!-- nav -->
-            <ul class="nav flex-column nav-pills nav-pills-dark">
-              <!-- nav item -->
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#"><i
-                    class="feather-icon icon-shopping-bag me-2"></i>Shop</a>
-              </li>
-              <!-- nav item -->
-              <li class="nav-item">
-                <a class="nav-link" href="{{ route('blog') }}"><i class="feather-icon icon-gift me-2"></i>Blog</a>
-              </li>
+  </div>
 
-              <!-- nav item -->
-              <li class="nav-item">
-                <a class="nav-link" href="{{ route('store.reviews') }}"><i class="feather-icon icon-star me-2"></i>Reviews</a>
-              </li>
-              <!-- nav item -->
-         
-              <!-- nav item -->
-              <li class="nav-item">
-                <a class="nav-link" href="{{ route('store.contact') }}"><i class="feather-icon icon-phone-call me-2"></i>Contact</a>
-              </li>
+  <section class="mb-lg-14 mb-8 mt-8">
+    <div class="container">
+      <div class="row">
 
-            </ul>
-            <hr />
-            <div>
-              <ul class="nav flex-column nav-links">
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Produce</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Dairy & Eggs</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Beverages</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Meat & Seafood</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Snacks & Candy</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Frozen</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Bakery</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Prepared Foods</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Alcohol</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Dry Goods & Pasta</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Condiments & Sauces</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Canned Goods & Soups</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Breakfast</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Household</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Baking Essentials</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Oils, Vinegars, & Spices</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Health Care</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Personal Care</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Kitchen Supplies</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Floral</a>
-                </li>
-                <!-- nav item -->
-                <li class="nav-item">
-                  <a href="#!" class="nav-link">Party & Gift Supplies</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-12 col-lg-9 col-md-8">
-            <div class="mb-8 bg-light d-lg-flex justify-content-lg-between rounded">
-              <div class="align-self-center p-8">
-                <div class="mb-3">
-                  <h5 class="mb-0 fw-bold">E-Grocery Super Market</h5>
-                  <p class="mb-0 text-muted">
-                    Trouver tous ce que vous chercher ici ...
-                  </p>
-                </div>
+        {{-- Sidebar --}}
+        @include('store.partials.sidebar')
+
+        {{-- Contenu principal --}}
+        <div class="col-12 col-lg-9 col-md-8">
+
+          {{-- Bannière boutique --}}
+          <div class="mb-8 bg-light d-lg-flex justify-content-lg-between rounded">
+            <div class="align-self-center p-8">
+              <div class="mb-3">
+                <h5 class="mb-0 fw-bold">{{ $shop->name }}</h5>
+                <p class="mb-0 text-muted">
+                  {{ $shop->description ? Str::limit($shop->description, 80) : 'Trouvez tout ce que vous cherchez ici...' }}
+                </p>
+              </div>
+              <form action="{{ route('store.single', ['uuid' => $shop->uuid]) }}" method="GET">
                 <div class="position-relative">
-                  <input type="email" class="form-control" id="exampleFormControlInput1"
-                    placeholder="Search E-Grocery Super Market" />
-                  <span class="position-absolute end-0 top-0 mt-2 me-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                      class="feather feather-search">
+                  <input type="search" class="form-control"
+                    name="search"
+                    value="{{ request('search') }}"
+                    placeholder="Rechercher dans {{ $shop->name }}">
+                  <button type="submit" class="position-absolute end-0 top-0 mt-2 me-3 btn btn-link p-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                      fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
                       <circle cx="11" cy="11" r="8"></circle>
                       <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
-                  </span>
+                  </button>
                 </div>
-              </div>
-              <div class="py-4">
-                <!-- img -->
-                <img src="../assets/images/svg-graphics/store-graphics.svg" alt="" class="img-fluid" />
-              </div>
+              </form>
             </div>
-
-            <div class="d-md-flex justify-content-between mb-3 align-items-center">
-              <div>
-                <p class="mb-3 mb-md-0">24 Products found</p>
-              </div>
-              <div class="d-flex justify-content-md-between align-items-center">
-                <div class="me-2">
-                  <!-- select option -->
-                  <select class="form-select">
-                    <option selected>Show: 50</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="30">30</option>
-                  </select>
-                </div>
-                
-              </div>
-            </div>
-            <!-- row -->
-            <div class="row g-4 row-cols-xl-4 row-cols-lg-3 row-cols-2 row-cols-md-2 mt-2">
-              <div class="col">
-                <!-- card -->
-                <div class="card card-product">
-                  <div class="card-body">
-                    <div class="text-center position-relative">
-                      <!-- badge -->
-                      <div class="position-absolute top-0 start-0">
-                        <span class="badge bg-danger">Sale</span>
-                      </div>
-                      <a href="#!">
-                        <!-- img --><img src="../assets/images/products/product-img-1.jpg"
-                          alt="Grocery Ecommerce Template" class="mb-3 img-fluid" /></a>
-                      <!-- btn action -->
-                      <div class="card-product-action">
-                        <a href="#!" class="btn-action" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i
-                            class="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true" title="Quick View"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Wishlist"><i
-                            class="bi bi-heart"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Compare"><i
-                            class="bi bi-arrow-left-right"></i></a>
-                      </div>
-                    </div>
-                    <div class="text-small mb-1">
-                      <a href="#!" class="text-decoration-none text-muted"><small>Snack & Munchies</small></a>
-                    </div>
-                    <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Haldiram's Sev Bhujia</a>
-                    </h2>
-                    <div>
-                      <!-- rating -->
-                      <small class="text-warning">
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-half"></i></small>
-                      <!-- text --><span class="text-muted small">4.5(149)</span>
-                    </div>
-                    <!-- price -->
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                      <div>
-                        <span class="text-dark">$18</span>
-                        <span class="text-decoration-line-through text-muted">$24</span>
-                      </div>
-                      <div>
-                        <!-- btn --><a href="#!" class="btn btn-primary btn-sm">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-plus">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                          Add</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <!-- card -->
-                <div class="card card-product">
-                  <div class="card-body">
-                    <div class="text-center position-relative">
-                      <!-- badge -->
-                      <a href="#!">
-                        <!-- img --><img src="../assets/images/products/product-img-2.jpg"
-                          alt="Grocery Ecommerce Template" class="mb-3 img-fluid" /></a>
-                      <!-- btn action -->
-                      <div class="card-product-action">
-                        <a href="#!" class="btn-action" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i
-                            class="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true" title="Quick View"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Wishlist"><i
-                            class="bi bi-heart"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Compare"><i
-                            class="bi bi-arrow-left-right"></i></a>
-                      </div>
-                    </div>
-                    <div class="text-small mb-1">
-                      <a href="#!" class="text-decoration-none text-muted"><small>Bakery & Biscuits</small></a>
-                    </div>
-                    <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">NutriChoice Digestive
-                      </a>
-                    </h2>
-                    <div class="text-warning">
-                      <small>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-half"></i></small>
-                      <!-- text --><span class="text-muted small">4.5 (25)</span>
-                    </div>
-                    <!-- price -->
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                      <div><span class="text-dark">$24</span></div>
-                      <div>
-                        <!-- btn --><a href="#!" class="btn btn-primary btn-sm">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-plus">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                          Add</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <!-- card -->
-                <div class="card card-product">
-                  <div class="card-body">
-                    <div class="text-center position-relative">
-                      <!-- badge -->
-                      <a href="#!">
-                        <!-- img --><img src="../assets/images/products/product-img-3.jpg"
-                          alt="Grocery Ecommerce Template" class="mb-3 img-fluid" /></a>
-                      <!-- btn action -->
-                      <div class="card-product-action">
-                        <a href="#!" class="btn-action" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i
-                            class="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true" title="Quick View"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Wishlist"><i
-                            class="bi bi-heart"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Compare"><i
-                            class="bi bi-arrow-left-right"></i></a>
-                      </div>
-                    </div>
-                    <div class="text-small mb-1">
-                      <a href="#!" class="text-decoration-none text-muted"><small>Bakery & Biscuits</small></a>
-                    </div>
-                    <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Cadbury 5 Star Chocolate</a>
-                    </h2>
-                    <div class="text-warning">
-                      <small>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i></small>
-                      <!-- text --><span class="text-muted small">5 (469)</span>
-                    </div>
-                    <!-- price -->
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                      <div>
-                        <span class="text-dark">$32</span>
-                        <span class="text-decoration-line-through text-muted">$35</span>
-                      </div>
-                      <div>
-                        <!-- btn --><a href="#!" class="btn btn-primary btn-sm">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-plus">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                          Add</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <!-- card -->
-                <div class="card card-product">
-                  <div class="card-body">
-                    <div class="text-center position-relative">
-                      <!-- badge -->
-                      <a href="#!">
-                        <!-- img --><img src="../assets/images/products/product-img-4.jpg"
-                          alt="Grocery Ecommerce Template" class="mb-3 img-fluid" /></a>
-                      <!-- btn action -->
-                      <div class="card-product-action">
-                        <a href="#!" class="btn-action" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i
-                            class="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true" title="Quick View"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Wishlist"><i
-                            class="bi bi-heart"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Compare"><i
-                            class="bi bi-arrow-left-right"></i></a>
-                      </div>
-                    </div>
-                    <div class="text-small mb-1">
-                      <a href="#!" class="text-decoration-none text-muted"><small>Snack & Munchies</small></a>
-                    </div>
-                    <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Onion Flavour Potato</a>
-                    </h2>
-                    <div class="text-warning">
-                      <small>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-half"></i>
-                        <i class="bi bi-star"></i></small>
-                      <!-- text --><span class="text-muted small">3.5 (456)</span>
-                    </div>
-                    <!-- price -->
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                      <div>
-                        <span class="text-dark">$3</span>
-                        <span class="text-decoration-line-through text-muted">$5</span>
-                      </div>
-                      <div>
-                        <!-- btn --><a href="#!" class="btn btn-primary btn-sm">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-plus">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                          Add</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <!-- card -->
-                <div class="card card-product">
-                  <div class="card-body">
-                    <div class="text-center position-relative">
-                      <!-- badge -->
-                      <a href="#!">
-                        <!-- img --><img src="../assets/images/products/product-img-5.jpg"
-                          alt="Grocery Ecommerce Template" class="mb-3 img-fluid" /></a>
-                      <!-- btn action -->
-                      <div class="card-product-action">
-                        <a href="#!" class="btn-action" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i
-                            class="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true" title="Quick View"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Wishlist"><i
-                            class="bi bi-heart"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Compare"><i
-                            class="bi bi-arrow-left-right"></i></a>
-                      </div>
-                    </div>
-                    <div class="text-small mb-1">
-                      <a href="#!" class="text-decoration-none text-muted"><small>Instant Food</small></a>
-                    </div>
-                    <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Salted Instant Popcorn
-                      </a>
-                    </h2>
-                    <div class="text-warning">
-                      <small>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-half"></i></small>
-                      <!-- text --><span class="text-muted small">4.5 (39)</span>
-                    </div>
-                    <div class="d-flex justify-content-between mt-4">
-                      <div>
-                        <span class="text-dark">$13</span>
-                        <span class="text-decoration-line-through text-muted">$18</span>
-                      </div>
-                      <div>
-                        <!-- btn --><a href="#!" class="btn btn-primary btn-sm">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-plus">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                          Add</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <!-- card -->
-                <div class="card card-product">
-                  <div class="card-body">
-                    <div class="text-center position-relative">
-                      <!-- badge -->
-                      <div class="position-absolute top-0 start-0">
-                        <span class="badge bg-danger">Sale</span>
-                      </div>
-                      <a href="#!">
-                        <!-- img --><img src="../assets/images/products/product-img-6.jpg"
-                          alt="Grocery Ecommerce Template" class="mb-3 img-fluid" /></a>
-                      <!-- btn action -->
-                      <div class="card-product-action">
-                        <a href="#!" class="btn-action" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i
-                            class="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true" title="Quick View"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Wishlist"><i
-                            class="bi bi-heart"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Compare"><i
-                            class="bi bi-arrow-left-right"></i></a>
-                      </div>
-                    </div>
-                    <div class="text-small mb-1">
-                      <a href="#!" class="text-decoration-none text-muted"><small>Dairy, Bread & Eggs</small></a>
-                    </div>
-                    <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Blueberry Greek Yogurt</a>
-                    </h2>
-                    <div>
-                      <!-- rating -->
-                      <small class="text-warning">
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-half"></i></small>
-                      <!-- text --><span class="text-muted small">4.5 (189)</span>
-                    </div>
-                    <!-- price -->
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                      <div>
-                        <span class="text-dark">$18</span>
-                        <span class="text-decoration-line-through text-muted">$24</span>
-                      </div>
-                      <div>
-                        <!-- btn --><a href="#!" class="btn btn-primary btn-sm">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-plus">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                          Add</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <!-- card -->
-                <div class="card card-product">
-                  <div class="card-body">
-                    <div class="text-center position-relative">
-                      <!-- badge -->
-                      <a href="#!">
-                        <!-- img --><img src="../assets/images/products/product-img-7.jpg"
-                          alt="Grocery Ecommerce Template" class="mb-3 img-fluid" /></a>
-                      <!-- btn action -->
-                      <div class="card-product-action">
-                        <a href="#!" class="btn-action" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i
-                            class="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true" title="Quick View"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Wishlist"><i
-                            class="bi bi-heart"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Compare"><i
-                            class="bi bi-arrow-left-right"></i></a>
-                      </div>
-                    </div>
-                    <div class="text-small mb-1">
-                      <a href="#!" class="text-decoration-none text-muted"><small>Dairy, Bread & Eggs</small></a>
-                    </div>
-                    <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Britannia Cheese Slices</a>
-                    </h2>
-                    <div class="text-warning">
-                      <small>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i></small>
-                      <!-- text --><span class="text-muted small">5 (345)</span>
-                    </div>
-                    <!-- price -->
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                      <div><span class="text-dark">$24</span></div>
-                      <div>
-                        <!-- btn --><a href="#!" class="btn btn-primary btn-sm">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-plus">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                          Add</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <!-- card -->
-                <div class="card card-product">
-                  <div class="card-body">
-                    <div class="text-center position-relative">
-                      <!-- badge -->
-                      <a href="#!">
-                        <!-- img --><img src="../assets/images/products/product-img-8.jpg"
-                          alt="Grocery Ecommerce Template" class="mb-3 img-fluid" /></a>
-                      <!-- btn action -->
-                      <div class="card-product-action">
-                        <a href="#!" class="btn-action" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i
-                            class="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true" title="Quick View"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Wishlist"><i
-                            class="bi bi-heart"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Compare"><i
-                            class="bi bi-arrow-left-right"></i></a>
-                      </div>
-                    </div>
-                    <div class="text-small mb-1">
-                      <a href="#!" class="text-decoration-none text-muted"><small>Instant Food</small></a>
-                    </div>
-                    <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Kellogg's Original Cereals</a>
-                    </h2>
-                    <div class="text-warning">
-                      <small>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-half"></i></small>
-                      <!-- text --><span class="text-muted small">4 (90)</span>
-                    </div>
-                    <!-- price -->
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                      <div>
-                        <span class="text-dark">$32</span>
-                        <span class="text-decoration-line-through text-muted">$35</span>
-                      </div>
-                      <div>
-                        <!-- btn --><a href="#!" class="btn btn-primary btn-sm">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-plus">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                          Add</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <!-- card -->
-                <div class="card card-product">
-                  <div class="card-body">
-                    <div class="text-center position-relative">
-                      <!-- badge -->
-                      <a href="#!">
-                        <!-- img --><img src="../assets/images/products/product-img-9.jpg"
-                          alt="Grocery Ecommerce Template" class="mb-3 img-fluid" /></a>
-                      <!-- btn action -->
-                      <div class="card-product-action">
-                        <a href="#!" class="btn-action" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i
-                            class="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true" title="Quick View"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Wishlist"><i
-                            class="bi bi-heart"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Compare"><i
-                            class="bi bi-arrow-left-right"></i></a>
-                      </div>
-                    </div>
-                    <div class="text-small mb-1">
-                      <a href="#!" class="text-decoration-none text-muted"><small>Snack & Munchies</small></a>
-                    </div>
-                    <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Slurrp Millet Chocolate
-                      </a>
-                    </h2>
-                    <div class="text-warning">
-                      <small>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-half"></i></small>
-                      <!-- text --><span class="text-muted small">4.5 (67)</span>
-                    </div>
-                    <!-- price -->
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                      <div>
-                        <span class="text-dark">$3</span>
-                        <span class="text-decoration-line-through text-muted">$5</span>
-                      </div>
-                      <div>
-                        <!-- btn --><a href="#!" class="btn btn-primary btn-sm">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-plus">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                          Add</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <!-- card -->
-                <div class="card card-product">
-                  <div class="card-body">
-                    <div class="text-center position-relative">
-                      <!-- badge -->
-                      <a href="#!">
-                        <!-- img --><img src="../assets/images/products/product-img-10.jpg"
-                          alt="Grocery Ecommerce Template" class="mb-3 img-fluid" /></a>
-                      <!-- btn action -->
-                      <div class="card-product-action">
-                        <a href="#!" class="btn-action" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i
-                            class="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true" title="Quick View"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Wishlist"><i
-                            class="bi bi-heart"></i></a>
-                        <a href="#!" class="btn-action" data-bs-toggle="tooltip" data-bs-html="true" title="Compare"><i
-                            class="bi bi-arrow-left-right"></i></a>
-                      </div>
-                    </div>
-                    <div class="text-small mb-1">
-                      <a href="#!" class="text-decoration-none text-muted"><small>Dairy, Bread & Eggs</small></a>
-                    </div>
-                    <h2 class="fs-6">
-                      <a href="{{ route('shop.single', ['uuid' => "rui"]) }}" class="text-inherit text-decoration-none">Amul Butter - 500 g</a>
-                    </h2>
-                    <div class="text-warning">
-                      <small>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-half"></i>
-                        <i class="bi bi-star"></i></small>
-                      <!-- text --><span class="text-muted small">3.5 (89)</span>
-                    </div>
-                    <div class="d-flex justify-content-between mt-4">
-                      <div>
-                        <span class="text-dark">$13</span>
-                        <span class="text-decoration-line-through text-muted">$18</span>
-                      </div>
-                      <div>
-                        <!-- btn --><a href="#!" class="btn btn-primary btn-sm">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-plus">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                          Add</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- row -->
-            <div class="row mt-8">
-              <div class="col">
-                <!-- nav -->
-                <nav>
-                  <ul class="pagination">
-                    <li class="page-item disabled">
-                      <a class="page-link mx-1 " href="#" aria-label="Previous">
-                        <i class="feather-icon icon-chevron-left"></i>
-                      </a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link mx-1 active" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link mx-1 text-body" href="#">2</a>
-                    </li>
-
-                    <li class="page-item">
-                      <a class="page-link mx-1 text-body" href="#">...</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link mx-1 text-body" href="#">12</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link mx-1 text-body" href="#" aria-label="Next">
-                        <i class="feather-icon icon-chevron-right"></i>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
+            <div class="py-4">
+              <img src="{{ asset('assets/images/svg-graphics/store-graphics.svg') }}"
+                alt="" class="img-fluid">
             </div>
           </div>
+
+          {{-- Filtres et compteur --}}
+          <div class="d-md-flex justify-content-between mb-3 align-items-center">
+            <div>
+              <p class="mb-3 mb-md-0">
+                <strong>{{ $products->total() }}</strong> produit(s) trouvé(s)
+                @if(request('category'))
+                dans <strong>{{ $shopCategories->firstWhere('id', request('category'))?->name }}</strong>
+                @endif
+                @if(request('search'))
+                pour "<strong>{{ request('search') }}</strong>"
+                @endif
+              </p>
+            </div>
+            <div class="d-flex gap-2 align-items-center">
+              {{-- Filtre section --}}
+              <form action="{{ route('store.single', ['uuid' => $shop->uuid]) }}"
+                method="GET" id="filterForm" class="d-flex gap-2">
+                @if(request('search'))
+                <input type="hidden" name="search" value="{{ request('search') }}">
+                @endif
+                <select class="form-select form-select-sm"
+                  name="section"
+                  onchange="document.getElementById('filterForm').submit()">
+                  <option value="">Tous</option>
+                  <option value="product" {{ request('section') == 'product'  ? 'selected' : '' }}>Produits</option>
+                  <option value="service" {{ request('section') == 'service'  ? 'selected' : '' }}>Services</option>
+                  <option value="rental" {{ request('section') == 'rental'   ? 'selected' : '' }}>Locations</option>
+                </select>
+                <select class="form-select form-select-sm"
+                  name="per_page"
+                  onchange="document.getElementById('filterForm').submit()">
+                  <option value="12" {{ request('per_page', 12) == 12 ? 'selected' : '' }}>12</option>
+                  <option value="24" {{ request('per_page') == 24 ? 'selected' : '' }}>24</option>
+                  <option value="48" {{ request('per_page') == 48 ? 'selected' : '' }}>48</option>
+                </select>
+              </form>
+            </div>
+          </div>
+
+          {{-- Flash messages --}}
+          @if(session('success'))
+          <div class="alert alert-success alert-dismissible fade show">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+          @endif
+
+          {{-- Grille produits --}}
+          @if($products->count() > 0)
+          <div class="row g-4 row-cols-xl-4 row-cols-lg-3 row-cols-2 row-cols-md-2 mt-2">
+
+            @foreach($products as $product)
+            <div class="col">
+              <div class="card card-product h-100">
+                <div class="card-body">
+                  <div class="text-center position-relative">
+
+                    {{-- Badge promo --}}
+                    @if($product->is_on_sale && $product->sale_price)
+                    <div class="position-absolute top-0 start-0">
+                      <span class="badge bg-danger">
+                        -{{ round((($product->price - $product->sale_price) / $product->price) * 100) }}%
+                      </span>
+                    </div>
+                    @endif
+
+                    {{-- Badge section --}}
+                    <div class="position-absolute top-0 end-0">
+                      @if($product->section->value === 'service')
+                      <span class="badge bg-info">Service</span>
+                      @elseif($product->section->value === 'rental')
+                      <span class="badge bg-warning text-dark">Location</span>
+                      @endif
+                    </div>
+
+                    {{-- Image --}}
+                    <a href="{{ route('shop.single', ['uuid' => $product->uuid]) }}">
+                      @if($product->images->count() > 0)
+                      <img src="{{ asset($product->images->first()->url) }}"
+                        alt="{{ $product->name }}"
+                        class="mb-3 img-fluid"
+                        style="height:180px; object-fit:cover;">
+                      @else
+                      <div class="mb-3 bg-light d-flex align-items-center justify-content-center"
+                        style="height:180px;">
+                        <i class="bi bi-image fs-1 text-muted"></i>
+                      </div>
+                      @endif
+                    </a>
+
+                    {{-- Actions rapides --}}
+                    <div class="card-product-action">
+                      <a href="{{ route('shop.single', ['uuid' => $product->uuid]) }}"
+                        class="btn-action"
+                        data-bs-toggle="tooltip" title="Voir le produit">
+                        <i class="bi bi-eye"></i>
+                      </a>
+                   @auth
+<button type="button"
+        class="btn-action border-0 bg-transparent p-1"
+        onclick="toggleWishlist('{{ $product->uuid }}', this)"
+        title="Wishlist">
+    <i class="bi bi-heart{{ in_array($product->id, $wishlistedIds ?? []) ? '-fill text-danger' : '' }}"></i>
+</button>
+@else
+<a href="{{ route('login') }}" class="btn-action" title="Wishlist">
+    <i class="bi bi-heart"></i>
+</a>
+@endauth
+                    </div>
+                  </div>
+
+                  {{-- Nom boutique --}}
+                  <div class="text-small mb-1">
+                    <a href="{{ route('store.single', ['uuid' => $shop->uuid]) }}"
+                      class="text-decoration-none text-success fw-semibold small">
+                      <i class="bi bi-shop me-1"></i>{{ $shop->name }}
+                    </a>
+                  </div>
+
+                  {{-- Catégorie --}}
+                  @if($product->categories->count() > 0)
+                  <div class="text-small mb-1">
+                    <a href="{{ route('store.single', ['uuid' => $shop->uuid, 'category' => $product->categories->first()->id]) }}"
+                      class="text-decoration-none text-muted">
+                      <small>{{ $product->categories->first()->name }}</small>
+                    </a>
+                  </div>
+                  @endif
+
+                  {{-- Nom produit --}}
+                  <h2 class="fs-6 mb-1">
+                    <a href="{{ route('shop.single', ['uuid' => $product->uuid]) }}"
+                      class="text-inherit text-decoration-none text-dark fw-semibold">
+                      {{ $product->name }}
+                    </a>
+                  </h2>
+
+                  {{-- Étoiles + note --}}
+                  {{-- Étoiles + note --}}
+                  <div class="mb-2">
+                    <small class="text-warning">
+                      @for($i = 1; $i <= 5; $i++)
+                        <i class="bi bi-star{{ $i <= round($product->reviews_avg_rating ?? 0) ? '-fill' : '' }} text-warning"></i>
+                        @endfor
+                    </small>
+                    <span class="text-muted small ms-1">
+                      {{ number_format($product->reviews_avg_rating ?? 0, 1) }}
+                      ({{ $product->reviews_count ?? 0 }})
+                    </span>
+                  </div>
+
+                  {{-- Prix --}}
+                  <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div>
+                      @if($product->is_on_sale && $product->sale_price)
+                      <span class="text-danger fw-bold">
+                        {{ number_format($product->sale_price, 0, ',', ' ') }} FCFA
+                      </span>
+                      <span class="text-decoration-line-through text-muted ms-1 small">
+                        {{ number_format($product->price, 0, ',', ' ') }}
+                      </span>
+                      @else
+                      <span class="text-dark fw-bold">
+                        {{ number_format($product->price, 0, ',', ' ') }} FCFA
+                      </span>
+                      @endif
+
+                      @if($product->section->value === 'rental' && $product->price_7days)
+                      <div class="text-muted small">
+                        <i class="bi bi-calendar3 me-1"></i>
+                        {{ number_format($product->price_7days, 0, ',', ' ') }} / 7j
+                      </div>
+                      @endif
+                    </div>
+
+                    {{-- Boutons action + wishlist SÉPARÉS --}}
+                    <div class="d-flex align-items-center gap-2">
+
+                      {{-- Wishlist — EN DEHORS du <a> --}}
+                      <button type="button"
+                        class="btn-action border-0 bg-transparent p-1"
+                        onclick="toggleWishlist('{{ $product->uuid }}', this)"
+                        title="Wishlist">
+                        <i class="bi bi-heart{{ in_array($product->id, $wishlistedIds ?? []) ? '-fill text-danger' : '' }}"></i>
+                      </button>
+
+                      {{-- Bouton principal --}}
+                      @if($product->section->value === 'service')
+                      <a href="{{ route('shop.single', ['uuid' => $product->uuid]) }}"
+                        class="btn btn-primary btn-sm">
+                        <i class="bi bi-arrow-right me-1"></i>Voir
+                      </a>
+                      @elseif($product->section->value === 'rental')
+                      <a href="{{ route('shop.single', ['uuid' => $product->uuid]) }}"
+                        class="btn btn-primary btn-sm">
+                        <i class="bi bi-calendar-check me-1"></i>Louer
+                      </a>
+                      @else
+                      @php
+                      $displayPrice = ($product->is_on_sale && $product->sale_price)
+                      ? number_format($product->sale_price, 0, ',', ' ')
+                      : number_format($product->price, 0, ',', ' ');
+                      $displayImage = $product->images->count()
+                      ? asset($product->images->first()->url)
+                      : asset('assets/images/products/product-img-1.jpg');
+                      $displayUrl = route('shop.single', ['uuid' => $product->uuid]);
+                      @endphp
+
+                      <button type="button" class="btn btn-primary btn-sm"
+                        onclick="addToWaitlist({
+        uuid:  '{{ $product->uuid }}',
+        name:  '{{ addslashes($product->name) }}',
+        shop:  '{{ addslashes($shop->name) }}',
+        price: '{{ $displayPrice }} FCFA',
+        image: '{{ $displayImage }}',
+        url:   '{{ $displayUrl }}'
+    })">
+                        <i class="bi bi-plus me-1"></i>Ajouter
+                      </button>
+                      @endif
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            @endforeach
+
+          </div>
+
+          {{-- Pagination --}}
+          @if($products->hasPages())
+          <div class="row mt-8">
+            <div class="col">
+              {{ $products->withQueryString()->links('vendor.pagination.custom') }}
+            </div>
+          </div>
+          @endif
+
+          @else
+          {{-- Aucun produit --}}
+          <div class="text-center py-8 mt-4">
+            <i class="bi bi-box-seam display-4 text-muted"></i>
+            <h5 class="mt-4">Aucun produit trouvé</h5>
+            <p class="text-muted">
+              @if(request('search'))
+              Aucun résultat pour "{{ request('search') }}".
+              @else
+              Cette boutique n'a pas encore de produits.
+              @endif
+            </p>
+            @if(request('search') || request('category') || request('section'))
+            <a href="{{ route('store.single', ['uuid' => $shop->uuid]) }}"
+              class="btn btn-outline-secondary mt-2">
+              <i class="bi bi-arrow-left me-2"></i>Voir tous les produits
+            </a>
+            @endif
+          </div>
+          @endif
+
         </div>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
+</main>
 
-
-
-
-
-
-
-@endsection 
+@endsection

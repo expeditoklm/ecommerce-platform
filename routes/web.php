@@ -45,7 +45,13 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/base', [ShopController::class, 'base'])->name('base');
 
-Route::get('/shop/wishlist', [ShopController::class, 'shopWishlist'])->name('shop.wishlist');
+Route::get('/shop/wishlist', [ShopController::class, 'shopWishlist'])
+    ->middleware('auth')
+    ->name('shop.wishlist');
+
+Route::post('/wishlist/toggle/{uuid}', [ShopController::class, 'toggleWishlist'])
+    ->middleware('auth')
+    ->name('wishlist.toggle');
 Route::get('/shop/cart', [ShopController::class, 'shopCart'])->name('shop.cart');
 
 // Modifiez votre route pour accepter l'UUID
@@ -87,11 +93,23 @@ Route::get('/account/notification', [AccountController::class, 'accountNotificat
 
 
 Route::get('/store/grid', [storeController::class, 'storeGrid'])->name('store.grid');
-Route::get('/store/single', [StoreController::class, 'storeSingle'])->name('store.single');
-Route::get('/store', [StoreController::class, 'store'])->middleware(['auth', 'verified'])->name('store');
-Route::get('/store/reviews', [StoreController::class, 'storeReviews'])->middleware(['auth', 'verified'])->name('store.reviews');
-Route::post('/store/reviews/{uuid}', [StoreController::class, 'storeReviewsAdd'])->middleware(['auth', 'verified'])->name('store.reviews-add');
-Route::get('/store/contact', [StoreController::class, 'storeContact'])->middleware(['auth', 'verified'])->name('store.contact');
+// Route::get('/store/single/{uuid}', [StoreController::class, 'storeSingle'])->name('store.single');
+// Route::get('/store', [StoreController::class, 'store'])->middleware(['auth', 'verified'])->name('store');
+// Route::get('/store/reviews', [StoreController::class, 'storeReviews'])->middleware(['auth', 'verified'])->name('store.reviews');
+// Avis sur un produit (uuid du produit)
+Route::post('/store/reviews/{uuid}', [StoreController::class, 'storeReviewsAdd'])
+    ->middleware(['auth', 'verified'])->name('store.reviews-add');
+
+// Avis sur une boutique (pas d'uuid en paramètre — shop_uuid dans le form)
+Route::post('/store/reviews', [StoreController::class, 'storeReviewsAdd'])
+    ->middleware(['auth', 'verified'])->name('store.shop-review-add');
+// Route::get('/store/contact', [StoreController::class, 'storeContact'])->middleware(['auth', 'verified'])->name('store.contact');
+
+// Store public
+Route::get('/stores',                  [StoreController::class, 'store'])->name('store');
+Route::get('/store/single/{uuid}',            [StoreController::class, 'storeSingle'])->name('store.single');
+Route::get('/store/{uuid}/reviews',    [StoreController::class, 'storeReviews'])->name('store.reviews');
+Route::get('/store/{uuid}/contact',    [StoreController::class, 'storeContact'])->name('store.contact');
 
 Route::post('/review/{uuid}/helpful', [StoreController::class, 'helpful'])
     ->name('review.helpful')
@@ -138,6 +156,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::get('/admin/order-single/{uuid}', [AdminController::class, 'adminOrderSingle'])->middleware(['auth', 'verified'])->name('admin.order-single');
 Route::get('/admin/order-single-location', [AdminController::class, 'adminOrderSingleLocation'])->middleware(['auth', 'verified'])->name('admin.order-single-location');
 Route::get('/admin/vendor-grid', [AdminController::class, 'adminVendorGrid'])->middleware(['auth', 'verified'])->name('admin.vendor-grid');
+Route::post('/admin/shops/{uuid}/toggle-status', [AdminController::class, 'adminToggleShopStatus'])
+    ->middleware(['auth', 'verified'])
+    ->name('admin.toggle-shop-status');
+
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/admin/shops/create', [AdminController::class, 'adminCreateShop'])
+        ->name('admin.create-shop');
+    Route::post('/admin/shops', [AdminController::class, 'adminStoreShop'])
+        ->name('admin.store-shop');
+    Route::get('/admin/shops/{uuid}/edit', [AdminController::class, 'adminEditShop'])
+        ->name('admin.edit-shop');
+    Route::put('/admin/shops/{uuid}', [AdminController::class, 'adminUpdateShop'])
+        ->name('admin.update-shop');
+    Route::delete('/admin/shops/{uuid}/logo', [AdminController::class, 'adminDeleteShopLogo'])
+        ->name('admin.delete-shop-logo');
+});
+
+
+
+
+
 Route::get('/admin/customers', [AdminController::class, 'adminCustomers'])->middleware(['auth', 'verified'])->name('admin.customers');
 Route::get('/admin/reviews', [AdminController::class, 'adminReviews'])->middleware(['auth', 'verified'])->name('admin.reviews');
 Route::get('/admin/me-order-list', [AdminController::class, 'adminMeOrderList'])->middleware(['auth', 'verified'])->name('admin.me-order-list');
@@ -187,6 +227,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Suppression en masse (AJAX)
     Route::delete('/admin/products/bulk-delete', [AdminController::class, 'adminBulkDeleteProducts'])
         ->name('admin.bulk-delete-products');
+
+
+    Route::post('/wishlist/toggle/{uuid}', [ShopController::class, 'toggleWishlist'])
+    ->middleware('auth')
+    ->name('wishlist.toggle');
 });
 
 

@@ -7,11 +7,12 @@ use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\Shop;
 use App\Models\Type;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -35,8 +36,8 @@ class AdminController extends Controller
         }
 
         $query = Product::with(['images', 'type', 'categories', 'shop'])
-            ->where('deleted', 0)
-            ->where('section', 'product');
+            ->where('deleted', 0);
+
 
 
         // Filtre section
@@ -676,26 +677,173 @@ class AdminController extends Controller
     }
 
     public function adminOrderSingle($uuid)
-{
-    $order = Order::with([
-        'user',
-        'owner',
-        'product.images',
-        'offeredProduct.images',
-    ])->where('uuid', $uuid)->firstOrFail();
+    {
+        $order = Order::with([
+            'user',
+            'owner',
+            'product.images',
+            'offeredProduct.images',
+        ])->where('uuid', $uuid)->firstOrFail();
 
-    return view('admin/order-single', compact('order'));
-}
+        return view('admin/order-single', compact('order'));
+    }
 
     public function adminOrderSingleLocation()
     {
         return view('admin/order-single-location');
     }
 
-    public function adminVendorGrid()
+    public function adminVendorGrid(Request $request)
     {
-        return view('admin/vendor-grid');
+        $query = Shop::with(['user', 'mainCategory'])
+            ->where('user_id', Auth::id()) // ← seulement MES boutiques
+            ->where('deleted', 0);
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('status')) {
+            $query->where('is_active', $request->status);
+        }
+
+        $shops = $query->latest()->paginate(9)->appends($request->query());
+
+        return view('admin/vendor-grid', compact('shops'));
     }
+
+    public function adminToggleShopStatus($uuid)
+    {
+        $shop = Shop::where('uuid', $uuid)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        $shop->update(['is_active' => !$shop->is_active]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Statut de la boutique mis à jour.',
+        ]);
+    }
+
+
+
+
+
+
+
+
+
+    public function adminCreateShop()
+    {
+        $categories = Category::where('deleted', 0)->where('status', 1)->get();
+        return view('admin/add-shop', compact('categories'));
+    }
+
+    public function adminStoreShop(Request $request)
+    {
+        $request->validate([
+            'name'             => 'required|string|max:255',
+            'main_category_id' => 'nullable|exists:categories,id',
+            'description'      => 'nullable|string',
+            'address'          => 'nullable|string|max:255',
+            'location'         => 'nullable|string|max:255',
+            'phone'            => 'nullable|string|max:20',
+            'contact_email'    => 'nullable|email|max:255',
+            'contact_phone'    => 'nullable|string|max:20',
+            'website_url'      => 'nullable|url|max:255',
+            'return_policy'    => 'nullable|string',
+            'is_active'        => 'required|in:0,1',
+            'logo_url'         => 'nullable|image|mimes:jpeg,png,svg|max:1024',
+        ]);
+
+        $logoPath = null;
+        if ($request->hasFile('logo_url')) {
+            $logoPath = $request->file('logo_url')->store('shops/logos', 'public');
+        }
+
+        Shop::create([
+            'uuid'             => \Illuminate\Support\Str::uuid(),
+            'user_id'          => Auth::id(),
+            'name'             => $request->name,
+            'slug'             => \Illuminate\Support\Str::slug($request->name),
+            'description'      => $request->description,
+            'address'          => $request->address,
+            'location'         => $request->location,
+            'phone'            => $request->phone,
+            'contact_email'    => $request->contact_email,
+            'contact_phone'    => $request->contact_phone,
+            'website_url'      => $request->website_url,
+            'return_policy'    => $request->return_policy,
+            'main_category_id' => $request->main_category_id,
+            'is_active'        => $request->is_active,
+            'logo_url'         => $logoPath,
+        ]);
+
+        return redirect()->route('admin.vendor-grid')->with('success', 'Boutique créée avec succès.');
+    }
+
+    public function adminEditShop($uuid)
+    {
+        $shop = Shop::where('uuid', $uuid)->where('user_id', Auth::id())->firstOrFail();
+        $categories = Category::where('deleted', 0)->where('status', 1)->get();
+        return view('admin/add-shop', compact('shop', 'categories'));
+    }
+
+    public function adminUpdateShop(Request $request, $uuid)
+    {
+        $shop = Shop::where('uuid', $uuid)->where('user_id', Auth::id())->firstOrFail();
+
+        $request->validate([
+            'name'          => 'required|string|max:255',
+            'logo_url'      => 'nullable|image|mimes:jpeg,png,svg|max:1024',
+            'contact_email' => 'nullable|email|max:255',
+            'website_url'   => 'nullable|url|max:255',
+            'is_active'     => 'required|in:0,1',
+        ]);
+
+        $logoPath = $shop->logo_url;
+        if ($request->hasFile('logo_url')) {
+            // Supprimer l'ancien logo
+            if ($logoPath && Storage::disk('public')->exists($logoPath)) {
+                Storage::disk('public')->delete($logoPath);
+            }
+            $logoPath = $request->file('logo_url')->store('shops/logos', 'public');
+        }
+
+        $shop->update([
+            'name'             => $request->name,
+            'slug'             => \Illuminate\Support\Str::slug($request->name),
+            'description'      => $request->description,
+            'address'          => $request->address,
+            'location'         => $request->location,
+            'phone'            => $request->phone,
+            'contact_email'    => $request->contact_email,
+            'contact_phone'    => $request->contact_phone,
+            'website_url'      => $request->website_url,
+            'return_policy'    => $request->return_policy,
+            'main_category_id' => $request->main_category_id,
+            'is_active'        => $request->is_active,
+            'logo_url'         => $logoPath,
+        ]);
+
+        return redirect()->route('admin.vendor-grid')->with('success', 'Boutique mise à jour avec succès.');
+    }
+
+    public function adminDeleteShopLogo($uuid)
+    {
+        $shop = Shop::where('uuid', $uuid)->where('user_id', Auth::id())->firstOrFail();
+
+        if ($shop->logo_url && Storage::disk('public')->exists($shop->logo_url)) {
+            Storage::disk('public')->delete($shop->logo_url);
+        }
+
+        $shop->update(['logo_url' => null]);
+
+        return response()->json(['success' => true, 'message' => 'Logo supprimé.']);
+    }
+
+
 
     public function adminCustomers()
     {
@@ -713,7 +861,7 @@ class AdminController extends Controller
     // }
 
 
-      public function adminMeOrderList(Request $request)
+    public function adminMeOrderList(Request $request)
     {
         $query = Order::with(['user', 'product.images'])
             ->where('orders.deleted', 0)
@@ -752,18 +900,18 @@ class AdminController extends Controller
 
         return view('admin/me-order-list', compact('orders', 'counts'));
     }
-public function adminMeOrderSingle($uuid)
-{
-    $order = Order::with([
-        'product.images',
-        'offeredProduct.images',
-        'owner',
-    ])->where('uuid', $uuid)
-      ->where('user_id', Auth::id()) // sécurité : seulement mes commandes
-      ->firstOrFail();
+    public function adminMeOrderSingle($uuid)
+    {
+        $order = Order::with([
+            'product.images',
+            'offeredProduct.images',
+            'owner',
+        ])->where('uuid', $uuid)
+            ->where('user_id', Auth::id()) // sécurité : seulement mes commandes
+            ->firstOrFail();
 
-    return view('admin/me-order-single', compact('order'));
-}
+        return view('admin/me-order-single', compact('order'));
+    }
 
     public function adminMeOrderSingleLocation()
     {
