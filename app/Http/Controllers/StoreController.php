@@ -49,10 +49,21 @@ private function getShopData(string $uuid): array
 
     return view('store/store', compact('shops'));
 }
-    public function storeGrid()
-    {
-        return view('store/store-grid');
+    public function storeGrid(Request $request)
+{
+    $query = Shop::with('mainCategory')
+        ->withCount(['products' => fn($q) => $q->where('deleted', 0)->where('status', 1)])
+        ->where('shops.deleted', 0)
+        ->where('is_active', 1);
+
+    if ($request->filled('search')) {
+        $query->where('name', 'like', '%' . $request->search . '%');
     }
+
+    $shops = $query->latest()->paginate(12)->withQueryString();
+
+    return view('store/store-grid', compact('shops'));
+}
 
     // ── Boutique : produits ───────────────────────────────
     public function storeSingle(Request $request, string $uuid)

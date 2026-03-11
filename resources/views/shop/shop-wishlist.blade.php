@@ -150,19 +150,47 @@
                                         @endif
                                     </td>
 
-                                    {{-- Actions --}}
-                                    <td class="align-middle">
-                                        <a href="{{ route('shop.single', ['uuid' => $product->uuid]) }}"
-                                           class="btn btn-primary btn-sm">
-                                            @if($product->section->value === 'service')
-                                                <i class="bi bi-arrow-right me-1"></i>Voir
-                                            @elseif($product->section->value === 'rental')
-                                                <i class="bi bi-calendar-check me-1"></i>Louer
-                                            @else
-                                                <i class="bi bi-arrow-left-right me-1"></i>Troquer
-                                            @endif
-                                        </a>
-                                    </td>
+                                   {{-- Actions --}}
+<td class="align-middle">
+    <div class="d-flex align-items-center gap-2">
+
+        @if($product->section->value === 'service')
+            <a href="{{ route('shop.single', ['uuid' => $product->uuid]) }}"
+               class="btn btn-primary btn-sm">
+                <i class="bi bi-arrow-right me-1"></i>Voir
+            </a>
+
+        @elseif($product->section->value === 'rental')
+            <a href="{{ route('shop.single', ['uuid' => $product->uuid]) }}"
+               class="btn btn-primary btn-sm">
+                <i class="bi bi-calendar-check me-1"></i>Louer
+            </a>
+
+        @else
+            @php
+                $displayPrice = ($product->is_on_sale && $product->sale_price)
+                    ? number_format($product->sale_price, 0, ',', ' ')
+                    : number_format($product->price, 0, ',', ' ');
+                $displayImage = $product->images->count()
+                    ? asset($product->images->first()->url)
+                    : asset('assets/images/products/product-img-1.jpg');
+                $displayUrl = route('shop.single', ['uuid' => $product->uuid]);
+            @endphp
+            <button type="button" class="btn btn-primary btn-sm"
+                onclick="addToWaitlist({
+                    uuid:  '{{ $product->uuid }}',
+                    name:  '{{ addslashes($product->name) }}',
+                    shop:  '{{ $product->shop ? addslashes($product->shop->name) : "" }}',
+                    price: '{{ $displayPrice }} FCFA',
+                    image: '{{ $displayImage }}',
+                    url:   '{{ $displayUrl }}'
+                })">
+                <i class="bi bi-plus me-1"></i>Ajouter à la liste
+            </button>
+        @endif
+
+    </div>
+</td>
 
                                     {{-- Retirer --}}
                                     {{-- Retirer --}}

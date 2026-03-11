@@ -6,8 +6,8 @@
 
 <head>
   <!-- Required meta tags -->
-<meta charset="utf-8">
-<meta name="csrf-token" content="{{ csrf_token() }}">  {{-- ← ajoute cette ligne --}}
+  <meta charset="utf-8">
+  <meta name="csrf-token" content="{{ csrf_token() }}"> {{-- ← ajoute cette ligne --}}
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta content="Codescandy" name="author">
   <title>AccUeil eCommerce FreshCart </title>
@@ -187,24 +187,28 @@
 
           </div>
           <div class="col-xxl-5 col-lg-5 d-none d-lg-block">
-
-            <form action="#">
-              <div class="input-group ">
-                <input class="form-control rounded" type="search" placeholder="Search for products">
-                <span class="input-group-append">
-                  <button class="btn bg-white border border-start-0 ms-n10 rounded-0 rounded-end" type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                      class="feather feather-search">
-                      <circle cx="11" cy="11" r="8"></circle>
-                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    <form action="{{ route('search') }}" method="GET">
+        <div class="input-group">
+            <input class="form-control rounded"
+                   type="search"
+                   name="q"
+                   value="{{ request('q') }}"
+                   placeholder="Rechercher des produits, boutiques..."
+                   autocomplete="off"
+                   id="globalSearch">
+            <span class="input-group-append">
+                <button class="btn bg-white border border-start-0 ms-n10 rounded-0 rounded-end" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
-                  </button>
-                </span>
-              </div>
-
-            </form>
-          </div>
+                </button>
+            </span>
+        </div>
+    </form>
+</div>
           <div class="col-md-2 col-xxl-3 d-none d-lg-block">
             <!-- Button trigger modal -->
             <button type="button" class="btn  btn-outline-gray-400 text-muted" data-bs-toggle="modal"
@@ -228,9 +232,11 @@
                       d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
                     </path>
                   </svg>
-                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
-                    1
-                    <span class="visually-hidden">unread messages</span>
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"
+                    id="wishlist-badge"
+                    style="{{ auth()->check() && $wishlistCount > 0 ? '' : 'display:none' }}">
+                    {{ auth()->check() ? $wishlistCount : 0 }}
+                    <span class="visually-hidden">Wishlist</span>
                   </span>
                 </a>
               </div>
@@ -257,27 +263,22 @@
                     <path d="M16 10a4 4 0 0 1-8 0"></path>
                   </svg>
                   {{-- Desktop --}}
-<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"
-      id="waitlist-badge" style="display:none">
-    0
-    <span class="visually-hidden">Liste d'attente</span>
-</span>
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"
+                    id="waitlist-badge" style="display:none">
+                    0
+                    <span class="visually-hidden">Liste d'attente</span>
+                  </span>
 
-{{-- Mobile (même chose) --}}
-<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"
-      id="waitlist-badge-mobile" style="display:none">
-    0
-    <span class="visually-hidden">Liste d'attente</span>
-</span>
+                  {{-- Mobile (même chose) --}}
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"
+                    id="waitlist-badge-mobile" style="display:none">
+                    0
+                    <span class="visually-hidden">Liste d'attente</span>
+                  </span>
                   </span>
                 </a>
 
               </div>
-
-
-
-
-
             </div>
           </div>
         </div>
@@ -295,77 +296,117 @@
           </div>
           <div class="offcanvas-body">
             <div class="d-block d-lg-none mb-4">
-              <form action="#">
-                <div class="input-group ">
-                  <input class="form-control rounded" type="search" placeholder="Search for products">
-                  <span class="input-group-append">
-                    <button class="btn bg-white border border-start-0 ms-n10 rounded-0 rounded-end" type="button">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="feather feather-search">
+    <form action="{{ route('search') }}" method="GET">
+        <div class="input-group">
+            <input class="form-control rounded" type="search"
+                   name="q" value="{{ request('q') }}"
+                   placeholder="Rechercher des produits...">
+            <span class="input-group-append">
+                <button class="btn bg-white border border-start-0 ms-n10 rounded-0 rounded-end" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                      </svg>
-                    </button>
-                  </span>
-                </div>
-              </form>
-              <div class="mt-2">
-                <button type="button" class="btn  btn-outline-gray-400 text-muted w-100 " data-bs-toggle="modal"
-                  data-bs-target="#locationModal">
-                  <i class="feather-icon icon-map-pin me-2"></i>Pick Location
+                    </svg>
                 </button>
-              </div>
-            </div>
+            </span>
+        </div>
+    </form>
+</div>
+            {{-- ── MOBILE : collapse ─────────────────────────── --}}
             <div class="d-block d-lg-none mb-4">
               <a class="btn btn-primary w-100 d-flex justify-content-center align-items-center"
-                data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
-                aria-controls="collapseExample">
-                <span class="me-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                    class="feather feather-grid">
+                data-bs-toggle="collapse" href="#collapseExample" role="button"
+                aria-expanded="false" aria-controls="collapseExample">
+                <span class="me-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid">
                     <rect x="3" y="3" width="7" height="7"></rect>
                     <rect x="14" y="3" width="7" height="7"></rect>
                     <rect x="14" y="14" width="7" height="7"></rect>
                     <rect x="3" y="14" width="7" height="7"></rect>
-                  </svg></span> All Category
+                  </svg>
+                </span>
+                Toutes les catégories
               </a>
               <div class="collapse mt-2" id="collapseExample">
-                <div class="card card-body">
-                  <ul class="mb-0 list-unstyled">
-                    <li><a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Dairy, Bread & Eggs</a></li>
-                    <li><a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Snacks & Munchies</a></li>
-                    <li><a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Fruits & Vegetables</a></li>
-                    <li><a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Cold Drinks & Juices</a></li>
-                    <li><a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Breakfast & Instant Food</a></li>
-                    <li><a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Bakery & Biscuits</a></li>
-                    <li><a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Chicken, Meat & Fish</a></li>
-                  </ul>
+                <div class="card card-body p-3">
+                  @foreach($navCategories as $section => $cats)
+                  <div class="mb-2">
+                    <small class="text-uppercase text-muted fw-bold d-block mb-1">
+                      @if($section === 'product') Produits
+                      @elseif($section === 'service') Services
+                      @else Locations
+                      @endif
+                    </small>
+                    <p class="mb-0 small">
+                      @foreach($cats as $cat)
+                      <a class="text-decoration-none text-dark"
+                        href="{{ route('shop.by-category', ['uuid' => $cat->uuid]) }}">
+                        {{ $cat->name }}
+                      </a>@if(!$loop->last), @endif
+                      @endforeach
+                    </p>
+                  </div>
+                  @if(!$loop->last)
+                  <hr class="my-2">@endif
+                  @endforeach
                 </div>
               </div>
             </div>
+
+            {{-- ── DESKTOP : dropdown mega ───────────────────── --}}
             <div class="dropdown me-3 d-none d-lg-block">
-              <button class="btn btn-primary px-6 " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                aria-expanded="false">
+              <button class="btn btn-primary px-6" type="button"
+                id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                aria-expanded="false" data-bs-auto-close="outside">
                 <span class="me-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"
-                    class="feather feather-grid">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="1.2"
+                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid">
                     <rect x="3" y="3" width="7" height="7"></rect>
                     <rect x="14" y="3" width="7" height="7"></rect>
                     <rect x="14" y="14" width="7" height="7"></rect>
                     <rect x="3" y="14" width="7" height="7"></rect>
-                  </svg></span> All Category
+                  </svg>
+                </span>
+                Toutes les catégories
               </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Dairy, Bread & Eggs</a></li>
-                <li><a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Snacks & Munchies</a></li>
-                <li><a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Fruits & Vegetables</a></li>
-                <li><a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Cold Drinks & Juices</a></li>
-                <li><a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Breakfast & Instant Food</a></li>
-                <li><a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Bakery & Biscuits</a></li>
-                <li><a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Chicken, Meat & Fish</a></li>
-              </ul>
+
+              <div class="dropdown-menu p-4" style="min-width: 480px;" aria-labelledby="dropdownMenuButton1">
+                <div class="row g-3">
+                  @foreach($navCategories as $section => $cats)
+                  <div class="col-12">
+                    {{-- Titre de section --}}
+                    <h6 class="text-primary mb-2 pb-1 border-bottom">
+                      @if($section === 'product')
+                      <i class="bi bi-box-seam me-1"></i>Produits
+                      @elseif($section === 'service')
+                      <i class="bi bi-tools me-1"></i>Services
+                      @else
+                      <i class="bi bi-calendar-check me-1"></i>Locations
+                      @endif
+                    </h6>
+
+                    {{-- Catégories en ligne séparées par virgules --}}
+                    <p class="mb-0 small lh-lg">
+                      @foreach($cats as $cat)
+                      <a href="{{ route('shop.by-category', ['uuid' => $cat->uuid]) }}"
+                        class="text-decoration-none text-dark fw-medium me-1
+                                  @if(request()->route('uuid') === $cat->uuid) text-primary @endif">
+                        @if($cat->icon_cat)
+                        <i class="{{ $cat->icon_cat }} me-1"></i>
+                        @endif
+                        {{ $cat->name }}
+                      </a>@if(!$loop->last)<span class="text-muted">, </span>@endif
+                      @endforeach
+                    </p>
+                  </div>
+                  @endforeach
+                </div>
+              </div>
             </div>
             <div class="">
               <ul class="navbar-nav align-items-center ">
@@ -384,61 +425,69 @@
                   </a>
                 </li>
 
-
                 <li class="nav-item dropdown w-100 w-lg-auto dropdown-fullwidth">
-                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    Mega menu
+                  <a class="nav-link dropdown-toggle" href="#" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Catégories
                   </a>
-                  <div class=" dropdown-menu pb-0">
+                  <div class="dropdown-menu pb-0">
                     <div class="row p-2 p-lg-4">
+
+                      {{-- Colonne par section --}}
+                      @foreach($navCategories as $section => $cats)
                       <div class="col-lg-3 col-12 mb-4 mb-lg-0">
-                        <h6 class="text-primary ps-3">Products</h6>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Butter</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Milk Drinks</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Curd & Yogurt</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Eggs</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Buns & Bakery</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Cheese</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Condensed Milk</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Dairy Products</a>
+
+                        {{-- Titre section --}}
+                        <h6 class="text-primary ps-3 mb-2">
+                          @if($section === 'product')
+                          <i class="bi bi-box-seam me-1"></i>Produits
+                          @elseif($section === 'service')
+                          <i class="bi bi-tools me-1"></i>Services
+                          @else
+                          <i class="bi bi-calendar-check me-1"></i>Locations
+                          @endif
+                        </h6>
+
+                        {{-- Liste des catégories --}}
+                        @foreach($cats->take(8) as $cat)
+                        <a class="dropdown-item py-1"
+                          href="{{ route('shop.by-category', ['uuid' => $cat->uuid]) }}">
+                          @if($cat->icon_cat)
+                          <i class="{{ $cat->icon_cat }} me-2 text-muted small"></i>
+                          @endif
+                          {{ $cat->name }}
+                        </a>
+                        @endforeach
+
+                        {{-- Voir plus si > 8 --}}
+                        @if($cats->count() > 8)
+                        <a class="dropdown-item py-1 text-primary small"
+                          href="{{ route('store.grid') }}">
+                          +{{ $cats->count() - 8 }} autres...
+                        </a>
+                        @endif
+
                       </div>
-                      <div class="col-lg-3 col-12 mb-4 mb-lg-0">
-                        <h6 class="text-primary ps-3">Services</h6>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Breakfast Cereal</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}"> Noodles, Pasta & Soup</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Frozen Veg Snacks</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}"> Frozen Non-Veg Snacks</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}"> Vermicelli</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}"> Instant Mixes</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}"> Batter</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}"> Fruit and Juices</a>
-                      </div>
-                      <div class="col-lg-3 col-12 mb-4 mb-lg-0">
-                        <h6 class="text-primary ps-3">Location</h6>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Soft Drinks</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Fruit Juices</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Coldpress</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Water & Ice Cubes</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Soda & Mixers</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Health Drinks</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Herbal Drinks</a>
-                        <a class="dropdown-item" href="{{ route('shop.fullwidth') }}">Milk Drinks</a>
-                      </div>
+                      @endforeach
+
+                      {{-- Colonne pub --}}
                       <div class="col-lg-3 col-12 mb-4 mb-lg-0">
                         <div class="card border-0">
-                          <img src="{{ asset('assets/images/banner/menu-banner.jpg') }}" alt="eCommerce HTML Template"
-                            class="img-fluid">
+                          <img src="{{ asset('assets/images/banner/menu-banner.jpg') }}"
+                            alt="Offre du jour" class="img-fluid rounded">
                           <div class="position-absolute ps-6 mt-8">
-                            <h5 class=" mb-0 ">Dont miss this <br>offer today.</h5>
-                            <a href="#" class="btn btn-primary btn-sm mt-3">Shop Now</a>
+                            <h5 class="mb-0">Ne ratez pas<br>l'offre du jour.</h5>
+                            <a href="{{ route('store.grid') }}"
+                              class="btn btn-primary btn-sm mt-3">
+                              Voir les boutiques
+                            </a>
                           </div>
                         </div>
                       </div>
+
                     </div>
                   </div>
                 </li>
-
                 <li class="nav-item dropdown w-100 w-lg-auto">
                   <a class="nav-link " href="{{ route('login') }}" role="button"
                     aria-expanded="false">
@@ -512,107 +561,138 @@
 
 
   <!-- Shop Cart -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-  <div class="offcanvas-header border-bottom">
-    <div class="text-start">
-      <h5 id="offcanvasRightLabel" class="mb-0 fs-4">Liste d'attente</h5>
-      <small id="waitlist-count-label">0 produit(s)</small>
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header border-bottom">
+      <div class="text-start">
+        <h5 id="offcanvasRightLabel" class="mb-0 fs-4">Liste d'attente</h5>
+        <small id="waitlist-count-label">0 produit(s)</small>
+      </div>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    @guest
-    <div class="alert alert-danger p-2" role="alert">
-      Se connecter pour finaliser votre demande.
-      <a href="{{ route('login') }}" class="alert-link">Connectez-vous maintenant!</a>
-    </div>
-    @endguest
+    <div class="offcanvas-body">
+      @guest
+      <div class="alert alert-danger p-2" role="alert">
+        Se connecter pour finaliser votre demande.
+        <a href="{{ route('login') }}" class="alert-link">Connectez-vous maintenant!</a>
+      </div>
+      @endguest
 
-    <div id="waitlist-items">
-      {{-- Rempli dynamiquement par JS --}}
-    </div>
+      <div id="waitlist-items">
+        {{-- Rempli dynamiquement par JS --}}
+      </div>
 
-    <div class="text-center text-muted py-5 d-none" id="waitlist-empty">
-      <i class="bi bi-bag-x fs-1"></i>
-      <p class="mt-2">Votre liste d'attente est vide.</p>
-    </div>
+      <div class="text-center text-muted py-5 d-none" id="waitlist-empty">
+        <i class="bi bi-bag-x fs-1"></i>
+        <p class="mt-2">Votre liste d'attente est vide.</p>
+      </div>
 
-    <div class="d-flex justify-content-between mt-4" id="waitlist-actions" style="display:none!important">
-      <a href="{{ route('welcome') }}" class="btn btn-primary">Continuer</a>
-      <button onclick="clearWaitlist()" class="btn btn-outline-danger btn-sm">
-        <i class="bi bi-trash me-1"></i>Vider
-      </button>
-    </div>
-  </div>
-</div>
-
-
-
-
-  <!-- Modal -->
-  <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered">
-      <div class="modal-content">
-
-        <div class="modal-body p-6">
-          <div class="d-flex justify-content-between align-items-start ">
-            <div>
-              <h5 class="mb-1" id="locationModalLabel">Choisissez une ville</h5>
-              <p class="mb-0 small">Enter your address and we will specify the offer you area. </p>
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="my-5">
-            <input type="search" class="form-control" placeholder="Search your area">
-          </div>
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6 class="mb-0">Select contry</h6>
-            <a href="#" class=" btn-outline-gray-400 text-muted btn-sm">Indicatif</a>
-
-
-          </div>
-          <div>
-            <div data-simplebar style="height:300px;">
-              <div class="list-group list-group-flush">
-
-                <a href="#"
-                  class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action active">
-                  <span>Alabama</span><span>+299</span></a>
-                <a href="#"
-                  class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                  <span>Alaska</span><span>+299</span></a>
-                <a href="#"
-                  class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                  <span>Arizona</span><span>+299</span></a>
-                <a href="#"
-                  class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                  <span>California</span><span>+299</span></a>
-                <a href="#"
-                  class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                  <span>Colorado</span><span>+299</span></a>
-                <a href="#"
-                  class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                  <span>Florida</span><span>+299</span></a>
-                <a href="#"
-                  class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                  <span>Arizona</span><span>+299</span></a>
-                <a href="#"
-                  class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                  <span>California</span><span>+299</span></a>
-                <a href="#"
-                  class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                  <span>Colorado</span><span>+299</span></a>
-                <a href="#"
-                  class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 list-group-item-action">
-                  <span>Florida</span><span>+299</span></a>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      <div class="d-flex justify-content-between mt-4" id="waitlist-actions" style="display:none!important">
+        <a href="{{ route('welcome') }}" class="btn btn-primary">Continuer</a>
+        <button onclick="clearWaitlist()" class="btn btn-outline-danger btn-sm">
+          <i class="bi bi-trash me-1"></i>Vider
+        </button>
       </div>
     </div>
   </div>
+
+
+
+<div class="modal fade" id="locationModal" tabindex="-1"
+     aria-labelledby="locationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-6">
+
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5 class="mb-1" id="locationModalLabel">Choisissez une ville</h5>
+                        <p class="mb-0 small">
+                            Sélectionnez votre ville pour voir les offres disponibles près de chez vous.
+                        </p>
+                    </div>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                {{-- Ville active --}}
+                @php $activeCity = session('selected_city'); @endphp
+                @if($activeCity)
+                <div class="alert alert-success alert-sm py-2 px-3 mt-4 mb-0 d-flex justify-content-between align-items-center">
+                    <small><i class="bi bi-geo-alt-fill me-1"></i>Ville active : <strong>{{ $activeCity }}</strong></small>
+                    <a href="{{ route('location.clear') }}" class="text-danger small ms-2">
+                        <i class="bi bi-x-circle"></i>
+                    </a>
+                </div>
+                @endif
+
+                {{-- Recherche --}}
+                <div class="my-4">
+                    <input type="search" class="form-control" id="citySearch"
+                           placeholder="Rechercher une ville..."
+                           oninput="filterCities(this.value)">
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0">Villes disponibles</h6>
+                    <span class="badge bg-light text-muted border" id="cityCount">
+                        {{ $navCities->count() }} ville(s)
+                    </span>
+                </div>
+
+                <div data-simplebar style="height:300px;">
+                    <div class="list-group list-group-flush" id="cityList">
+
+                        @foreach($navCities as $city => $districts)
+                        <div class="city-group" data-city="{{ strtolower($city) }}">
+
+                            {{-- Ligne ville --}}
+                            <a href="{{ route('location.set', ['city' => $city]) }}"
+                               class="list-group-item d-flex justify-content-between align-items-center
+                                      px-2 py-2 list-group-item-action
+                                      {{ $activeCity === $city ? 'active' : '' }}">
+                                <span class="fw-medium">
+                                    <i class="bi bi-geo-alt me-2 {{ $activeCity === $city ? '' : 'text-muted' }}"></i>
+                                    {{ $city }}
+                                </span>
+                                <span class="badge {{ $activeCity === $city ? 'bg-white text-primary' : 'bg-light text-muted border' }}">
+                                    {{ $districts->count() }} quartier(s)
+                                </span>
+                            </a>
+
+                            {{-- Sous-districts --}}
+                            @php $uniqueDistricts = $districts->whereNotNull('district')->pluck('district')->unique()->filter(); @endphp
+                            @if($uniqueDistricts->count() > 0)
+                            <div class="ps-4 border-start ms-3">
+                                @foreach($uniqueDistricts as $district)
+                                <a href="{{ route('location.set', ['city' => $city, 'district' => $district]) }}"
+                                   class="list-group-item d-flex justify-content-between align-items-center
+                                          px-2 py-1 list-group-item-action border-0
+                                          {{ session('selected_district') === $district ? 'active' : '' }}">
+                                    <small class="text-muted">
+                                        <i class="bi bi-pin-map me-2"></i>{{ $district }}
+                                    </small>
+                                </a>
+                                @endforeach
+                            </div>
+                            @endif
+
+                        </div>
+                        @endforeach
+
+                        {{-- Aucun résultat recherche --}}
+                        <div id="noCity" class="text-center py-4 d-none">
+                            <i class="bi bi-search text-muted fs-4"></i>
+                            <p class="text-muted small mt-2">Aucune ville trouvée</p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
   @yield('content') ;
@@ -801,69 +881,69 @@
   <script src="{{ asset('assets/js/vendors/zoom.js') }}"></script>
   <script src="{{ asset('assets/js/vendors/increment-value.js') }}"></script>
 
-{{-- ═══════════════════════════════════════════════
+  {{-- ═══════════════════════════════════════════════
      LISTE D'ATTENTE — localStorage
      ═══════════════════════════════════════════════ --}}
-<script>
-// ── Helpers localStorage ────────────────────────────
-const WAITLIST_KEY = 'maketroc_waitlist';
+  <script>
+    // ── Helpers localStorage ────────────────────────────
+    const WAITLIST_KEY = 'maketroc_waitlist';
 
-function getWaitlist() {
-    return JSON.parse(localStorage.getItem(WAITLIST_KEY) || '[]');
-}
+    function getWaitlist() {
+      return JSON.parse(localStorage.getItem(WAITLIST_KEY) || '[]');
+    }
 
-function saveWaitlist(items) {
-    localStorage.setItem(WAITLIST_KEY, JSON.stringify(items));
-    renderWaitlist();
-    updateBadge();
-}
+    function saveWaitlist(items) {
+      localStorage.setItem(WAITLIST_KEY, JSON.stringify(items));
+      renderWaitlist();
+      updateBadge();
+    }
 
-function addToWaitlist(product) {
-    const items = getWaitlist();
-    const exists = items.find(p => p.uuid === product.uuid);
-    if (exists) {
+    function addToWaitlist(product) {
+      const items = getWaitlist();
+      const exists = items.find(p => p.uuid === product.uuid);
+      if (exists) {
         showToast('Déjà dans votre liste d\'attente', 'warning');
         return;
+      }
+      items.push(product);
+      saveWaitlist(items);
+      showToast(product.name + ' ajouté à la liste d\'attente', 'success');
+      // Ouvrir le panel
+      const offcanvas = bootstrap.Offcanvas.getOrCreateInstance(document.getElementById('offcanvasRight'));
+      offcanvas.show();
     }
-    items.push(product);
-    saveWaitlist(items);
-    showToast(product.name + ' ajouté à la liste d\'attente', 'success');
-    // Ouvrir le panel
-    const offcanvas = bootstrap.Offcanvas.getOrCreateInstance(document.getElementById('offcanvasRight'));
-    offcanvas.show();
-}
 
-function removeFromWaitlist(uuid) {
-    const items = getWaitlist().filter(p => p.uuid !== uuid);
-    saveWaitlist(items);
-}
+    function removeFromWaitlist(uuid) {
+      const items = getWaitlist().filter(p => p.uuid !== uuid);
+      saveWaitlist(items);
+    }
 
-function clearWaitlist() {
-    saveWaitlist([]);
-}
+    function clearWaitlist() {
+      saveWaitlist([]);
+    }
 
-function renderWaitlist() {
-    const items     = getWaitlist();
-    const container = document.getElementById('waitlist-items');
-    const empty     = document.getElementById('waitlist-empty');
-    const actions   = document.getElementById('waitlist-actions');
-    const label     = document.getElementById('waitlist-count-label');
+    function renderWaitlist() {
+      const items = getWaitlist();
+      const container = document.getElementById('waitlist-items');
+      const empty = document.getElementById('waitlist-empty');
+      const actions = document.getElementById('waitlist-actions');
+      const label = document.getElementById('waitlist-count-label');
 
-    if (!container) return;
+      if (!container) return;
 
-    if (items.length === 0) {
+      if (items.length === 0) {
         container.innerHTML = '';
         empty?.classList.remove('d-none');
         actions && (actions.style.display = 'none');
         if (label) label.textContent = '0 produit(s)';
         return;
-    }
+      }
 
-    empty?.classList.add('d-none');
-    actions && (actions.style.removeProperty('display'));
-    if (label) label.textContent = items.length + ' produit(s)';
+      empty?.classList.add('d-none');
+      actions && (actions.style.removeProperty('display'));
+      if (label) label.textContent = items.length + ' produit(s)';
 
-    container.innerHTML = items.map(p => `
+      container.innerHTML = items.map(p => `
         <div class="d-flex align-items-start border-bottom py-3">
             <img src="${p.image}" alt="${p.name}"
                  class="rounded" style="width:60px;height:60px;object-fit:cover;flex-shrink:0">
@@ -882,23 +962,23 @@ function renderWaitlist() {
             </div>
         </div>
     `).join('');
-}
+    }
 
-function updateBadge() {
-    const count = getWaitlist().length;
-    ['waitlist-badge', 'waitlist-badge-mobile'].forEach(id => {
+    function updateBadge() {
+      const count = getWaitlist().length;
+      ['waitlist-badge', 'waitlist-badge-mobile'].forEach(id => {
         const el = document.getElementById(id);
         if (!el) return;
         el.childNodes[0].textContent = count + ' ';
         el.style.display = count > 0 ? '' : 'none';
-    });
-}
+      });
+    }
 
-// ── Toast notification ──────────────────────────────
-function showToast(message, type = 'success') {
-    const id = 'toast-' + Date.now();
-    const color = type === 'success' ? 'bg-success' : type === 'warning' ? 'bg-warning' : 'bg-danger';
-    const html = `
+    // ── Toast notification ──────────────────────────────
+    function showToast(message, type = 'success') {
+      const id = 'toast-' + Date.now();
+      const color = type === 'success' ? 'bg-success' : type === 'warning' ? 'bg-warning' : 'bg-danger';
+      const html = `
         <div id="${id}" class="toast align-items-center text-white ${color} border-0 position-fixed"
              style="bottom:1.5rem;right:1.5rem;z-index:9999" role="alert">
             <div class="d-flex">
@@ -907,65 +987,103 @@ function showToast(message, type = 'success') {
                         data-bs-dismiss="toast"></button>
             </div>
         </div>`;
-    document.body.insertAdjacentHTML('beforeend', html);
-    const el = document.getElementById(id);
-    const toast = new bootstrap.Toast(el, { delay: 3000 });
-    toast.show();
-    el.addEventListener('hidden.bs.toast', () => el.remove());
-}
+      document.body.insertAdjacentHTML('beforeend', html);
+      const el = document.getElementById(id);
+      const toast = new bootstrap.Toast(el, {
+        delay: 3000
+      });
+      toast.show();
+      el.addEventListener('hidden.bs.toast', () => el.remove());
+    }
 
-// ── Init au chargement ──────────────────────────────
-document.addEventListener('DOMContentLoaded', function () {
-    renderWaitlist();
-    updateBadge();
-});
-</script>
+    // ── Init au chargement ──────────────────────────────
+    document.addEventListener('DOMContentLoaded', function() {
+      renderWaitlist();
+      updateBadge();
+    });
+  </script>
 
-{{-- ═══════════════════════════════════════════════
+  {{-- ═══════════════════════════════════════════════
      WISHLIST — AJAX Laravel
      ═══════════════════════════════════════════════ --}}
-<script>
-function toggleWishlist(uuid, btn) {
-    @auth
-    if (event) event.preventDefault();
-    btn.disabled = true;
+  <script>
+    function toggleWishlist(uuid, btn) {
+      @auth
+      if (event) event.preventDefault();
+      btn.disabled = true;
 
-    const token = document.querySelector('meta[name="csrf-token"]');
-    if (!token) {
+      const token = document.querySelector('meta[name="csrf-token"]');
+      if (!token) {
         showToast('CSRF token manquant', 'danger');
         btn.disabled = false;
         return;
-    }
+      }
 
-    fetch('/wishlist/toggle/' + uuid, {
-        method: 'POST',
-        headers: {
+      fetch('/wishlist/toggle/' + uuid, {
+          method: 'POST',
+          headers: {
             'X-CSRF-TOKEN': token.content,
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-        }
-    })
-    .then(r => {
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        return r.json();
-    })
-    .then(data => {
-        const icon = btn.querySelector('i');
-        if (data.wishlisted) {
+          }
+        })
+        .then(r => {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        })
+        .then(data => {
+          const icon = btn.querySelector('i');
+          const badge = document.getElementById('wishlist-badge');
+
+          if (data.wishlisted) {
             icon.classList.replace('bi-heart', 'bi-heart-fill');
             icon.classList.add('text-danger');
             showToast('Ajouté à la wishlist ❤️', 'success');
-        } else {
+            // Incrémenter badge
+            if (badge) {
+              const current = parseInt(badge.childNodes[0].textContent) || 0;
+              badge.childNodes[0].textContent = (current + 1) + ' ';
+              badge.style.display = '';
+            }
+          } else {
             icon.classList.replace('bi-heart-fill', 'bi-heart');
             icon.classList.remove('text-danger');
             showToast('Retiré de la wishlist', 'warning');
-        }
-    })
-    .catch(err => showToast('Erreur: ' + err.message, 'danger'))
-    .finally(() => btn.disabled = false);
-    @else
-    window.location.href = '{{ route("login") }}';
-    @endauth
+            // Décrémenter badge
+            if (badge) {
+              const current = parseInt(badge.childNodes[0].textContent) || 0;
+              const newCount = Math.max(0, current - 1);
+              badge.childNodes[0].textContent = newCount + ' ';
+              badge.style.display = newCount > 0 ? '' : 'none';
+            }
+          }
+        })
+        .catch(err => showToast('Erreur: ' + err.message, 'danger'))
+        .finally(() => btn.disabled = false);
+      @else
+      window.location.href = '{{ route("login") }}';
+      @endauth
+    }
+  </script>
+
+  {{-- JS filtre ville --}}
+<script>
+function filterCities(query) {
+    const groups  = document.querySelectorAll('.city-group');
+    const noCity  = document.getElementById('noCity');
+    const counter = document.getElementById('cityCount');
+    let visible   = 0;
+    query = query.toLowerCase().trim();
+
+    groups.forEach(group => {
+        const city = group.dataset.city || '';
+        const match = !query || city.includes(query);
+        group.classList.toggle('d-none', !match);
+        if (match) visible++;
+    });
+
+    noCity.classList.toggle('d-none', visible > 0);
+    counter.textContent = visible + ' ville(s)';
 }
 </script>
 

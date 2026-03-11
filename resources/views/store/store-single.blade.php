@@ -157,18 +157,20 @@
                         data-bs-toggle="tooltip" title="Voir le produit">
                         <i class="bi bi-eye"></i>
                       </a>
-                   @auth
-<button type="button"
-        class="btn-action border-0 bg-transparent p-1"
-        onclick="toggleWishlist('{{ $product->uuid }}', this)"
-        title="Wishlist">
-    <i class="bi bi-heart{{ in_array($product->id, $wishlistedIds ?? []) ? '-fill text-danger' : '' }}"></i>
-</button>
-@else
-<a href="{{ route('login') }}" class="btn-action" title="Wishlist">
-    <i class="bi bi-heart"></i>
-</a>
-@endauth
+
+                      @auth
+                      <button type="button"
+                        class="btn-action border-0"
+                        onclick="toggleWishlist('{{ $product->uuid }}', this)"
+                        data-bs-toggle="tooltip" title="Wishlist">
+                        <i class="bi bi-heart{{ in_array($product->id, $wishlistedIds ?? []) ? '-fill text-danger' : '' }}"></i>
+                      </button>
+                      @else
+                      <a href="{{ route('login') }}" class="btn-action"
+                        data-bs-toggle="tooltip" title="Wishlist">
+                        <i class="bi bi-heart"></i>
+                      </a>
+                      @endauth
                     </div>
                   </div>
 
@@ -239,13 +241,6 @@
                     {{-- Boutons action + wishlist SÉPARÉS --}}
                     <div class="d-flex align-items-center gap-2">
 
-                      {{-- Wishlist — EN DEHORS du <a> --}}
-                      <button type="button"
-                        class="btn-action border-0 bg-transparent p-1"
-                        onclick="toggleWishlist('{{ $product->uuid }}', this)"
-                        title="Wishlist">
-                        <i class="bi bi-heart{{ in_array($product->id, $wishlistedIds ?? []) ? '-fill text-danger' : '' }}"></i>
-                      </button>
 
                       {{-- Bouton principal --}}
                       @if($product->section->value === 'service')

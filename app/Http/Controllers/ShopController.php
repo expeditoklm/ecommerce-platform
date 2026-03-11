@@ -25,15 +25,15 @@ class ShopController extends Controller
     }
 
     public function shopWishlist()
-{
-    $wishlists = Wishlist::with(['product.images', 'product.categories', 'product.shop'])
-        ->where('user_id', FacadesAuth::id())
-        ->where('deleted', 0)
-        ->latest()
-        ->paginate(10);
+    {
+        $wishlists = Wishlist::with(['product.images', 'product.categories', 'product.shop'])
+            ->where('user_id', FacadesAuth::id())
+            ->where('deleted', 0)
+            ->latest()
+            ->paginate(10);
 
-    return view('shop.shop-wishlist', compact('wishlists'));
-}
+        return view('shop.shop-wishlist', compact('wishlists'));
+    }
     public function shopCart()
     {
         return view('shop/shop-cart');
@@ -213,28 +213,28 @@ class ShopController extends Controller
 
 
 
-private function getShopData(string $uuid): array
-{
-    $shop = Shop::with('mainCategory')
-        ->where('shops.uuid', $uuid)
-        ->where('shops.is_active', 1)
-        ->where('shops.deleted', 0)
-        ->firstOrFail();
+    private function getShopData(string $uuid): array
+    {
+        $shop = Shop::with('mainCategory')
+            ->where('shops.uuid', $uuid)
+            ->where('shops.is_active', 1)
+            ->where('shops.deleted', 0)
+            ->firstOrFail();
 
-    $shopCategories = Category::whereHas('products', function ($q) use ($shop) {
+        $shopCategories = Category::whereHas('products', function ($q) use ($shop) {
             $q->where('products.shop_id', $shop->id)
-              ->where('products.deleted', 0)
-              ->where('products.status', 1)
-              ->where('category_product.deleted', 0); // ← pivot aussi qualifié
+                ->where('products.deleted', 0)
+                ->where('products.status', 1)
+                ->where('category_product.deleted', 0); // ← pivot aussi qualifié
         })
-        ->where('categories.deleted', 0)
-        ->where('categories.status', 1)
-        ->get();
+            ->where('categories.deleted', 0)
+            ->where('categories.status', 1)
+            ->get();
 
-    return compact('shop', 'shopCategories');
-}
+        return compact('shop', 'shopCategories');
+    }
     // Utilisation dans chaque méthode
- 
+
 
     public function storeReviews(Request $request, string $uuid)
     {
@@ -251,73 +251,195 @@ private function getShopData(string $uuid): array
 
 
     public function storeSingle(Request $request, string $uuid)
-{
-    $data = $this->getShopData($uuid);  // ← fournit $shop et $shopCategories
-    $shop = $data['shop'];
+    {
+        $data = $this->getShopData($uuid);  // ← fournit $shop et $shopCategories
+        $shop = $data['shop'];
 
-    $sortParam = $request->get('sort', 'top');
+        $sortParam = $request->get('sort', 'top');
 
-    $productsQuery = Product::with(['images', 'type', 'categories'])
-        ->where('shop_id', $shop->id)
-        ->where('deleted', 0)
-        ->where('status', 1);
+        $productsQuery = Product::with(['images', 'type', 'categories'])
+            ->where('shop_id', $shop->id)
+            ->where('deleted', 0)
+            ->where('status', 1);
 
-    if ($request->filled('category')) {
-        $productsQuery->whereHas('categories', function ($q) use ($request) {
-            $q->where('categories.id', $request->category);
-        });
+        if ($request->filled('category')) {
+            $productsQuery->whereHas('categories', function ($q) use ($request) {
+                $q->where('categories.id', $request->category);
+            });
+        }
+
+        if ($request->filled('search')) {
+            $productsQuery->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        if (session('selected_city')) {
+            $query->where('products.city', session('selected_city'));
+        }
+        if (session('selected_district')) {
+            $query->where('products.district', session('selected_district'));
+        }
+
+        $wishlistedIds = FacadesAuth::check()
+            ? Wishlist::where('user_id', FacadesAuth::id())
+            ->where('deleted', 0)
+            ->pluck('product_id')
+            ->toArray()
+            : [];
+
+
+        $products = $productsQuery->paginate(12)->appends(request()->query());
+
+        return view('store.store-single', array_merge($data, compact('products', 'sortParam', 'wishlistedIds')));
     }
 
-    if ($request->filled('search')) {
-        $productsQuery->where('name', 'like', '%' . $request->search . '%');
-    }
 
-    $wishlistedIds = FacadesAuth::check()
-    ? Wishlist::where('user_id', FacadesAuth::id())
-              ->where('deleted', 0)
-              ->pluck('product_id')
-              ->toArray()
-    : [];
+    public function toggleWishlist(string $uuid)
+    {
+        $product = Product::where('uuid', $uuid)->where('deleted', 0)->firstOrFail();
+        $userId  = FacadesAuth::id();
 
+        // Cherche AVEC ou SANS deleted — pas de filtre sur deleted
+        $existing = Wishlist::where('user_id', $userId)
+            ->where('product_id', $product->id)
+            ->first();
 
-    $products = $productsQuery->paginate(12)->appends(request()->query());
+        if ($existing) {
+            // Toggle : inverse le deleted
+            $existing->update(['deleted' => $existing->deleted ? 0 : 1]);
+            $wishlisted = $existing->deleted == 0;
+        } else {
+            // Première fois — crée
+            Wishlist::create([
+                'uuid'       => \Illuminate\Support\Str::uuid(),
+                'user_id'    => $userId,
+                'product_id' => $product->id,
+                'deleted'    => 0,
+            ]);
+            $wishlisted = true;
+        }
 
-    return view('store.store-single', array_merge($data, compact('products', 'sortParam', 'wishlistedIds')));
-}
-
-
-public function toggleWishlist(string $uuid)
-{
-    $product = Product::where('uuid', $uuid)->where('deleted', 0)->firstOrFail();
-    $userId  = Auth::id();
-
-    $existing = Wishlist::where('user_id', $userId)
-                        ->where('product_id', $product->id)
-                        ->where('deleted', 0)
-                        ->first();
-
-    if ($existing) {
-        $existing->update(['deleted' => 1]);
-
-        // Si requête AJAX → JSON, sinon redirect
         if (request()->expectsJson()) {
-            return response()->json(['wishlisted' => false]);
+            return response()->json(['wishlisted' => $wishlisted]);
         }
         return redirect()->route('shop.wishlist')
-                         ->with('success', 'Produit retiré de la wishlist.');
+            ->with('success', $wishlisted ? 'Ajouté à la wishlist.' : 'Retiré de la wishlist.');
     }
 
-    Wishlist::create([
-        'uuid'       => \Illuminate\Support\Str::uuid(),
-        'user_id'    => $userId,
-        'product_id' => $product->id,
-        'deleted'    => 0,
-    ]);
+    public function shopByCategory(Request $request, string $uuid)
+    {
+        $category = \App\Models\Category::where('uuid', $uuid)
+            ->where('deleted', 0)->where('status', 1)->firstOrFail();
 
-    if (request()->expectsJson()) {
-        return response()->json(['wishlisted' => true]);
+        $perPage = $request->get('per_page', 16);
+
+        $query = \App\Models\Product::with(['images', 'shop', 'categories'])
+            ->withAvg(['reviews' => fn($q) => $q->where('deleted', 0)], 'rating')
+            ->withCount(['reviews'  => fn($q) => $q->where('deleted', 0)])
+            ->whereHas('categories', fn($q) => $q->where('categories.uuid', $uuid))
+            ->where('products.deleted', 0)
+            ->where('products.status', 1);
+
+        if ($request->filled('search')) {
+            $query->where('products.name', 'like', '%' . $request->search . '%');
+        }
+
+        if (session('selected_city')) {
+            $query->where('products.city', session('selected_city'));
+        }
+        if (session('selected_district')) {
+            $query->where('products.district', session('selected_district'));
+        }
+
+        match ($request->sort) {
+            'price_asc'  => $query->orderBy('products.price', 'asc'),
+            'price_desc' => $query->orderBy('products.price', 'desc'),
+            'rating'     => $query->orderByDesc('reviews_avg_rating'),
+            'popular'    => $query->orderByDesc('products.popularity_score'),
+            default      => $query->latest('products.created_at'),
+        };
+
+        $products = $query->paginate($perPage)->appends(request()->query());
+
+        $relatedCategories = \App\Models\Category::where('section', $category->section)
+            ->where('deleted', 0)->where('status', 1)->orderBy('name')->get();
+
+        $wishlistedIds = auth()->check()
+            ? \App\Models\Wishlist::where('user_id', auth()->id())
+            ->where('deleted', 0)->pluck('product_id')->toArray()
+            : [];
+
+        return view('shop.shop-fullwidth', compact(
+            'category',
+            'products',
+            'relatedCategories',
+            'wishlistedIds'
+        ));
     }
-    return back()->with('success', 'Ajouté à la wishlist.');
-}
 
+
+    public function setLocation(Request $request)
+    {
+        session(['selected_city'     => $request->city]);
+        session(['selected_district' => $request->district]);
+
+        return redirect()->back()->with(
+            'success',
+            'Ville sélectionnée : ' . $request->city .
+                ($request->district ? ' – ' . $request->district : '')
+        );
+    }
+
+    public function clearLocation()
+    {
+        session()->forget(['selected_city', 'selected_district']);
+        return redirect()->back();
+    }
+
+    public function search(Request $request)
+    {
+        $q = trim($request->get('q', ''));
+
+        if (empty($q)) {
+            return redirect()->route('store.grid');
+        }
+
+        $products = \App\Models\Product::with(['images', 'shop', 'categories'])
+            ->withAvg(['reviews' => fn($q) => $q->where('deleted', 0)], 'rating')
+            ->withCount(['reviews' => fn($q) => $q->where('deleted', 0)])
+            ->where('products.deleted', 0)
+            ->where('products.status', 1)
+            ->where(function ($query) use ($q) {
+                $query->where('products.name', 'like', "%{$q}%")
+                    ->orWhere('products.description', 'like', "%{$q}%");
+            })
+            ->when(
+                session('selected_city'),
+                fn($query) =>
+                $query->where('products.city', session('selected_city'))
+            )
+            ->when(
+                session('selected_district'),
+                fn($query) =>
+                $query->where('products.district', session('selected_district'))
+            )
+            ->when(request('section'), fn($q, $s) => $q->where('products.section', $s))
+            ->when(request('sort') === 'price_asc',  fn($q) => $q->orderBy('products.price', 'asc'))
+            ->when(request('sort') === 'price_desc', fn($q) => $q->orderBy('products.price', 'desc'))
+            ->when(request('sort') === 'rating',     fn($q) => $q->orderByDesc('reviews_avg_rating'))
+            ->latest()
+            ->paginate(20)->appends(request()->query());
+
+        $shops = \App\Models\Shop::where('deleted', 0)
+            ->where('is_active', 1)
+            ->where('name', 'like', "%{$q}%")
+            ->take(4)
+            ->get();
+
+        $wishlistedIds = auth()->check()
+            ? \App\Models\Wishlist::where('user_id', auth()->id())
+            ->where('deleted', 0)->pluck('product_id')->toArray()
+            : [];
+
+        return view('shop.search', compact('products', 'shops', 'q', 'wishlistedIds'));
+    }
 }

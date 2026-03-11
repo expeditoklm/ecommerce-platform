@@ -112,4 +112,22 @@ class Shop extends Model
         $empty  = 5 - $full - $half;
         return compact('full', 'half', 'empty');
     }
+
+
+
+
+
+
+// app/Models/Shop.php
+public function getProductCategories()
+{
+    return \App\Models\Category::whereHas('products', function ($q) {
+        $q->where('products.shop_id', $this->id)
+          ->where('products.deleted', 0)
+          ->where('products.status', 1);
+    })
+    ->where('categories.deleted', 0)
+    ->where('categories.status', 1)
+    ->get();
+}
 }

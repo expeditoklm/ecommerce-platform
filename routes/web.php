@@ -38,9 +38,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/search', [ShopController::class, 'search'])->name('search');
+Route::get('/shop/category/{uuid}', [ShopController::class, 'shopByCategory'])
+    ->name('shop.by-category');
 
 
-
+    Route::get('/location/set',   [ShopController::class, 'setLocation'])->name('location.set');
+Route::get('/location/clear', [ShopController::class, 'clearLocation'])->name('location.clear');
 
 
 Route::get('/base', [ShopController::class, 'base'])->name('base');
