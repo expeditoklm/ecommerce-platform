@@ -18,7 +18,14 @@ class BlogImage extends Model
 {
     use HasUuid;
 
-    protected $fillable = ['uuid', 'blog_id', 'url', 'deleted'];
+    protected $fillable = [
+    'uuid',
+    'blog_id',
+    'url',
+    'role',
+    'position',
+    'deleted',
+];
     protected $casts = ['deleted' => 'boolean'];
 
     public function blog()

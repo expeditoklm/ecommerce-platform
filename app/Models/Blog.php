@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasUuid;
+use BlogTag;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -38,9 +39,10 @@ class Blog extends Model
         'uuid',
         'shop_id',
         'category_id',
-        'slug_url',
+        'slug_url','content_left','content_right', 
         'title',
         'description',
+         'cover_url',
         'content',
         'publication_date',
         'reading_time',
@@ -60,18 +62,32 @@ class Blog extends Model
         'publication_date' => 'date',
     ];
 
-    public function shop()
-    {
-        return $this->belongsTo(Shop::class);
-    }
+   
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
+    // app/Models/Blog.php
+public function shop()     { return $this->belongsTo(Shop::class); }
+public function category() { return $this->belongsTo(Category::class); }
+public function images()   { return $this->hasMany(BlogImage::class)->where('deleted', 0)->orderBy('position'); }
+public function tags()     { return $this->belongsToMany(BlogTag::class, 'blog_blog_tag'); }
 
-    public function images()
-    {
-        return $this->hasMany(BlogImage::class);
-    }
+// Accès à l'auteur via shop
+public function getAuthorAttribute() { return $this->shop?->user; }
+
+// Images par rôle
+public function coverImage() {
+    return $this->hasOne(BlogImage::class)->where('role', 'cover')->where('deleted', 0);
+}
+public function leftImage() {
+    return $this->hasOne(BlogImage::class)->where('role', 'left')->where('deleted', 0);
+}
+public function rightImage() {
+    return $this->hasOne(BlogImage::class)->where('role', 'right')->where('deleted', 0);
+}
+
+public function blogCategories()
+{
+    return $this->belongsToMany(\App\Models\Category::class, 'blog_category');
+}
+
+
 }

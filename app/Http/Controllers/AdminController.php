@@ -845,15 +845,137 @@ class AdminController extends Controller
 
 
 
-    public function adminCustomers()
-    {
-        return view('admin/customers');
+public function adminCustomers(Request $request)
+{
+    $ownerId = Auth::id();
+
+    $query = \App\Models\User::select([
+        'users.id',
+        'users.uuid',      // ← déjà présent
+        'users.name',
+        'users.email',
+        'users.phone',
+        'users.avatar_url',
+    ])
+    ->join('orders', 'orders.user_id', '=', 'users.id')
+    ->where('orders.owner_id', $ownerId)
+    ->where('orders.deleted', 0)
+    ->groupBy(
+        'users.id',
+        'users.uuid',      // ← ajoute ici
+        'users.name',
+        'users.email',
+        'users.phone',
+        'users.avatar_url'
+    )
+    ->selectRaw('COUNT(orders.id) as orders_count')
+    ->selectRaw('SUM(orders.total) as total_spent')
+    ->selectRaw('MAX(orders.created_at) as last_order_date')
+    ->selectRaw('MAX(orders.status) as last_status')
+    ->selectRaw('GROUP_CONCAT(DISTINCT orders.type) as order_types');
+
+    // Recherche
+    if ($request->filled('search')) {
+        $s = $request->search;
+        $query->where(function ($q) use ($s) {
+            $q->where('users.name', 'like', "%{$s}%")
+              ->orWhere('users.email', 'like', "%{$s}%");
+        });
     }
 
-    public function adminReviews()
-    {
-        return view('admin/reviews');
+    // Filtre type
+    if ($request->filled('type')) {
+        $query->where('orders.type', $request->type);
     }
+
+    // Tri
+    match($request->sort) {
+        'orders' => $query->orderByDesc('orders_count'),
+        'total'  => $query->orderByDesc('total_spent'),
+        default  => $query->orderByDesc('last_order_date'),
+    };
+
+    $customers = $query->paginate(15)->appends(request()->query());
+
+    return view('admin.customers', compact('customers'));
+}
+
+    public function adminReviews(Request $request)
+{
+    $userId = Auth::id();
+
+    // Récupère les IDs des produits appartenant à l'utilisateur connecté
+    $myProductIds = \App\Models\Product::whereHas('shop', fn($q) =>
+            $q->where('user_id', $userId)->where('deleted', 0)
+        )
+        ->where('deleted', 0)
+        ->pluck('id');
+
+    // Récupère les IDs des boutiques appartenant à l'utilisateur
+    $myShopIds = \App\Models\Shop::where('user_id', $userId)
+        ->where('deleted', 0)->pluck('id');
+
+    $query = \App\Models\Review::with(['user', 'product', 'shop'])
+        ->where('deleted', 0)
+        ->where(function ($q) use ($myProductIds, $myShopIds) {
+            $q->whereIn('product_id', $myProductIds)
+              ->orWhereIn('shop_id', $myShopIds);
+        });
+
+    // Recherche
+    if ($request->filled('search')) {
+        $s = $request->search;
+        $query->where(function ($q) use ($s) {
+            $q->where('comment', 'like', "%{$s}%")
+              ->orWhere('title', 'like', "%{$s}%");
+        });
+    }
+
+    // Filtre note
+    if ($request->filled('rating')) {
+        $query->where('rating', $request->rating);
+    }
+
+    // Filtre section
+    if ($request->filled('section')) {
+        if ($request->section === 'shop') {
+            $query->whereNull('product_id')->whereNotNull('shop_id');
+        } else {
+            $query->whereHas('product', fn($q) =>
+                $q->where('section', $request->section)
+            );
+        }
+    }
+
+    // Tri
+    match($request->sort) {
+        'rating_desc' => $query->orderByDesc('rating'),
+        'rating_asc'  => $query->orderBy('rating'),
+        'likes'       => $query->orderByDesc('likes_count'),
+        default       => $query->latest(),
+    };
+
+    $reviews       = $query->paginate(15)->appends(request()->query());
+    $totalReviews  = $query->count();
+    $averageRating = $query->avg('rating') ?? 0;
+
+    return view('admin.reviews', compact('reviews', 'totalReviews', 'averageRating'));
+}
+
+public function adminDeleteReview(string $uuid)
+{
+    $review = \App\Models\Review::where('uuid', $uuid)->firstOrFail();
+
+    // Vérifie que le produit ou la boutique appartient bien à l'utilisateur connecté
+    $isOwner = ($review->product && $review->product->shop?->user_id === Auth::id())
+            || ($review->shop   && $review->shop->user_id === Auth::id());
+
+    abort_unless($isOwner, 403);
+
+    $review->update(['deleted' => 1]);
+
+    return redirect()->back()->with('success', 'Avis supprimé.');
+}
 
     // public function adminMeOrderList()
     // {
@@ -918,13 +1040,6 @@ class AdminController extends Controller
         return view('admin/order-single-location');
     }
 
-    public function adminBlogSetting()
-    {
-        return view('admin/setting-blog');
-    }
+    
 
-    public function adminAddBlog()
-    {
-        return view('admin/add-blog');
-    }
 }

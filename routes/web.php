@@ -124,7 +124,16 @@ Route::post('/review/{uuid}/report', [StoreController::class, 'report'])
     ->middleware('auth');
 
 Route::get('/blog', [BlogController::class, 'blog'])->name('blog');
-Route::get('/blog/single', [BlogController::class, 'blogSingle'])->name('blog.single');
+Route::get('/blog/single/{uuid}', [BlogController::class, 'blogSingle'])->name('blog.single');
+Route::patch('/admin/blog/{uuid}/toggle', [BlogController::class, 'adminToggleBlog'])->name('admin.blog-toggle');
+Route::delete('/admin/blog/{uuid}',       [BlogController::class, 'adminDeleteBlog'])->name('admin.blog-delete');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/admin/blog-setting', [BlogController::class, 'adminBlogSetting'])->name('admin.blog-setting');
+    Route::get('/admin/add-blog',     [BlogController::class, 'adminCreateBlog'])->name('admin.add-blog');
+    Route::post('/admin/blog',        [BlogController::class, 'adminStoreBlog'])->name('admin.blog-store');
+    Route::get('/admin/blog/{uuid}/edit', [BlogController::class, 'adminEditBlog'])->name('admin.blog-edit');
+    Route::put('/admin/blog/{uuid}',      [BlogController::class, 'adminUpdateBlog'])->name('admin.blog-update');
+});
 
 
 
@@ -182,13 +191,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 
-Route::get('/admin/customers', [AdminController::class, 'adminCustomers'])->middleware(['auth', 'verified'])->name('admin.customers');
-Route::get('/admin/reviews', [AdminController::class, 'adminReviews'])->middleware(['auth', 'verified'])->name('admin.reviews');
+Route::get('/admin/customers', [AdminController::class, 'adminCustomers'])
+    ->name('admin.customers');
+
+Route::get('/admin/customers/{uuid}/orders', [AdminController::class, 'adminCustomerOrders'])
+    ->name('admin.customer-orders');
+Route::get('/admin/reviews', [AdminController::class, 'adminReviews'])
+    ->name('admin.reviews');
+
+Route::delete('/admin/reviews/{uuid}', [AdminController::class, 'adminDeleteReview'])
+    ->name('admin.review-delete');
 Route::get('/admin/me-order-list', [AdminController::class, 'adminMeOrderList'])->middleware(['auth', 'verified'])->name('admin.me-order-list');
 Route::get('/admin/me-order-single/{uuid}', [AdminController::class, 'adminMeOrderSingle'])->middleware(['auth', 'verified'])->name('admin.me-order-single');
 Route::get('/admin/me-order-single-location', [AdminController::class, 'adminMeOrderSingleLocation'])->middleware(['auth', 'verified'])->name('admin.me-order-single-location');
-Route::get('/admin/blog-setting', [AdminController::class, 'adminBlogSetting'])->middleware(['auth', 'verified'])->name('admin.blog-setting');
-Route::get('/admin/add-blog', [AdminController::class, 'adminAddBlog'])->middleware(['auth', 'verified'])->name('admin.add-blog');
 
 
 
