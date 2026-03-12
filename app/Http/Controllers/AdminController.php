@@ -16,10 +16,58 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
-    public function adminIndex()
-    {
-        return view('admin/index');
-    }
+
+public function adminIndex()
+{
+    $shopIds = \App\Models\Shop::where('user_id', Auth::id())
+                                ->where('deleted', 0)
+                                ->pluck('id');
+
+    $productIds = \App\Models\Product::whereIn('shop_id', $shopIds)
+                                      ->where('deleted', 0)
+                                      ->pluck('id');
+
+    $stats = [
+        // Compteurs produits/services/locations
+        'products_count'  => \App\Models\Product::whereIn('shop_id', $shopIds)->where('section', 'product')->where('deleted', 0)->count(),
+        'services_count'  => \App\Models\Product::whereIn('shop_id', $shopIds)->where('section', 'service')->where('deleted', 0)->count(),
+        'rentals_count'   => \App\Models\Product::whereIn('shop_id', $shopIds)->where('section', 'rental')->where('deleted', 0)->count(),
+
+        // Commandes par type
+        'orders_product'  => \App\Models\Order::whereIn('product_id', $productIds)->where('type', 'exchange')->where('deleted', 0)->count(),
+        'orders_service'  => \App\Models\Order::whereIn('product_id', $productIds)->where('type', 'service')->where('deleted', 0)->count(),
+        'orders_rental'   => \App\Models\Order::whereIn('product_id', $productIds)->where('type', 'rental')->where('deleted', 0)->count(),
+
+        // Revenus (commandes complétées)
+        'total_revenue'   => \App\Models\Order::whereIn('product_id', $productIds)->where('status', 'completed')->where('deleted', 0)->sum('total'),
+
+        // Clients uniques
+        'customers_count' => \App\Models\Order::whereIn('product_id', $productIds)->where('deleted', 0)->distinct('user_id')->count('user_id'),
+
+        // Avis
+        'reviews_count'   => \App\Models\Review::whereIn('product_id', $productIds)->where('deleted', 0)->count(),
+        'avg_rating'      => \App\Models\Review::whereIn('product_id', $productIds)->where('deleted', 0)->avg('rating') ?? 0,
+
+        // Blogs
+        'blogs_count'     => \App\Models\Blog::whereIn('shop_id', $shopIds)->where('deleted', 0)->count(),
+        'blogs_published' => \App\Models\Blog::whereIn('shop_id', $shopIds)->where('is_published', 1)->where('deleted', 0)->count(),
+    ];
+
+    $recentOrders = \App\Models\Order::with(['product', 'user'])
+        ->whereIn('product_id', $productIds)
+        ->where('deleted', 0)
+        ->latest()
+        ->take(8)
+        ->get();
+
+    return view('admin.index', compact('stats', 'recentOrders'));
+}
+    // public function adminIndex()
+    // {
+    //     return view('admin/index');
+    // }
+
+
 
 
     public function adminProducts(Request $request)
