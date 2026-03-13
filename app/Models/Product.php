@@ -18,7 +18,7 @@ class Product extends Model
         'exchange_status', 'condition', 'condition_description',
         'description', 'features', 'file_url',
         'price', 'price_7days', 'price_30days',
-        'stock',
+        'stock','user_id',
         'is_on_sale', 'sale_price', 'sale_end_date',
         'popularity_score', 'wishlist_count',
         'carousel_priority', 'auto_display', 'manual_display',
@@ -87,13 +87,15 @@ class Product extends Model
         return $this->belongsTo(Type::class);
     }
 
-    public function categories()
+   public function categories()
     {
-        return $this->belongsToMany(Category::class, 'category_product')
-            ->withTimestamps()
-            ->wherePivot('deleted', 0);
+        return $this->belongsToMany(
+            Category::class,
+            'category_product',
+            'product_id',
+            'category_id'
+        )->wherePivot('deleted', 0);
     }
-
     public function images()
     {
         return $this->hasMany(ProductImage::class)->where('deleted', 0);
@@ -121,4 +123,21 @@ public function getWishlistCountAttribute(): int
 {
     return $this->wishlists()->count();
 }
+// Ajouter la relation :
+public function user()
+{
+    return $this->belongsTo(\App\Models\User::class);
+}
+
+// Helper pour retrouver le propriétaire (boutique OU utilisateur direct)
+public function getOwnerAttribute()
+{
+    return $this->shop?->user ?? $this->user;
+}
+
+  public function getFirstImageAttribute(): ?string
+    {
+        return $this->images->first()?->url;
+    }
+
 }

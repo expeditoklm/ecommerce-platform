@@ -11,6 +11,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ExchangeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -111,7 +112,7 @@ Route::post('/store/reviews', [StoreController::class, 'storeReviewsAdd'])
 
 // Store public
 Route::get('/stores',                  [StoreController::class, 'store'])->name('store');
-Route::get('/store/single/{uuid}',            [StoreController::class, 'storeSingle'])->name('store.single');
+Route::get('/store/single/{uuid?}',            [StoreController::class, 'storeSingle'])->name('store.single');
 Route::get('/store/{uuid}/reviews',    [StoreController::class, 'storeReviews'])->name('store.reviews');
 Route::get('/store/{uuid}/contact',    [StoreController::class, 'storeContact'])->name('store.contact');
 
@@ -253,6 +254,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ->name('wishlist.toggle');
 });
 
+
+Route::middleware(['auth', 'verified'])->group(function () {
+
+    // Mes articles personnels (sans boutique)
+    Route::get('/account/my-items',          [AccountController::class, 'myItems'])->name('account.my-items');
+    Route::get('/account/my-items/create',   [AccountController::class, 'myItemsCreate'])->name('account.my-items-create');
+    Route::post('/account/my-items',         [AccountController::class, 'myItemsStore'])->name('account.my-items-store');
+    Route::get('/account/my-items/{uuid}/edit', [AccountController::class, 'myItemsEdit'])->name('account.my-items-edit');
+    Route::put('/account/my-items/{uuid}',   [AccountController::class, 'myItemsUpdate'])->name('account.my-items-update');
+    Route::delete('/account/my-items/{uuid}',[AccountController::class, 'myItemsDelete'])->name('account.my-items-delete');
+
+    // Échanges
+    Route::get('/account/exchanges',         [ExchangeController::class, 'index'])->name('account.exchanges');
+    Route::post('/exchange/propose/{uuid}',  [ExchangeController::class, 'propose'])->name('exchange.propose');
+    Route::post('/exchange/{uuid}/accept',   [ExchangeController::class, 'accept'])->name('exchange.accept');
+    Route::post('/exchange/{uuid}/reject',   [ExchangeController::class, 'reject'])->name('exchange.reject');
+    Route::post('/exchange/{uuid}/counter',  [ExchangeController::class, 'counter'])->name('exchange.counter');
+});
 
 
 

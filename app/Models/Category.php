@@ -40,9 +40,12 @@ class Category extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'category_product')
-            ->withTimestamps()
-            ->wherePivot('deleted', 0);
+        return $this->belongsToMany(
+            Product::class,
+            'category_product',     // table pivot
+            'category_id',          // FK vers categories
+            'product_id'            // FK vers products
+        )->wherePivot('deleted', 0);
     }
 
     public function blogs()

@@ -14,10 +14,114 @@ use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 class ShopController extends Controller
 {
-    public function welcome()
-    {
-        return view('welcome');
-    }
+
+
+public function welcome()
+{
+    // =========================================================
+    // TOP 12 CATÉGORIES + leurs produits pour les onglets
+    // =========================================================
+    $categories = \App\Models\Category::where('categories.status', 1)
+        ->where('categories.deleted', 0)
+        ->where('categories.section', 'product')
+        ->withCount([
+            'products' => fn($q) => $q
+                ->where('products.deleted', 0)
+                ->where('products.status', 1)
+        ])
+        ->having('products_count', '>', 0)
+        ->orderByDesc('products_count')
+        ->limit(12)
+        // Eager load les produits pour les onglets (5 premières catégories)
+        // avec leurs images, avis et boutique
+        ->with([
+            'products' => fn($q) => $q
+                ->where('products.deleted', 0)
+                ->where('products.status', 1)
+                ->where('products.section', 'product')
+                ->with([
+                    'images'  => fn($q) => $q->where('deleted', 0)->limit(1),
+                    'shop:id,name',
+                ])
+                ->withCount(['reviews' => fn($q) => $q->where('deleted', 0)])
+                ->withAvg(['reviews' => fn($q) => $q->where('deleted', 0)], 'rating')
+                ->orderByDesc('popularity_score')
+                ->limit(10),
+        ])
+        ->get();
+
+
+    // =========================================================
+    // PRODUITS POPULAIRES multi-critères
+    // =========================================================
+    $popularProducts = \App\Models\Product::query()
+        ->where('products.deleted', 0)
+        ->where('products.status', 1)
+        ->where('products.section', 'product')
+        ->where('products.exchange_status', 'En Echange')
+        ->with([
+            'images'    => fn($q) => $q->where('deleted', 0)->limit(1),
+            'categories'=> fn($q) => $q->where('categories.status', 1)->limit(1),
+            'shop:id,name',
+        ])
+        ->withCount(['reviews'  => fn($q) => $q->where('reviews.deleted', 0)])
+        ->withAvg(['reviews'    => fn($q) => $q->where('reviews.deleted', 0)], 'rating')
+        ->withCount(['wishlists as active_wishlist_count' => fn($q) => $q->where('wishlists.deleted', 0)])
+        ->orderByRaw('
+            (products.popularity_score * 2)
+            + (products.wishlist_count * 3)
+            + (SELECT COUNT(*) FROM reviews
+               WHERE reviews.product_id = products.id
+               AND reviews.deleted = 0) * 4
+            + COALESCE(
+                (SELECT AVG(reviews.rating) FROM reviews
+                 WHERE reviews.product_id = products.id
+                 AND reviews.deleted = 0), 0) * 5
+            DESC
+        ')
+        ->limit(12)
+        ->get();
+
+
+    // =========================================================
+    // PRODUITS LES MIEUX NOTÉS
+    // =========================================================
+    $topRatedProducts = \App\Models\Product::query()
+        ->where('products.deleted', 0)
+        ->where('products.status', 1)
+        ->where('products.section', 'product')
+        ->with(['images' => fn($q) => $q->where('deleted', 0)->limit(1)])
+        ->withCount(['reviews' => fn($q) => $q->where('reviews.deleted', 0)])
+        ->withAvg(['reviews'   => fn($q) => $q->where('reviews.deleted', 0)], 'rating')
+        ->having('reviews_count', '>=', 1)
+        ->orderByDesc('reviews_avg_rating')
+        ->orderByDesc('reviews_count')
+        ->limit(8)
+        ->get();
+
+
+    // =========================================================
+    // PRODUITS LES PLUS EN WISHLIST
+    // =========================================================
+    $wishlistedProducts = \App\Models\Product::query()
+        ->where('products.deleted', 0)
+        ->where('products.status', 1)
+        ->where('products.section', 'product')
+        ->with(['images' => fn($q) => $q->where('deleted', 0)->limit(1)])
+        ->withCount(['wishlists as active_wishlist_count' => fn($q) => $q->where('wishlists.deleted', 0)])
+        ->having('active_wishlist_count', '>=', 1)
+        ->orderByDesc('active_wishlist_count')
+        ->limit(8)
+        ->get();
+
+
+    return view('welcome', compact(
+        'categories',
+        'popularProducts',
+        'topRatedProducts',
+        'wishlistedProducts',
+    ));
+}
 
     public function base()
     {
